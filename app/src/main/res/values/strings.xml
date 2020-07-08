@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Rushing Turtles</string>
+
+    <!-- TESTS -->
+    <string name="test_string">Yeeeeey</string>
+
+    <!-- TOOLBAR -->
+    <string name="info_toolbar">Information</string>
+    <string name="settings_toolbar">Settings</string>
+
+    <!-- MAIN ACTIVITY -->
+    <string name="main_button_start">Start game</string>
+    <string name="main_button_join">Join game</string>
+
+</resources>

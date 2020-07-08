@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Pędzące Żółwie</string>
+
+    <!-- TESTS -->
+    <string name="test_string">Elo elo 320</string>
+
+    <!-- TOOLBAR -->
+    <string name="info_toolbar">Informacje</string>
+    <string name="settings_toolbar">Ustawienia</string>
+
+    <!-- MAIN ACTIVITY -->
+    <string name="main_button_start">Rozpocznij grę</string>
+    <string name="main_button_join">Dołącz do gry</string>
+
+</resources>
