@@ -7,4 +7,9 @@
     <dimen name="button_padding_vertical">16dp</dimen>
     <dimen name="button_padding_horizontal">24dp</dimen>
 
+    <!-- GAME ACTIVITY -->
+    <dimen name="card_padding_vertical">6dp</dimen>
+    <dimen name="card_padding_horizontal">6dp</dimen>
+
+
 </resources>

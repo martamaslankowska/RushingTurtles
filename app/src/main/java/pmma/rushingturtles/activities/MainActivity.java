@@ -17,24 +17,21 @@ import pmma.rushingturtles.R;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private Toolbar toolbar;
-    private Button mainButton;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+//        WSC.setActivity(this);
 
-        toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        mainButton = findViewById(R.id.mainButton);
+        Button mainButton = findViewById(R.id.mainButton);
         mainButton.setOnClickListener(this);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
@@ -46,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                Toast.makeText(this, getResources().getString(R.string.info_toolbar) + " selected", Toast.LENGTH_SHORT).show();
                 Intent intentInfo = new Intent(this, InfoActivity.class);
                 startActivity(intentInfo);
+//                WSC.sendMsg();
                 break;
 
             case R.id.settingsMenu:
@@ -66,7 +64,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     {
         switch (view.getId()) {
             case R.id.mainButton:
-                Toast.makeText(getApplicationContext(), getResources().getString(R.string.test_string), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getApplicationContext(), getResources().getString(R.string.test_string), Toast.LENGTH_SHORT).show();
+                Intent intentInfo = new Intent(this, GameActivity.class);
+                startActivity(intentInfo);
         }
     }
 

@@ -1,19 +1,230 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@android:color/darker_gray">
+
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:src="@drawable/board_low_quality"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineBoard"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineBoard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.66" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineTopOfCard1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.75" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineTopOfCard2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.65" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineTopOfCard3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.55" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineTopOfCard4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.45" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineTopOfCard5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.35" />
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineBottomOfCard1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="1" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineBottomOfCard2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.9" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineBottomOfCard3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.8" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineBottomOfCard4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.7" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineBottomOfCard5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.6" />
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineBottomOfColorTurtle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.15" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineBottomTexts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.3" />
+
+
+    <ImageView
+        android:id="@+id/imageViewCard5"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/card_padding_vertical"
+        android:layout_marginHorizontal="@dimen/card_padding_horizontal"
+        android:src="@drawable/turtle_card"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineBottomOfCard5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guidelineBoard"
+        app:layout_constraintTop_toTopOf="@+id/guidelineTopOfCard5" />
+
+    <ImageView
+        android:id="@+id/imageViewCard4"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/card_padding_vertical"
+        android:layout_marginHorizontal="@dimen/card_padding_horizontal"
+        android:src="@drawable/turtle_card"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineBottomOfCard4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guidelineBoard"
+        app:layout_constraintTop_toTopOf="@+id/guidelineTopOfCard4" />
+
+    <ImageView
+        android:id="@+id/imageViewCard3"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/card_padding_vertical"
+        android:layout_marginHorizontal="@dimen/card_padding_horizontal"
+        android:src="@drawable/turtle_card"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineBottomOfCard3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guidelineBoard"
+        app:layout_constraintTop_toTopOf="@+id/guidelineTopOfCard3" />
+
+    <ImageView
+        android:id="@+id/imageViewCard2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/card_padding_vertical"
+        android:layout_marginHorizontal="@dimen/card_padding_horizontal"
+        android:src="@drawable/turtle_card"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineBottomOfCard2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guidelineBoard"
+        app:layout_constraintTop_toTopOf="@+id/guidelineTopOfCard2" />
+
+    <ImageView
+        android:id="@+id/imageViewCard1"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/card_padding_vertical"
+        android:layout_marginHorizontal="@dimen/card_padding_horizontal"
+        android:src="@drawable/turtle_card"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineBottomOfCard1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guidelineBoard"
+        app:layout_constraintTop_toTopOf="@+id/guidelineTopOfCard1" />
+
+
+    <ImageView
+        android:id="@+id/imageViewTurtleColor"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="@dimen/card_padding_horizontal"
+        android:layout_marginTop="@dimen/card_padding_vertical"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineBottomOfColorTurtle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guidelineBoard"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.33"
-        app:srcCompat="@drawable/turtle" />
+        app:srcCompat="@drawable/turtle_color" />
+
+    <TextView
+        android:id="@+id/textViewCurrentPlayerText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="RUSZA SIĘ"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toTopOf="@+id/textViewCurrentPlayerName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/guidelineBoard"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewTurtleColor" />
+
+    <TextView
+        android:id="@+id/textViewCurrentPlayerName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Piotr"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toTopOf="@+id/textViewNextPlayerName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guidelineBoard"
+        app:layout_constraintTop_toBottomOf="@+id/textViewCurrentPlayerText" />
+
+    <TextView
+        android:id="@+id/textViewNextPlayerName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="Marta"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineBottomTexts"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guidelineBoard"
+        app:layout_constraintTop_toBottomOf="@+id/textViewCurrentPlayerName" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
