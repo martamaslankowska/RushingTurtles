@@ -13,5 +13,6 @@
     <!-- GAME ACTIVITY -->
     <color name="whiteAlpha">#BFEBEBEB</color>
     <color name="black">#000000</color>
+    <color name="backgroundGray">#D5D5D5</color>
 
 </resources>

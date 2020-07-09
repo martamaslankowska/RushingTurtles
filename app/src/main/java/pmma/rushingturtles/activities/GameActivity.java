@@ -15,6 +15,10 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import pmma.rushingturtles.R;
 
 public class GameActivity extends AppCompatActivity implements View.OnClickListener {
@@ -24,49 +28,101 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     ImageView card3;
     ImageView card4;
     ImageView card5;
+    List<ImageView> cards;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
+        initializeCardImageViews();
+        addCardImageViewsOnListeners();
+    }
+
+    private void initializeCardImageViews() {
         card1 = findViewById(R.id.imageViewCard1);
         card2 = findViewById(R.id.imageViewCard2);
         card3 = findViewById(R.id.imageViewCard3);
         card4 = findViewById(R.id.imageViewCard4);
         card5 = findViewById(R.id.imageViewCard5);
 
-        card1.setOnClickListener(this);
-        card2.setOnClickListener(this);
-        card3.setOnClickListener(this);
-        card4.setOnClickListener(this);
-        card5.setOnClickListener(this);
+        cards = Arrays.asList(card1, card2, card3, card4, card5);
+    }
+
+    private void addCardImageViewsOnListeners() {
+        for (int i=0; i<cards.size(); i++)
+            cards.get(i).setOnClickListener(this);
     }
 
     @Override
     public void onClick(View view) {
-        /* Find statusBar height */
+        /* If we want to move card to the left, we need to move other cards to the right */
+        if (movementCondition(view)) {
+            int cardIdx = cards.indexOf((ImageView) view);
+            for (int i = 0; i < cards.size(); i++) {
+                if (i != cardIdx && !movementCondition(cards.get(i))) {
+                    moveCard(cards.get(i));
+                }
+            }
+        }
+        /* Move our card to the left :) */
+        moveCard(view);
+    }
+
+    public void moveCard(View view) {
+        int statusBarHeight = getStatusBarHeight();
+        int windowWidth = getWindowDisplayMetrics().widthPixels;
+
+        int[] coordinates = getImageViewCoordinates(view, statusBarHeight);
+        int imgX = coordinates[0];
+        int imgY = coordinates[1];
+
+        float movementValueX = windowWidth*0.3f;
+        float movementX = calculateMovement(imgX, windowWidth, movementValueX);
+        createAndAnimatePath(view, imgX, imgY, movementX);
+    }
+
+    private int getStatusBarHeight() {
         Rect rectangle = new Rect();
         Window window = getWindow();
         window.getDecorView().getWindowVisibleDisplayFrame(rectangle);
         int statusBarHeight = rectangle.top;
+        return statusBarHeight;
+    }
 
-        /* Get window height and width */
+    private DisplayMetrics getWindowDisplayMetrics() {
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        int windowHeight = displayMetrics.heightPixels;
-        int windowWidth = displayMetrics.widthPixels;
+        return displayMetrics;
+    }
 
-        /* Get imageView coordinates */
+    private int[] getImageViewCoordinates(View view, int statusBarHeight) {
         Rect rect = new Rect();
         view.getGlobalVisibleRect(rect);
-        int imgX = rect.left;
-        int imgY = rect.top - statusBarHeight;
+        int[] coordinates = new int[2];
+        coordinates[0] = rect.left;
+        coordinates[1] = rect.top - statusBarHeight;
+        return coordinates;
+    }
 
-        /* Calculate direction of card movement */
-        float movementX = (imgX < windowWidth/2) ? windowWidth*0.3f : - windowWidth*0.3f;
+    private boolean movementCondition(int imgX, int windowWidth) {
+        return imgX > windowWidth/2;
+    }
 
-        /* Move card left or right */
+    private boolean movementCondition(View view) {
+        int statusBarHeight = getStatusBarHeight();
+        int windowWidth = getWindowDisplayMetrics().widthPixels;
+        int[] coordinates = getImageViewCoordinates(view, statusBarHeight);
+        int imgX = coordinates[0];
+        return imgX > windowWidth/2;
+    }
+
+    private float calculateMovement(int imgX, int windowWidth, float movementValueX) {
+        float movementX = movementCondition(imgX, windowWidth) ? - movementValueX : movementValueX;
+        return movementX;
+    }
+
+    private void createAndAnimatePath(View view, int imgX, int imgY, float movementX) {
         Path path = new Path();
         path.moveTo(imgX, imgY);
         path.lineTo(movementX + imgX, imgY);
@@ -74,4 +130,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         animator.setDuration(500);
         animator.start();
     }
+
+
 }
