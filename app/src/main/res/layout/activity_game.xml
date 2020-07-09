@@ -8,16 +8,17 @@
 
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/imageViewBoard"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@drawable/board_background"
-        android:src="@drawable/board_low_quality"
+        android:src="@drawable/board_smaller"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guidelineBoard"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelineBoard"
@@ -119,8 +120,8 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="@dimen/card_padding_vertical"
         android:layout_marginHorizontal="@dimen/card_padding_horizontal"
+        android:layout_marginBottom="@dimen/card_padding_vertical"
         android:src="@drawable/turtle_card"
         app:layout_constraintBottom_toTopOf="@+id/guidelineBottomOfCard5"
         app:layout_constraintEnd_toEndOf="parent"
@@ -132,8 +133,8 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="@dimen/card_padding_vertical"
         android:layout_marginHorizontal="@dimen/card_padding_horizontal"
+        android:layout_marginBottom="@dimen/card_padding_vertical"
         android:src="@drawable/turtle_card"
         app:layout_constraintBottom_toTopOf="@+id/guidelineBottomOfCard4"
         app:layout_constraintEnd_toEndOf="parent"
@@ -145,8 +146,8 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="@dimen/card_padding_vertical"
         android:layout_marginHorizontal="@dimen/card_padding_horizontal"
+        android:layout_marginBottom="@dimen/card_padding_vertical"
         android:src="@drawable/turtle_card"
         app:layout_constraintBottom_toTopOf="@+id/guidelineBottomOfCard3"
         app:layout_constraintEnd_toEndOf="parent"
@@ -158,8 +159,8 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="@dimen/card_padding_vertical"
         android:layout_marginHorizontal="@dimen/card_padding_horizontal"
+        android:layout_marginBottom="@dimen/card_padding_vertical"
         android:src="@drawable/turtle_card"
         app:layout_constraintBottom_toTopOf="@+id/guidelineBottomOfCard2"
         app:layout_constraintEnd_toEndOf="parent"
@@ -171,8 +172,8 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="@dimen/card_padding_vertical"
         android:layout_marginHorizontal="@dimen/card_padding_horizontal"
+        android:layout_marginBottom="@dimen/card_padding_vertical"
         android:src="@drawable/turtle_card"
         app:layout_constraintBottom_toTopOf="@+id/guidelineBottomOfCard1"
         app:layout_constraintEnd_toEndOf="parent"
@@ -197,10 +198,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:textSize="15sp"
-        android:text="RUSZA SIĘ"
-        android:textStyle="bold"
+        android:text="@string/turn_of_sb"
+        android:textAllCaps="true"
         android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/textViewCurrentPlayerName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guidelineBoard"
@@ -211,8 +213,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Piotr"
-        android:textSize="15sp"
         android:textColor="@color/black"
+        android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/textViewNextPlayerName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guidelineBoard"
@@ -224,10 +226,104 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:text="Marta"
+        android:textSize="15sp"
         app:layout_constraintBottom_toTopOf="@+id/guidelineBottomTexts"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guidelineBoard"
         app:layout_constraintTop_toBottomOf="@+id/textViewCurrentPlayerName" />
+
+    <ImageView
+        android:id="@+id/imageViewBottomDeckOfCards"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:paddingHorizontal="@dimen/deck_of_cards_padding_horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineBottomOfCard5"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineVerticalDeckOfCards"
+        app:layout_constraintStart_toStartOf="@+id/imageViewBoard"
+        app:layout_constraintTop_toTopOf="@+id/guidelineBottomTexts"
+        app:srcCompat="@drawable/deck_of_2_cards" />
+
+    <ImageView
+        android:id="@+id/imageViewDeckOfCards"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:paddingHorizontal="@dimen/single_card_on_deck_padding_horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineBottomOfCard5"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineVerticalDeckOfCards"
+        app:layout_constraintStart_toStartOf="@+id/imageViewBoard"
+        app:layout_constraintTop_toTopOf="@+id/guidelineBottomTexts"
+        app:srcCompat="@drawable/red_card_arrow" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineVerticalDeckOfCards"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.3" />
+
+    <Button
+        android:id="@+id/buttonPlayCardOnDeck"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/buttonColorStart"
+        android:paddingHorizontal="@dimen/button_padding_horizontal_card_deck"
+        android:text="@string/play_card_on_deck"
+        android:textColor="@color/whiteTextColor"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineBottomOfCard5"
+        app:layout_constraintEnd_toEndOf="@+id/imageViewBottomDeckOfCards"
+        app:layout_constraintStart_toStartOf="@+id/imageViewBottomDeckOfCards"
+        app:layout_constraintTop_toTopOf="@+id/imageViewBottomDeckOfCards" />
+
+    <ImageView
+        android:id="@+id/imageViewTurtleBlue"
+        android:layout_width="60dp"
+        android:layout_height="80dp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintBottom_toBottomOf="@id/imageViewTurtlePurple"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineBoard"
+        app:srcCompat="@drawable/turtle_blue_vertical" />
+
+    <ImageView
+        android:id="@+id/imageViewTurtleRed"
+        android:layout_width="60dp"
+        android:layout_height="80dp"
+        android:layout_marginRight="16dp"
+        app:layout_constraintBottom_toBottomOf="@id/imageViewTurtleYellow"
+        app:layout_constraintEnd_toEndOf="@+id/imageViewBoard"
+        app:layout_constraintStart_toEndOf="@+id/imageViewTurtleYellow"
+        app:srcCompat="@drawable/turtle_red_vertical" />
+
+    <ImageView
+        android:id="@+id/imageViewTurtleGreen"
+        android:layout_width="60dp"
+        android:layout_height="80dp"
+        app:layout_constraintBottom_toBottomOf="@id/imageViewTurtlePurple"
+        app:layout_constraintEnd_toStartOf="@+id/imageViewTurtleBlue"
+        app:layout_constraintStart_toEndOf="@+id/imageViewTurtlePurple"
+        app:srcCompat="@drawable/turtle_green_vertical" />
+
+    <ImageView
+        android:id="@+id/imageViewTurtleYellow"
+        android:layout_width="60dp"
+        android:layout_height="80dp"
+        android:layout_marginBottom="24dp"
+        android:layout_marginLeft="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/imageViewTurtleRed"
+        app:layout_constraintStart_toEndOf="@+id/imageViewTurtlePurple"
+        app:layout_constraintStart_toStartOf="@+id/imageViewBottomDeckOfCards"
+        app:srcCompat="@drawable/turtle_yellow_vertical" />
+
+    <ImageView
+        android:id="@+id/imageViewTurtlePurple"
+        android:layout_width="60dp"
+        android:layout_height="80dp"
+        android:layout_marginBottom="12dp"
+        android:layout_marginLeft="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/turtle_purple_vertical" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -10,6 +10,8 @@
     <!-- GAME ACTIVITY -->
     <dimen name="card_padding_vertical">6dp</dimen>
     <dimen name="card_padding_horizontal">6dp</dimen>
-
+    <dimen name="deck_of_cards_padding_horizontal">16dp</dimen>
+    <dimen name="single_card_on_deck_padding_horizontal">24dp</dimen>
+    <dimen name="button_padding_horizontal_card_deck">16dp</dimen>
 
 </resources>
