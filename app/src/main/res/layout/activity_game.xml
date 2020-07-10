@@ -459,4 +459,71 @@
         app:srcCompat="@drawable/color_picker_purple" />
 
 
+    <ImageView
+        android:id="@+id/imageViewColorPickerBlueTick"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:paddingVertical="@dimen/color_picker_padding_vertical"
+        android:paddingHorizontal="@dimen/color_picker_padding_horizontal"
+        android:layout_margin="@dimen/color_picker_tick_margin"
+        app:layout_constraintBottom_toBottomOf="@id/guidelineBottomOfColorPicker"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineColorPickerFirst"
+        app:layout_constraintStart_toStartOf="@+id/guidelineColorPickerBeforeFirst"
+        app:layout_constraintTop_toTopOf="@+id/guidelineTopOfColorPicker"
+        app:srcCompat="@drawable/tick" />
+
+
+    <ImageView
+        android:id="@+id/imageViewColorPickerRedTick"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:paddingVertical="@dimen/color_picker_padding_vertical"
+        android:paddingHorizontal="@dimen/color_picker_padding_horizontal"
+        android:layout_margin="@dimen/color_picker_tick_margin"
+        app:layout_constraintBottom_toBottomOf="@id/guidelineBottomOfColorPicker"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineColorPickerSecond"
+        app:layout_constraintStart_toStartOf="@+id/guidelineColorPickerFirst"
+        app:layout_constraintTop_toTopOf="@+id/guidelineTopOfColorPicker"
+        app:srcCompat="@drawable/tick" />
+
+    <ImageView
+        android:id="@+id/imageViewColorPickerGreenTick"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:paddingVertical="@dimen/color_picker_padding_vertical"
+        android:paddingHorizontal="@dimen/color_picker_padding_horizontal"
+        android:layout_margin="@dimen/color_picker_tick_margin"
+        app:layout_constraintBottom_toBottomOf="@id/guidelineBottomOfColorPicker"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineColorPickerThird"
+        app:layout_constraintStart_toStartOf="@+id/guidelineColorPickerSecond"
+        app:layout_constraintTop_toTopOf="@+id/guidelineTopOfColorPicker"
+        app:srcCompat="@drawable/tick" />
+
+    <ImageView
+        android:id="@+id/imageViewColorPickerYellowTick"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:paddingVertical="@dimen/color_picker_padding_vertical"
+        android:paddingHorizontal="@dimen/color_picker_padding_horizontal"
+        android:layout_margin="@dimen/color_picker_tick_margin"
+        app:layout_constraintBottom_toBottomOf="@id/guidelineBottomOfColorPicker"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineColorPickerFourth"
+        app:layout_constraintStart_toStartOf="@+id/guidelineColorPickerThird"
+        app:layout_constraintTop_toTopOf="@+id/guidelineTopOfColorPicker"
+        app:srcCompat="@drawable/tick" />
+
+    <ImageView
+        android:id="@+id/imageViewColorPickerPurpleTick"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:paddingVertical="@dimen/color_picker_padding_vertical"
+        android:paddingHorizontal="@dimen/color_picker_padding_horizontal"
+        android:layout_margin="@dimen/color_picker_tick_margin"
+        app:layout_constraintEnd_toEndOf="@id/guidelineColorPickerAfterFourth"
+        app:layout_constraintStart_toStartOf="@+id/guidelineColorPickerFourth"
+        app:layout_constraintTop_toTopOf="@+id/guidelineTopOfColorPicker"
+        app:layout_constraintBottom_toBottomOf="@id/guidelineBottomOfColorPicker"
+        app:srcCompat="@drawable/tick" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

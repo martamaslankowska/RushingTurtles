@@ -2,11 +2,21 @@
     <string name="app_name">Rushing Turtles</string>
 
     <!-- TESTS -->
-    <string name="test_string">Yeeeeey</string>
+    <string name="test_string">Heh, something is wrong</string>
 
     <!-- TOOLBAR -->
     <string name="info_toolbar">Information</string>
     <string name="settings_toolbar">Settings</string>
+
+    <!-- SETTINGS ACTIVITY -->
+    <string name="name_text_view_settings">Your name</string>
+    <string name="name_edit_button_text">Edit</string>
+    <string name="name_save_button_text">Save</string>
+
+    <!-- NAME ACTIVITY -->
+    <string name="name_text_view">Enter your name</string>
+    <string name="name_accept_button">Let\'s play</string>
+    <string name="name_validation_text">Please enter your name :)</string>
 
     <!-- MAIN ACTIVITY -->
     <string name="main_button_start">Start game</string>

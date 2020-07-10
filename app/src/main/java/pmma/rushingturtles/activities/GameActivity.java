@@ -5,7 +5,9 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Path;
 import android.graphics.Rect;
+import android.media.Image;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
@@ -31,17 +33,15 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     PopupWindow popupWindowWinner;
     Button playCardButton, closePopupButton;
 
-    ImageView blueTurtle;
-    ImageView redTurtle;
-    ImageView greenTurtle;
-    ImageView yellowTurtle;
-    ImageView purpleTurtle;
+    ImageView blueTurtle, redTurtle, greenTurtle, yellowTurtle, purpleTurtle;
 
-    ImageView card1;
-    ImageView card2;
-    ImageView card3;
-    ImageView card4;
-    ImageView card5;
+    ImageView blueColorPicker, redColorPicker, greenColorPicker, yellowColorPicker, purpleColorPicker;
+    List<ImageView> colorPickers;
+    ImageView blueColorTick, redColorTick, greenColorTick, yellowColorTick, purpleColorTick;
+    List<ImageView> colorTicks;
+    ImageView checkedColorPicker;
+
+    ImageView card1, card2, card3, card4, card5;
     List<ImageView> cards;
 
     List<Integer> cardCoordinatesY;
@@ -64,11 +64,58 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         initializeXmlViews();
         initializeTurtles();
         initializeCardImageViews();
+        initializeColorPickerViews();
 
         Log.i("GameActivity", String.valueOf(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT));
     }
 
+    private void initializeColorPickerViews() {
+        blueColorPicker = findViewById(R.id.imageViewColorPickerBlue);
+        redColorPicker = findViewById(R.id.imageViewColorPickerRed);
+        greenColorPicker = findViewById(R.id.imageViewColorPickerGreen);
+        yellowColorPicker = findViewById(R.id.imageViewColorPickerYellow);
+        purpleColorPicker = findViewById(R.id.imageViewColorPickerPurple);
+        colorPickers = Arrays.asList(blueColorPicker, redColorPicker, greenColorPicker, yellowColorPicker, purpleColorPicker);
+        checkedColorPicker = null;
+        for (int i=0; i<colorPickers.size(); i++)
+            colorPickers.get(i).setOnClickListener(colorPickerClickListener);
 
+        blueColorTick = findViewById(R.id.imageViewColorPickerBlueTick);
+        redColorTick = findViewById(R.id.imageViewColorPickerRedTick);
+        greenColorTick = findViewById(R.id.imageViewColorPickerGreenTick);
+        yellowColorTick = findViewById(R.id.imageViewColorPickerYellowTick);
+        purpleColorTick = findViewById(R.id.imageViewColorPickerPurpleTick);
+        colorTicks = Arrays.asList(blueColorTick, redColorTick, greenColorTick, yellowColorTick, purpleColorTick);
+
+        for (int i=0; i<colorTicks.size(); i++)
+            colorTicks.get(i).setVisibility(View.GONE);
+    }
+
+    private View.OnClickListener colorPickerClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            checkOrUncheckColorPicker(v);
+        }
+    };
+
+    public void checkOrUncheckColorPicker(View view) {
+        int touchedColorPickerIdx = colorPickers.indexOf(view);
+        if (checkedColorPicker == null) {
+            colorTicks.get(touchedColorPickerIdx).setVisibility(View.VISIBLE);
+            checkedColorPicker = (ImageView) view;
+        }
+        else {
+            if (checkedColorPicker == view) {
+                colorTicks.get(touchedColorPickerIdx).setVisibility(View.GONE);
+                checkedColorPicker = null;
+            }
+            else {
+                colorTicks.get(colorPickers.indexOf(checkedColorPicker)).setVisibility(View.GONE);
+                colorTicks.get(touchedColorPickerIdx).setVisibility(View.VISIBLE);
+                checkedColorPicker = (ImageView) view;
+            }
+        }
+    }
 
     private void initializeXmlViews() {
         playCardButton = findViewById(R.id.buttonPlayCardOnDeck);
@@ -114,27 +161,31 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private View.OnClickListener playCardButtonOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            //instantiate the popup.xml layout file
-            LayoutInflater layoutInflater = (LayoutInflater) GameActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View customView = layoutInflater.inflate(R.layout.popup_winner,null);
-
-            closePopupButton = (Button) customView.findViewById(R.id.closePopupBtn);
-
-            //instantiate popup window
-            popupWindowWinner = new PopupWindow(customView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-
-            //display the popup window
-            popupWindowWinner.showAtLocation(mainLayout, Gravity.CENTER, 0, 0);
-
-            //close the popup window on button click
-            closePopupButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    popupWindowWinner.dismiss();
-                }
-            });
+            manageWinnerPopupWindow(v);
         }
     };
+
+    private void manageWinnerPopupWindow(View view) {
+        //instantiate the popup.xml layout file
+        LayoutInflater layoutInflater = (LayoutInflater) GameActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View customView = layoutInflater.inflate(R.layout.popup_winner,null);
+
+        closePopupButton = (Button) customView.findViewById(R.id.closePopupBtn);
+
+        //instantiate popup window
+        popupWindowWinner = new PopupWindow(customView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        //display the popup window
+        popupWindowWinner.showAtLocation(mainLayout, Gravity.CENTER, 0, 0);
+
+        //close the popup window on button click
+        closePopupButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupWindowWinner.dismiss();
+            }
+        });
+    }
 
     @Override
     public void onClick(View view) {

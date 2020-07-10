@@ -2,17 +2,26 @@
     <string name="app_name">Pędzące Żółwie</string>
 
     <!-- TESTS -->
-    <string name="test_string">Elo elo 320</string>
+    <string name="test_string">Ups, coś poszło nie tak xD</string>
 
     <!-- TOOLBAR -->
     <string name="info_toolbar">Informacje</string>
     <string name="settings_toolbar">Ustawienia</string>
 
+    <!-- SETTINGS ACTIVITY -->
+    <string name="name_text_view_settings">Twoje imię</string>
+    <string name="name_edit_button_text">Edytuj</string>
+    <string name="name_save_button_text">Zapisz</string>
+
+    <!-- NAME ACTIVITY -->
+    <string name="name_text_view">Wprowadź swoje imię</string>
+    <string name="name_accept_button">Zaczynamy grę</string>
+    <string name="name_validation_text">Musisz wprowadzić swoje imię :)</string>
+
     <!-- MAIN ACTIVITY -->
     <string name="main_button_start">Rozpocznij grę</string>
     <string name="main_button_join">Dołącz do gry</string>
     <string name="waiting_room_text">Gracze oczekujący na rozpoczęcie gry</string>
-
 
     <!-- GAME ACTIVITY -->
     <string name="turn_of_sb">Rusza się</string>

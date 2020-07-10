@@ -3,6 +3,9 @@
     <!-- TEXT SIZES -->
     <dimen name="button_text_size">16sp</dimen>
 
+    <!-- SETTINGS ACTIVITY -->
+    <dimen name="text_margin_left">24dp</dimen>
+
     <!-- MAIN ACTIVITY -->
     <dimen name="button_padding_vertical">16dp</dimen>
     <dimen name="button_padding_horizontal">24dp</dimen>
@@ -17,6 +20,7 @@
     <dimen name="button_padding_horizontal_card_deck_land">24dp</dimen>
     <dimen name="color_picker_padding_horizontal">10dp</dimen>
     <dimen name="color_picker_padding_vertical">10dp</dimen>
+    <dimen name="color_picker_tick_margin">10dp</dimen>
 
 
 </resources>

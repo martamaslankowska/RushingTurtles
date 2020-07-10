@@ -8,6 +8,8 @@ import java.net.URISyntaxException;
 import tech.gusavila92.websocketclient.WebSocketClient;
 
 public class WSC {
+    public String clientName;
+
     private WebSocketClient webSocketClient;
     private static final WSC instance = new WSC();
 

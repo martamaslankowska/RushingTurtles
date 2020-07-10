@@ -11,21 +11,62 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
+        android:fitsSystemWindows="true"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
-        android:fitsSystemWindows="true"
-        app:titleTextColor="@color/whiteTextColor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:titleTextColor="@color/whiteTextColor" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/textViewPlayerName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/settings_toolbar"
+        android:layout_marginStart="@dimen/text_margin_left"
+        app:layout_constraintHorizontal_bias="0.0"
+        android:layout_marginTop="36dp"
+        app:layout_constraintVertical_bias="0.0"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:text="@string/name_text_view_settings"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"/>
+
+    <EditText
+        android:id="@+id/editTextPlayerName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/text_margin_left"
+        android:layout_marginTop="8dp"
+        android:text="@string/test_string"
+        android:textSize="17sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline3"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewPlayerName"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.6" />
+
+    <Button
+        android:id="@+id/buttonNameChange"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/button_padding_horizontal"
+        android:text="@string/name_edit_button_text"
+        app:layout_constraintBottom_toBottomOf="@+id/editTextPlayerName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline3"
+        app:layout_constraintTop_toTopOf="@+id/editTextPlayerName" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
