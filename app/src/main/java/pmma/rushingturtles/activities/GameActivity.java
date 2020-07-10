@@ -1,6 +1,7 @@
 package pmma.rushingturtles.activities;
 
 import android.animation.ObjectAnimator;
+import android.content.res.Configuration;
 import android.graphics.Path;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -8,15 +9,12 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -37,19 +35,31 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     ImageView card4;
     ImageView card5;
     List<ImageView> cards;
-    float cardCoordinateX;
-    float cardMovedCoordinateX;
-    int statusBarHeight = 0;
+
+    List<Integer> cardCoordinatesY;
+    float cardCoordinateXOrY;
+    float cardMovedCoordinateXOrY;
+    int statusBarHeight;
+
+    int currentOrientation;
+    boolean cardCoordinatesHaveBeenSet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
+        currentOrientation = getResources().getConfiguration().orientation;
+        cardCoordinatesHaveBeenSet = false;
+
         initializeXmlViews();
         initializeTurtles();
         initializeCardImageViews();
+
+        Log.i("GameActivity", String.valueOf(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT));
     }
+
+
 
     private void initializeXmlViews() {
         playCardButton = findViewById(R.id.buttonPlayCardOnDeck);
@@ -83,12 +93,13 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
     private void setCardCoordinates(float windowPercentage) {
         statusBarHeight = getStatusBarHeight();
-        int windowWidth = getWindowDisplayMetrics().widthPixels;
-        int imgX = getImageViewCoordinates(card1)[0];
-        float movementValueX = windowWidth * windowPercentage;
+        DisplayMetrics displayMetrics = getWindowDisplayMetrics();
+        int windowSize = currentOrientation == Configuration.ORIENTATION_PORTRAIT ? displayMetrics.widthPixels : displayMetrics.heightPixels;
+        int imgXOrY = getImageViewCoordinates(card1)[currentOrientation == Configuration.ORIENTATION_PORTRAIT ? 0 : 1];
+        float movementValue = windowSize * windowPercentage;
 
-        cardCoordinateX = (float) imgX;
-        cardMovedCoordinateX = imgX - movementValueX;
+        cardCoordinateXOrY = (float) imgXOrY;
+        cardMovedCoordinateXOrY = imgXOrY - movementValue;
     }
 
     private View.OnClickListener playCardButtonOnClickListener = new View.OnClickListener() {
@@ -100,14 +111,16 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View view) {
-        if (statusBarHeight == 0)
-            setCardCoordinates(0.3f);
+        if (!cardCoordinatesHaveBeenSet) {
+            setCardCoordinates(currentOrientation == Configuration.ORIENTATION_PORTRAIT ? 0.3f : 0.2f);
+            cardCoordinatesHaveBeenSet = true;
+        }
 
         /* If we want to move card to the left, we need to move other cards to the right */
-        if (!isCardOnTheLeftSide(view)) {
+        if (!isCardOutside(view)) {
             int cardIdx = cards.indexOf((ImageView) view);
             for (int i = 0; i < cards.size(); i++)
-                if (i != cardIdx && isCardOnTheLeftSide(cards.get(i)))
+                if (i != cardIdx && isCardOutside(cards.get(i)))
                     moveCard(cards.get(i));
         }
         /* Move our card to the left :) */
@@ -118,15 +131,21 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         int[] coordinates = getImageViewCoordinates(view);
         int imgX = coordinates[0];
         int imgY = coordinates[1];
-        float newImgX = calculateNewCoordinateX(imgX);
 
-        if (newImgX >= 0)
-            createAndAnimatePath(view, imgX, imgY, newImgX);
+        if (currentOrientation == Configuration.ORIENTATION_PORTRAIT) {
+            float newImgX = calculateNewCoordinateXOrY(imgX);
+            if (newImgX >= 0)
+                createAndAnimatePath(view, imgX, imgY, newImgX, imgY);
+        } else {
+            float newImgY = calculateNewCoordinateXOrY(imgY);
+            if (newImgY >= 0)
+                createAndAnimatePath(view, imgX, imgY, imgX, newImgY);
+        }
     }
 
-    private boolean isCardOnTheLeftSide(View view) {
-        int cardImgX = getImageViewCoordinates(view)[0];
-        return calculateNewCoordinateX(cardImgX) == cardCoordinateX;
+    private boolean isCardOutside(View view) {
+        int cardImgXOrY = getImageViewCoordinates(view)[currentOrientation == Configuration.ORIENTATION_PORTRAIT ? 0 : 1];
+        return calculateNewCoordinateXOrY(cardImgXOrY) == cardCoordinateXOrY;
     }
 
     private int getStatusBarHeight() {
@@ -151,19 +170,19 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         return coordinates;
     }
 
-    private float calculateNewCoordinateX(int imgX) {
-        float x = -1;
-        if (imgX == cardMovedCoordinateX)
-            x = cardCoordinateX;
-        if (imgX == cardCoordinateX)
-            x = cardMovedCoordinateX;
-        return x;
+    private float calculateNewCoordinateXOrY(int imgXOrY) {
+        float xOrY = -1;
+        if (imgXOrY == cardMovedCoordinateXOrY)
+            xOrY = cardCoordinateXOrY;
+        if (imgXOrY == cardCoordinateXOrY)
+            xOrY = cardMovedCoordinateXOrY;
+        return xOrY;
     }
 
-    private void createAndAnimatePath(View view, float imgX, float imgY, float newImgX) {
+    private void createAndAnimatePath(View view, float imgX, float imgY, float newImgX, float newImgY) {
         Path path = new Path();
         path.moveTo(imgX, imgY);
-        path.lineTo(newImgX, imgY);
+        path.lineTo(newImgX, newImgY);
         ObjectAnimator animator = ObjectAnimator.ofFloat(view, View.X, View.Y, path);
         animator.setDuration(500);
         animator.start();
