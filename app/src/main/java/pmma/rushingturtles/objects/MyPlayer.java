@@ -1,13 +1,14 @@
 package pmma.rushingturtles.objects;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import pmma.rushingturtles.enums.TurtleColor;
 
 public class MyPlayer {
     private int id;
     private String name;
-    private ArrayList<Card> cards;
+    private List<Card> cards;
     private TurtleColor turtle;
     private int activeCardPosition;
 
@@ -19,7 +20,7 @@ public class MyPlayer {
         this.activeCardPosition = -1;
     }
 
-    public MyPlayer(int id, String name, ArrayList<Card> cards, TurtleColor turtle) {
+    public MyPlayer(int id, String name, List<Card> cards, TurtleColor turtle) {
         this(id, name);
         this.cards = cards;
         this.turtle = turtle;
@@ -41,7 +42,7 @@ public class MyPlayer {
         this.name = name;
     }
 
-    public ArrayList<Card> getCards() {
+    public List<Card> getCards() {
         return cards;
     }
 

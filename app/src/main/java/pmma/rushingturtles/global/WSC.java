@@ -1,4 +1,4 @@
-package pmma.rushingturtles.websocket;
+package pmma.rushingturtles.global;
 
 import android.util.Log;
 
@@ -8,7 +8,6 @@ import java.net.URISyntaxException;
 import tech.gusavila92.websocketclient.WebSocketClient;
 
 public class WSC {
-
     private WebSocketClient webSocketClient;
     private static final WSC instance = new WSC();
 

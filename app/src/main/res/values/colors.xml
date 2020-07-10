@@ -5,6 +5,7 @@
     <color name="colorAccent">#03DAC5</color>
 
     <color name="whiteTextColor">#EBEBEB</color>
+    <color name="blackTextColor">#1F1F1F</color>
 
     <!-- MAIN ACTIVITY -->
     <color name="buttonColorStart">#B71C1C</color>

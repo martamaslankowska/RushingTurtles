@@ -9,13 +9,20 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import pmma.rushingturtles.R;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+
+    List<String> playersInTheWaitingRoomNames;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +35,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         Button mainButton = findViewById(R.id.mainButton);
         mainButton.setOnClickListener(this);
+
+        playersInTheWaitingRoomNames = new ArrayList<>();
+        playersInTheWaitingRoomNames.add("Marta");
+        playersInTheWaitingRoomNames.add("Piotr");
+        playersInTheWaitingRoomNames.add("Maciek");
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.item_listview_waiting_players, R.id.textViewListView, playersInTheWaitingRoomNames);
+        ListView listView = findViewById(R.id.listViewOfPlayersInTheWaitingRoom);
+        listView.setAdapter(adapter);
     }
 
     @Override

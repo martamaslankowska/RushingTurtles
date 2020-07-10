@@ -1,19 +1,25 @@
 package pmma.rushingturtles.activities;
 
 import android.animation.ObjectAnimator;
+import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Path;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import java.util.Arrays;
 import java.util.List;
@@ -21,7 +27,9 @@ import java.util.List;
 import pmma.rushingturtles.R;
 
 public class GameActivity extends AppCompatActivity implements View.OnClickListener {
-    Button playCardButton;
+    ConstraintLayout mainLayout;
+    PopupWindow popupWindowWinner;
+    Button playCardButton, closePopupButton;
 
     ImageView blueTurtle;
     ImageView redTurtle;
@@ -48,6 +56,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+        mainLayout = findViewById(R.id.gameLayout);
 
         currentOrientation = getResources().getConfiguration().orientation;
         cardCoordinatesHaveBeenSet = false;
@@ -63,7 +72,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
     private void initializeXmlViews() {
         playCardButton = findViewById(R.id.buttonPlayCardOnDeck);
-        playCardButton.setVisibility(View.INVISIBLE);
+//        playCardButton.setVisibility(View.INVISIBLE);
         playCardButton.setOnClickListener(playCardButtonOnClickListener);
     }
 
@@ -94,18 +103,36 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private void setCardCoordinates(float windowPercentage) {
         statusBarHeight = getStatusBarHeight();
         DisplayMetrics displayMetrics = getWindowDisplayMetrics();
-        int windowSize = currentOrientation == Configuration.ORIENTATION_PORTRAIT ? displayMetrics.widthPixels : displayMetrics.heightPixels;
-        int imgXOrY = getImageViewCoordinates(card1)[currentOrientation == Configuration.ORIENTATION_PORTRAIT ? 0 : 1];
+        float windowSize = currentOrientation == Configuration.ORIENTATION_PORTRAIT ? displayMetrics.widthPixels : displayMetrics.heightPixels;
+        float imgXOrY = getImageViewCoordinates(card1)[currentOrientation == Configuration.ORIENTATION_PORTRAIT ? 0 : 1];
         float movementValue = windowSize * windowPercentage;
 
-        cardCoordinateXOrY = (float) imgXOrY;
+        cardCoordinateXOrY = imgXOrY;
         cardMovedCoordinateXOrY = imgXOrY - movementValue;
     }
 
     private View.OnClickListener playCardButtonOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Toast.makeText(GameActivity.this, "Yeeey :)", Toast.LENGTH_SHORT).show();
+            //instantiate the popup.xml layout file
+            LayoutInflater layoutInflater = (LayoutInflater) GameActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View customView = layoutInflater.inflate(R.layout.popup_winner,null);
+
+            closePopupButton = (Button) customView.findViewById(R.id.closePopupBtn);
+
+            //instantiate popup window
+            popupWindowWinner = new PopupWindow(customView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+            //display the popup window
+            popupWindowWinner.showAtLocation(mainLayout, Gravity.CENTER, 0, 0);
+
+            //close the popup window on button click
+            closePopupButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    popupWindowWinner.dismiss();
+                }
+            });
         }
     };
 
@@ -172,9 +199,9 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
     private float calculateNewCoordinateXOrY(int imgXOrY) {
         float xOrY = -1;
-        if (imgXOrY == cardMovedCoordinateXOrY)
+        if (imgXOrY-1 < cardMovedCoordinateXOrY && cardMovedCoordinateXOrY < imgXOrY+1)
             xOrY = cardCoordinateXOrY;
-        if (imgXOrY == cardCoordinateXOrY)
+        if (imgXOrY-1 < cardCoordinateXOrY && cardCoordinateXOrY < imgXOrY+1)
             xOrY = cardMovedCoordinateXOrY;
         return xOrY;
     }
@@ -187,6 +214,5 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         animator.setDuration(500);
         animator.start();
     }
-
 
 }

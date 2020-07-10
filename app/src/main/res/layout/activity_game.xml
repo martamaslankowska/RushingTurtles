@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/gameLayout"
     android:background="@color/backgroundGray">
 
 
@@ -11,7 +12,7 @@
         android:id="@+id/imageViewBoard"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@drawable/board_background"
+        android:background="@drawable/xml_board_background"
         android:src="@drawable/board_smaller"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guidelineBoard"
@@ -115,7 +116,6 @@
         app:layout_constraintGuide_percent="0.3" />
 
 
-
     <ImageView
         android:id="@+id/imageViewTurtleBlue"
         android:layout_width="60dp"
@@ -148,8 +148,8 @@
         android:id="@+id/imageViewTurtleYellow"
         android:layout_width="60dp"
         android:layout_height="80dp"
-        android:layout_marginBottom="12dp"
         android:layout_marginLeft="20dp"
+        android:layout_marginBottom="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/imageViewTurtleRed"
         app:layout_constraintStart_toEndOf="@+id/imageViewTurtlePurple"
@@ -160,12 +160,11 @@
         android:id="@+id/imageViewTurtlePurple"
         android:layout_width="60dp"
         android:layout_height="80dp"
-        android:layout_marginBottom="6dp"
         android:layout_marginLeft="8dp"
+        android:layout_marginBottom="6dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/turtle_purple_vertical" />
-
 
 
     <ImageView
@@ -328,6 +327,136 @@
         app:layout_constraintStart_toStartOf="@+id/imageViewBottomDeckOfCards"
         app:layout_constraintTop_toTopOf="@+id/imageViewBottomDeckOfCards" />
 
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineBottomOfColorPicker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.14" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineTopOfColorPicker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.01" />
+
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineColorPickerBeforeFirst"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.05" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineColorPickerFirst"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.23" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineColorPickerSecond"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.41" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineColorPickerThird"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.59" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineColorPickerFourth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.77" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineColorPickerAfterFourth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.95" />
+
+
+    <ImageView
+        android:id="@+id/imageViewColorPickerBackground"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/xml_color_picker_background"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineBottomOfColorPicker"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guidelineTopOfColorPicker" />
+
+    <ImageView
+        android:id="@+id/imageViewColorPickerBlue"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:paddingVertical="@dimen/color_picker_padding_vertical"
+        android:paddingHorizontal="@dimen/color_picker_padding_horizontal"
+        app:layout_constraintBottom_toBottomOf="@id/guidelineBottomOfColorPicker"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineColorPickerFirst"
+        app:layout_constraintStart_toStartOf="@+id/guidelineColorPickerBeforeFirst"
+        app:layout_constraintTop_toTopOf="@+id/guidelineTopOfColorPicker"
+        app:srcCompat="@drawable/color_picker_blue" />
+
+    <ImageView
+        android:id="@+id/imageViewColorPickerRed"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:paddingVertical="@dimen/color_picker_padding_vertical"
+        android:paddingHorizontal="@dimen/color_picker_padding_horizontal"
+        app:layout_constraintBottom_toBottomOf="@id/guidelineBottomOfColorPicker"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineColorPickerSecond"
+        app:layout_constraintStart_toStartOf="@+id/guidelineColorPickerFirst"
+        app:layout_constraintTop_toTopOf="@+id/guidelineTopOfColorPicker"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/color_picker_red" />
+
+    <ImageView
+        android:id="@+id/imageViewColorPickerGreen"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:paddingVertical="@dimen/color_picker_padding_vertical"
+        android:paddingHorizontal="@dimen/color_picker_padding_horizontal"
+        app:layout_constraintBottom_toBottomOf="@id/guidelineBottomOfColorPicker"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineColorPickerThird"
+        app:layout_constraintStart_toStartOf="@+id/guidelineColorPickerSecond"
+        app:layout_constraintTop_toTopOf="@+id/guidelineTopOfColorPicker"
+        app:srcCompat="@drawable/color_picker_green" />
+
+    <ImageView
+        android:id="@+id/imageViewColorPickerYellow"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:paddingVertical="@dimen/color_picker_padding_vertical"
+        android:paddingHorizontal="@dimen/color_picker_padding_horizontal"
+        app:layout_constraintBottom_toBottomOf="@id/guidelineBottomOfColorPicker"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineColorPickerFourth"
+        app:layout_constraintStart_toStartOf="@+id/guidelineColorPickerThird"
+        app:layout_constraintTop_toTopOf="@+id/guidelineTopOfColorPicker"
+        app:srcCompat="@drawable/color_picker_yellow" />
+
+    <ImageView
+        android:id="@+id/imageViewColorPickerPurple"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:paddingVertical="@dimen/color_picker_padding_vertical"
+        android:paddingHorizontal="@dimen/color_picker_padding_horizontal"
+        app:layout_constraintEnd_toEndOf="@id/guidelineColorPickerAfterFourth"
+        app:layout_constraintStart_toStartOf="@+id/guidelineColorPickerFourth"
+        app:layout_constraintTop_toTopOf="@+id/guidelineTopOfColorPicker"
+        app:layout_constraintBottom_toBottomOf="@id/guidelineBottomOfColorPicker"
+        app:srcCompat="@drawable/color_picker_purple" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

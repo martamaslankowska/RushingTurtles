@@ -11,10 +11,15 @@
     <!-- MAIN ACTIVITY -->
     <string name="main_button_start">Rozpocznij grę</string>
     <string name="main_button_join">Dołącz do gry</string>
+    <string name="waiting_room_text">Gracze oczekujący na rozpoczęcie gry</string>
+
 
     <!-- GAME ACTIVITY -->
     <string name="turn_of_sb">Rusza się</string>
     <string name="your_turn">Twoja kolej</string>
     <string name="play_card_on_deck">Zagraj</string>
+
+    <!-- WINNER POPUP WINDOW -->
+    <string name="popup_main_text">Werble xD</string>
 
 </resources>

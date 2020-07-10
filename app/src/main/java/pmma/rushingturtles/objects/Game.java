@@ -5,14 +5,14 @@ import java.util.ArrayList;
 public class Game {
     private Board board;
     private ArrayList<String> playersNames;
-    private int activePlayerPosition;
+    private int activePlayerIdx;
     private Card recentlyPlayedCard;
     private MyPlayer myPlayer;
 
-    public Game(Board board, ArrayList<String> playersNames, int activePlayerPosition, MyPlayer myPlayer) {
+    public Game(Board board, ArrayList<String> playersNames, int activePlayerIdx, MyPlayer myPlayer) {
         this.board = board;
         this.playersNames = playersNames;
-        this.activePlayerPosition = activePlayerPosition;
+        this.activePlayerIdx = activePlayerIdx;
         this.myPlayer = myPlayer;
         this.recentlyPlayedCard = null;
     }
@@ -33,12 +33,12 @@ public class Game {
         this.playersNames = playersNames;
     }
 
-    public int getActivePlayerPosition() {
-        return activePlayerPosition;
+    public int getActivePlayerIdx() {
+        return activePlayerIdx;
     }
 
-    public void setActivePlayerPosition(int activePlayerPosition) {
-        this.activePlayerPosition = activePlayerPosition;
+    public void setActivePlayerIdx(int activePlayerIdx) {
+        this.activePlayerIdx = activePlayerIdx;
     }
 
     public Card getRecentlyPlayedCard() {
