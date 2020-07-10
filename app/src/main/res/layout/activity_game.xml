@@ -115,6 +115,59 @@
         app:layout_constraintGuide_percent="0.3" />
 
 
+
+    <ImageView
+        android:id="@+id/imageViewTurtleBlue"
+        android:layout_width="60dp"
+        android:layout_height="80dp"
+        android:layout_marginRight="6dp"
+        app:layout_constraintBottom_toBottomOf="@id/imageViewTurtlePurple"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineBoard"
+        app:srcCompat="@drawable/turtle_blue_vertical" />
+
+    <ImageView
+        android:id="@+id/imageViewTurtleRed"
+        android:layout_width="60dp"
+        android:layout_height="80dp"
+        android:layout_marginRight="16dp"
+        app:layout_constraintBottom_toBottomOf="@id/imageViewTurtleYellow"
+        app:layout_constraintEnd_toEndOf="@+id/imageViewBoard"
+        app:layout_constraintStart_toEndOf="@+id/imageViewTurtleYellow"
+        app:srcCompat="@drawable/turtle_red_vertical" />
+
+    <ImageView
+        android:id="@+id/imageViewTurtleGreen"
+        android:layout_width="60dp"
+        android:layout_height="80dp"
+        app:layout_constraintBottom_toBottomOf="@id/imageViewTurtlePurple"
+        app:layout_constraintEnd_toStartOf="@+id/imageViewTurtleBlue"
+        app:layout_constraintStart_toEndOf="@+id/imageViewTurtlePurple"
+        app:srcCompat="@drawable/turtle_green_vertical" />
+
+    <ImageView
+        android:id="@+id/imageViewTurtleYellow"
+        android:layout_width="60dp"
+        android:layout_height="80dp"
+        android:layout_marginBottom="12dp"
+        android:layout_marginLeft="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/imageViewTurtleRed"
+        app:layout_constraintStart_toEndOf="@+id/imageViewTurtlePurple"
+        app:layout_constraintStart_toStartOf="@+id/imageViewBottomDeckOfCards"
+        app:srcCompat="@drawable/turtle_yellow_vertical" />
+
+    <ImageView
+        android:id="@+id/imageViewTurtlePurple"
+        android:layout_width="60dp"
+        android:layout_height="80dp"
+        android:layout_marginBottom="6dp"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/turtle_purple_vertical" />
+
+
+
     <ImageView
         android:id="@+id/imageViewCard5"
         android:layout_width="0dp"
@@ -275,55 +328,6 @@
         app:layout_constraintStart_toStartOf="@+id/imageViewBottomDeckOfCards"
         app:layout_constraintTop_toTopOf="@+id/imageViewBottomDeckOfCards" />
 
-    <ImageView
-        android:id="@+id/imageViewTurtleBlue"
-        android:layout_width="60dp"
-        android:layout_height="80dp"
-        android:layout_marginRight="8dp"
-        app:layout_constraintBottom_toBottomOf="@id/imageViewTurtlePurple"
-        app:layout_constraintEnd_toStartOf="@+id/guidelineBoard"
-        app:srcCompat="@drawable/turtle_blue_vertical" />
-
-    <ImageView
-        android:id="@+id/imageViewTurtleRed"
-        android:layout_width="60dp"
-        android:layout_height="80dp"
-        android:layout_marginRight="16dp"
-        app:layout_constraintBottom_toBottomOf="@id/imageViewTurtleYellow"
-        app:layout_constraintEnd_toEndOf="@+id/imageViewBoard"
-        app:layout_constraintStart_toEndOf="@+id/imageViewTurtleYellow"
-        app:srcCompat="@drawable/turtle_red_vertical" />
-
-    <ImageView
-        android:id="@+id/imageViewTurtleGreen"
-        android:layout_width="60dp"
-        android:layout_height="80dp"
-        app:layout_constraintBottom_toBottomOf="@id/imageViewTurtlePurple"
-        app:layout_constraintEnd_toStartOf="@+id/imageViewTurtleBlue"
-        app:layout_constraintStart_toEndOf="@+id/imageViewTurtlePurple"
-        app:srcCompat="@drawable/turtle_green_vertical" />
-
-    <ImageView
-        android:id="@+id/imageViewTurtleYellow"
-        android:layout_width="60dp"
-        android:layout_height="80dp"
-        android:layout_marginBottom="24dp"
-        android:layout_marginLeft="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/imageViewTurtleRed"
-        app:layout_constraintStart_toEndOf="@+id/imageViewTurtlePurple"
-        app:layout_constraintStart_toStartOf="@+id/imageViewBottomDeckOfCards"
-        app:srcCompat="@drawable/turtle_yellow_vertical" />
-
-    <ImageView
-        android:id="@+id/imageViewTurtlePurple"
-        android:layout_width="60dp"
-        android:layout_height="80dp"
-        android:layout_marginBottom="12dp"
-        android:layout_marginLeft="12dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/turtle_purple_vertical" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

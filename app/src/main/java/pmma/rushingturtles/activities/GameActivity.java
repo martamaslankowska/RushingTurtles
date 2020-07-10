@@ -53,6 +53,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
     private void initializeXmlViews() {
         playCardButton = findViewById(R.id.buttonPlayCardOnDeck);
+        playCardButton.setVisibility(View.INVISIBLE);
         playCardButton.setOnClickListener(playCardButtonOnClickListener);
     }
 

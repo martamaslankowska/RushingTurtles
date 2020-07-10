@@ -14,4 +14,7 @@
     <dimen name="single_card_on_deck_padding_horizontal">24dp</dimen>
     <dimen name="button_padding_horizontal_card_deck">16dp</dimen>
 
+    <dimen name="button_padding_horizontal_card_deck_land">24dp</dimen>
+
+
 </resources>

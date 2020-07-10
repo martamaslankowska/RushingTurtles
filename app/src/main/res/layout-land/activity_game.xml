@@ -1,19 +1,308 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/backgroundGray">
+
+    <ImageView
+        android:id="@+id/imageViewbackground"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:src="@drawable/board_background_land"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineBoard"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
+    <ImageView
+        android:id="@+id/imageViewBoard"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:src="@drawable/board_smaller_land"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineBoard"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline"
+        android:id="@+id/guidelineBoard"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.66" />
+        app:layout_constraintGuide_percent="0.7" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineRightOfCard5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.6" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineRightOfCard4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineRightOfCard3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.4" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineRightOfCard2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.3" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineRightOfCard1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.2" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineLeftOfCard2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.1" />
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineLeftOfColorTurtle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.8" />
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineLeftOfDeckOfCards"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.3" />
+
+
+    <ImageView
+        android:id="@+id/imageViewTurtlePurple"
+        android:layout_width="70dp"
+        android:layout_height="55dp"
+        android:layout_marginStart="6dp"
+        android:layout_marginBottom="24dp"
+        app:layout_constraintBottom_toTopOf="@+id/imageViewTurtleGreen"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/turtle_purple_horizontal" />
+
+    <ImageView
+        android:id="@+id/imageViewTurtleYellow"
+        android:layout_width="70dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/imageViewTurtleRed"
+        app:layout_constraintStart_toStartOf="@+id/imageViewTurtleRed"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/turtle_yellow_horizontal" />
+
+    <ImageView
+        android:id="@+id/imageViewTurtleGreen"
+        android:layout_width="70dp"
+        android:layout_height="55dp"
+        app:layout_constraintBottom_toTopOf="@+id/imageViewTurtleBlue"
+        app:layout_constraintStart_toStartOf="@+id/imageViewTurtlePurple"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewTurtlePurple"
+        app:srcCompat="@drawable/turtle_green_horizontal" />
+
+    <ImageView
+        android:id="@+id/imageViewTurtleRed"
+        android:layout_width="70dp"
+        android:layout_height="55dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="@id/guidelineBoard"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewTurtleYellow"
+        app:srcCompat="@drawable/turtle_red_horizontal" />
+
+    <ImageView
+        android:id="@+id/imageViewTurtleBlue"
+        android:layout_width="70dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="24dp"
+        app:layout_constraintBottom_toBottomOf="@+id/guidelineBoard"
+        app:layout_constraintStart_toStartOf="@+id/imageViewTurtleGreen"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewTurtleGreen"
+        app:srcCompat="@drawable/turtle_blue_horizontal" />
+
+
+    <ImageView
+        android:id="@+id/imageViewCard5"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginHorizontal="@dimen/card_padding_horizontal"
+        android:layout_marginTop="@dimen/card_padding_vertical"
+        android:scaleType="fitStart"
+        android:src="@drawable/turtle_card"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineRightOfCard5"
+        app:layout_constraintStart_toStartOf="@+id/guidelineRightOfCard3"
+        app:layout_constraintTop_toTopOf="@+id/guidelineBoard" />
+
+    <ImageView
+        android:id="@+id/imageViewCard4"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginHorizontal="@dimen/card_padding_horizontal"
+        android:layout_marginTop="@dimen/card_padding_vertical"
+        android:scaleType="fitStart"
+        android:src="@drawable/turtle_card"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineRightOfCard4"
+        app:layout_constraintStart_toStartOf="@+id/guidelineRightOfCard2"
+        app:layout_constraintTop_toTopOf="@+id/guidelineBoard" />
+
+    <ImageView
+        android:id="@+id/imageViewCard3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginHorizontal="@dimen/card_padding_horizontal"
+        android:layout_marginTop="@dimen/card_padding_vertical"
+        android:scaleType="fitStart"
+        android:src="@drawable/turtle_card"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineRightOfCard3"
+        app:layout_constraintStart_toStartOf="@+id/guidelineRightOfCard1"
+        app:layout_constraintTop_toTopOf="@+id/guidelineBoard" />
+
+    <ImageView
+        android:id="@+id/imageViewCard2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginHorizontal="@dimen/card_padding_horizontal"
+        android:layout_marginTop="@dimen/card_padding_vertical"
+        android:scaleType="fitStart"
+        android:src="@drawable/turtle_card"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineRightOfCard2"
+        app:layout_constraintStart_toStartOf="@+id/guidelineLeftOfCard2"
+        app:layout_constraintTop_toTopOf="@+id/guidelineBoard" />
+
+    <ImageView
+        android:id="@+id/imageViewCard1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginHorizontal="@dimen/card_padding_horizontal"
+        android:layout_marginTop="@dimen/card_padding_vertical"
+        android:scaleType="fitStart"
+        android:src="@drawable/turtle_card"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineRightOfCard1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guidelineBoard" />
+
+
+    <ImageView
+        android:id="@+id/imageViewTurtleColor"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="@dimen/card_padding_horizontal"
+        android:layout_marginVertical="@dimen/card_padding_horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guidelineLeftOfColorTurtle"
+        app:layout_constraintTop_toTopOf="@+id/guidelineBoard"
+        app:srcCompat="@drawable/turtle_color" />
+
+    <TextView
+        android:id="@+id/textViewCurrentPlayerText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/turn_of_sb"
+        android:textAllCaps="true"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/textViewCurrentPlayerName"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineLeftOfColorTurtle"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/guidelineRightOfCard5"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewbackground" />
+
+    <TextView
+        android:id="@+id/textViewCurrentPlayerName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Piotr"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/textViewNextPlayerName"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineLeftOfColorTurtle"
+        app:layout_constraintStart_toStartOf="@+id/guidelineRightOfCard5"
+        app:layout_constraintTop_toBottomOf="@+id/textViewCurrentPlayerText" />
+
+    <TextView
+        android:id="@+id/textViewNextPlayerName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:text="Marta"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineLeftOfColorTurtle"
+        app:layout_constraintStart_toStartOf="@+id/guidelineRightOfCard5"
+        app:layout_constraintTop_toBottomOf="@+id/textViewCurrentPlayerName" />
+
+    <ImageView
+        android:id="@+id/imageViewBottomDeckOfCards"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginRight="48dp"
+        android:paddingHorizontal="@dimen/deck_of_cards_padding_horizontal"
+        android:rotation="90"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineLeftOfDeckOfCards"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineLeftOfColorTurtle"
+        app:layout_constraintStart_toStartOf="@+id/guidelineRightOfCard3"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/deck_of_2_cards" />
+
+    <ImageView
+        android:id="@+id/imageViewDeckOfCards"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginRight="48dp"
+        android:paddingHorizontal="@dimen/deck_of_cards_padding_horizontal"
+        android:rotation="90"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineLeftOfDeckOfCards"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineLeftOfColorTurtle"
+        app:layout_constraintStart_toStartOf="@+id/guidelineRightOfCard3"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/red_card_arrow" />
+
+
+    <Button
+        android:id="@+id/buttonPlayCardOnDeck"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/buttonColorStart"
+        android:paddingHorizontal="@dimen/button_padding_horizontal_card_deck_land"
+        android:text="@string/play_card_on_deck"
+        android:textColor="@color/whiteTextColor"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineLeftOfDeckOfCards"
+        app:layout_constraintEnd_toEndOf="@+id/imageViewBottomDeckOfCards"
+        app:layout_constraintStart_toStartOf="@+id/imageViewBottomDeckOfCards"
+        app:layout_constraintTop_toTopOf="@+id/imageViewBottomDeckOfCards" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
