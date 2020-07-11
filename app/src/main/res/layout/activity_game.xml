@@ -319,6 +319,7 @@
         android:layout_height="wrap_content"
         android:background="@color/buttonColorStart"
         android:paddingHorizontal="@dimen/button_padding_horizontal_card_deck"
+        android:layout_marginHorizontal="8dp"
         android:text="@string/play_card_on_deck"
         android:textColor="@color/whiteTextColor"
         android:textStyle="bold"

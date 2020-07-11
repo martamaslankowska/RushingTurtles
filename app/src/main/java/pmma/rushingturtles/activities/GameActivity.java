@@ -190,7 +190,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
         if (!cardCoordinatesHaveBeenSet) {
-            setCardCoordinates(currentOrientation == Configuration.ORIENTATION_PORTRAIT ? 0.3f : 0.2f);
+            setCardCoordinates(currentOrientation == Configuration.ORIENTATION_PORTRAIT ? 0.3f : 0.23f);
             cardCoordinatesHaveBeenSet = true;
         }
 

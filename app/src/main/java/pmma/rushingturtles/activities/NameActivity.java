@@ -3,20 +3,14 @@ package pmma.rushingturtles.activities;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Random;
 
 import pmma.rushingturtles.R;
 
@@ -51,10 +45,15 @@ public class NameActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
         if (editTextName.getText().toString().length() < 3)
-            Toast.makeText(this, getResources().getString(R.string.name_validation_text), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getResources().getString(R.string.name_length_validation_text), Toast.LENGTH_SHORT).show();
         else {
+            int playerId = new Random().nextInt();
             String playerName = editTextName.getText().toString();
-            preferences.edit().putString("name", playerName).apply();
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putInt("player_id", playerId).apply();
+            editor.putString("player_name", playerName).apply();
+            editor.putString("ip_address", "192.168.0.16").apply();
+
             startActivity(new Intent(NameActivity.this , MainActivity.class));
             finish();
         }

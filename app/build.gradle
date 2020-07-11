@@ -33,4 +33,8 @@ dependencies {
     implementation 'tech.gusavila92:java-android-websocket-client:1.2.2'
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.8.5'
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.8.5'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.8.5'
+
 }

@@ -4,7 +4,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:id="@+id/settingsLayout">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -25,12 +28,11 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/text_margin_left"
         app:layout_constraintHorizontal_bias="0.0"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="@dimen/text_margin_top"
         app:layout_constraintVertical_bias="0.0"
         android:textSize="18sp"
         android:textStyle="bold"
         android:text="@string/name_text_view_settings"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"/>
@@ -40,9 +42,10 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/text_margin_left"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="@dimen/title_vs_text_margin_top"
         android:text="@string/test_string"
         android:textSize="17sp"
+        android:focusableInTouchMode="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline3"
         app:layout_constraintHorizontal_bias="0.0"
@@ -62,11 +65,57 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/button_padding_horizontal"
-        android:text="@string/name_edit_button_text"
+        android:text="@string/save_button_text"
+        android:paddingVertical="@dimen/button_padding_vertical"
         app:layout_constraintBottom_toBottomOf="@+id/editTextPlayerName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toTopOf="@+id/editTextPlayerName" />
+
+
+    <TextView
+        android:id="@+id/textViewIpAddress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/text_margin_left"
+        android:layout_marginTop="@dimen/text_margin_left"
+        android:text="@string/ip_text_view_settings"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextPlayerName" />
+
+    <EditText
+        android:id="@+id/editTextIpAddress"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/text_margin_left"
+        android:layout_marginTop="@dimen/title_vs_text_margin_top"
+        android:text="@string/test_string"
+        android:textSize="17sp"
+        android:focusableInTouchMode="true"
+        app:layout_constraintEnd_toStartOf="@+id/guideline3"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewIpAddress"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <Button
+        android:id="@+id/buttonIpChange"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/button_padding_horizontal"
+        android:text="@string/edit_button_text"
+        android:paddingVertical="@dimen/button_padding_vertical"
+        app:layout_constraintBottom_toBottomOf="@+id/editTextIpAddress"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline3"
+        app:layout_constraintTop_toTopOf="@+id/editTextIpAddress" />
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

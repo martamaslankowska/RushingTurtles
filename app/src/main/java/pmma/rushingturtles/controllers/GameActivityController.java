@@ -10,11 +10,10 @@ import pmma.rushingturtles.objects.Game;
 import pmma.rushingturtles.objects.MyPlayer;
 
 public class GameActivityController {
-
     public Game game;
 
     private static final GameActivityController instance = new GameActivityController();
-    public GameActivityController getInstance() {
+    public static GameActivityController getInstance() {
         return instance;
     }
 
@@ -24,6 +23,7 @@ public class GameActivityController {
         MyPlayer player = new MyPlayer(myPlayerId, myPlayerName, cards, turtleColor);
         this.game = new Game(board, playersNames, activePlayerIdx, player);
     }
+
     
 
 }

@@ -10,18 +10,25 @@
 
     <!-- SETTINGS ACTIVITY -->
     <string name="name_text_view_settings">Twoje imię</string>
-    <string name="name_edit_button_text">Edytuj</string>
-    <string name="name_save_button_text">Zapisz</string>
+    <string name="edit_button_text">Edytuj</string>
+    <string name="save_button_text">Zapisz</string>
+    <string name="close_button_text">Zamknij</string>
+    <string name="toast_save_name_part_1">Twoje imię</string>
+    <string name="toast_has_been_saved">zostało zapisane :)</string>
+    <string name="ip_text_view_settings">Adres IP serwera</string>
+    <string name="toast_new_ip_address">Nowy adres IP</string>
 
     <!-- NAME ACTIVITY -->
     <string name="name_text_view">Wprowadź swoje imię</string>
     <string name="name_accept_button">Zaczynamy grę</string>
-    <string name="name_validation_text">Musisz wprowadzić swoje imię :)</string>
+    <string name="name_length_validation_text">Imię musi składać się z co najmniej 3 znaków</string>
+    <string name="name_enter_validation_text">Imię nie może zawierać znaku nowej linii</string>
 
     <!-- MAIN ACTIVITY -->
     <string name="main_button_start">Rozpocznij grę</string>
     <string name="main_button_join">Dołącz do gry</string>
     <string name="waiting_room_text">Gracze oczekujący na rozpoczęcie gry</string>
+    <string name="websocket_connection">Zostało nawiązane połaczenie</string>
 
     <!-- GAME ACTIVITY -->
     <string name="turn_of_sb">Rusza się</string>
