@@ -1,15 +1,16 @@
 package pmma.rushingturtles.objects;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Game {
     private Board board;
-    private ArrayList<String> playersNames;
+    private List<String> playersNames;
     private int activePlayerIdx;
     private Card recentlyPlayedCard;
     private MyPlayer myPlayer;
 
-    public Game(Board board, ArrayList<String> playersNames, int activePlayerIdx, MyPlayer myPlayer) {
+    public Game(Board board, List<String> playersNames, int activePlayerIdx, MyPlayer myPlayer) {
         this.board = board;
         this.playersNames = playersNames;
         this.activePlayerIdx = activePlayerIdx;
@@ -25,11 +26,11 @@ public class Game {
         this.board = board;
     }
 
-    public ArrayList<String> getPlayersNames() {
+    public List<String> getPlayersNames() {
         return playersNames;
     }
 
-    public void setPlayersNames(ArrayList<String> playersNames) {
+    public void setPlayersNames(List<String> playersNames) {
         this.playersNames = playersNames;
     }
 

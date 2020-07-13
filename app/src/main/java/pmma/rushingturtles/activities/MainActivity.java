@@ -2,15 +2,9 @@ package pmma.rushingturtles.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
 
-import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.telephony.TelephonyManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,7 +21,7 @@ import pmma.rushingturtles.websocket.WSC;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    List<String> playersInTheWaitingRoomNames;
+    List<String> playersInTheRoomNames;
     WSC wsc;
     MainActivityController mainController;
 
@@ -40,8 +34,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mainController.initializeMainController(this);
 
         wsc = WSC.getInstance();
-        if (!wsc.isAlreadyConnected())
-            wsc.connect(this, mainController);
+        if (!wsc.isAlreadyConnected()) {
+            wsc.setClassVariables(this, mainController);
+            wsc.connect(this);
+        }
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -54,12 +50,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Button mainButton = findViewById(R.id.mainButton);
         mainButton.setOnClickListener(this);
 
-        playersInTheWaitingRoomNames = new ArrayList<>();
-        playersInTheWaitingRoomNames.add("Marta");
-        playersInTheWaitingRoomNames.add("Piotr");
-        playersInTheWaitingRoomNames.add("Maciek");
+        playersInTheRoomNames = new ArrayList<>();
+        playersInTheRoomNames.add("Marta");
+        playersInTheRoomNames.add("Piotr");
+        playersInTheRoomNames.add("Maciek");
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.item_listview_waiting_players, R.id.textViewListView, playersInTheWaitingRoomNames);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.item_listview_waiting_players, R.id.textViewListView, playersInTheRoomNames);
         ListView listView = findViewById(R.id.listViewOfPlayersInTheWaitingRoom);
         listView.setAdapter(adapter);
         listView.setEnabled(false);

@@ -6,32 +6,32 @@ import java.util.List;
 import pmma.rushingturtles.enums.TurtleColor;
 
 public class MyPlayer {
-    private int id;
+    private int idx;
     private String name;
     private List<Card> cards;
     private TurtleColor turtle;
     private int activeCardPosition;
 
-    public MyPlayer(int id, String name) {
-        this.id = id;
+    public MyPlayer(int idx, String name) {
+        this.idx = idx;
         this.name = name;
         this.cards = new ArrayList<>();
         this.turtle = null;
         this.activeCardPosition = -1;
     }
 
-    public MyPlayer(int id, String name, List<Card> cards, TurtleColor turtle) {
-        this(id, name);
+    public MyPlayer(int idx, String name, List<Card> cards, TurtleColor turtle) {
+        this(idx, name);
         this.cards = cards;
         this.turtle = turtle;
     }
 
-    public int getId() {
-        return id;
+    public int getIdx() {
+        return idx;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setIdx(int idx) {
+        this.idx = idx;
     }
 
     public String getName() {

@@ -5,9 +5,8 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Path;
 import android.graphics.Rect;
-import android.media.Image;
 import android.os.Bundle;
-import android.provider.ContactsContract;
+import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
@@ -18,15 +17,21 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import pmma.rushingturtles.R;
+import pmma.rushingturtles.activityviewcontrollers.ColorPickerViewController;
+import pmma.rushingturtles.controllers.GameActivityController;
+import pmma.rushingturtles.enums.TurtleColor;
+import pmma.rushingturtles.websocket.WSC;
 
 public class GameActivity extends AppCompatActivity implements View.OnClickListener {
     ConstraintLayout mainLayout;
@@ -35,16 +40,20 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
     ImageView blueTurtle, redTurtle, greenTurtle, yellowTurtle, purpleTurtle;
 
+    ImageView colorPickerBackground;
     ImageView blueColorPicker, redColorPicker, greenColorPicker, yellowColorPicker, purpleColorPicker;
-    List<ImageView> colorPickers;
     ImageView blueColorTick, redColorTick, greenColorTick, yellowColorTick, purpleColorTick;
-    List<ImageView> colorTicks;
     ImageView checkedColorPicker;
+    List<ImageView> colorTicks;
+    List<ImageView> colorPickers;
+
+    TextView currentPlayerText, currentPlayerName, nextPlayerName;
 
     ImageView card1, card2, card3, card4, card5;
     List<ImageView> cards;
+    ImageView pickedCard;
+    ImageView outsideCard;
 
-    List<Integer> cardCoordinatesY;
     float cardCoordinateXOrY;
     float cardMovedCoordinateXOrY;
     int statusBarHeight;
@@ -52,11 +61,15 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     int currentOrientation;
     boolean cardCoordinatesHaveBeenSet;
 
+    public GameActivityController gameActivityController;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
         mainLayout = findViewById(R.id.gameLayout);
+        gameActivityController = GameActivityController.getInstance();
+        WSC.getInstance().setGameController(gameActivityController);
 
         currentOrientation = getResources().getConfiguration().orientation;
         cardCoordinatesHaveBeenSet = false;
@@ -64,111 +77,42 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         initializeXmlViews();
         initializeTurtles();
         initializeCardImageViews();
-        initializeColorPickerViews();
+        ColorPickerViewController colorPickerViewController = new ColorPickerViewController(this);
 
         Log.i("GameActivity", String.valueOf(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT));
     }
 
-    private void initializeColorPickerViews() {
-        blueColorPicker = findViewById(R.id.imageViewColorPickerBlue);
-        redColorPicker = findViewById(R.id.imageViewColorPickerRed);
-        greenColorPicker = findViewById(R.id.imageViewColorPickerGreen);
-        yellowColorPicker = findViewById(R.id.imageViewColorPickerYellow);
-        purpleColorPicker = findViewById(R.id.imageViewColorPickerPurple);
-        colorPickers = Arrays.asList(blueColorPicker, redColorPicker, greenColorPicker, yellowColorPicker, purpleColorPicker);
-        checkedColorPicker = null;
-        for (int i=0; i<colorPickers.size(); i++)
-            colorPickers.get(i).setOnClickListener(colorPickerClickListener);
 
-        blueColorTick = findViewById(R.id.imageViewColorPickerBlueTick);
-        redColorTick = findViewById(R.id.imageViewColorPickerRedTick);
-        greenColorTick = findViewById(R.id.imageViewColorPickerGreenTick);
-        yellowColorTick = findViewById(R.id.imageViewColorPickerYellowTick);
-        purpleColorTick = findViewById(R.id.imageViewColorPickerPurpleTick);
-        colorTicks = Arrays.asList(blueColorTick, redColorTick, greenColorTick, yellowColorTick, purpleColorTick);
-
-        for (int i=0; i<colorTicks.size(); i++)
-            colorTicks.get(i).setVisibility(View.GONE);
-    }
-
-    private View.OnClickListener colorPickerClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            checkOrUncheckColorPicker(v);
-        }
-    };
-
-    public void checkOrUncheckColorPicker(View view) {
-        int touchedColorPickerIdx = colorPickers.indexOf(view);
-        if (checkedColorPicker == null) {
-            colorTicks.get(touchedColorPickerIdx).setVisibility(View.VISIBLE);
-            checkedColorPicker = (ImageView) view;
-        }
-        else {
-            if (checkedColorPicker == view) {
-                colorTicks.get(touchedColorPickerIdx).setVisibility(View.GONE);
-                checkedColorPicker = null;
-            }
-            else {
-                colorTicks.get(colorPickers.indexOf(checkedColorPicker)).setVisibility(View.GONE);
-                colorTicks.get(touchedColorPickerIdx).setVisibility(View.VISIBLE);
-                checkedColorPicker = (ImageView) view;
-            }
-        }
-    }
 
     private void initializeXmlViews() {
         playCardButton = findViewById(R.id.buttonPlayCardOnDeck);
-//        playCardButton.setVisibility(View.INVISIBLE);
+        playCardButton.setVisibility(View.GONE);
         playCardButton.setOnClickListener(playCardButtonOnClickListener);
-    }
 
-    private void initializeTurtles() {
-        blueTurtle = findViewById(R.id.imageViewTurtleBlue);
-        redTurtle = findViewById(R.id.imageViewTurtleRed);
-        greenTurtle = findViewById(R.id.imageViewTurtleGreen);
-        yellowTurtle = findViewById(R.id.imageViewTurtleYellow);
-        purpleTurtle = findViewById(R.id.imageViewTurtlePurple);
-    }
-
-    private void initializeCardImageViews() {
-        card1 = findViewById(R.id.imageViewCard1);
-        card2 = findViewById(R.id.imageViewCard2);
-        card3 = findViewById(R.id.imageViewCard3);
-        card4 = findViewById(R.id.imageViewCard4);
-        card5 = findViewById(R.id.imageViewCard5);
-
-        cards = Arrays.asList(card1, card2, card3, card4, card5);
-        addCardImageViewsOnListeners();
-    }
-
-    private void addCardImageViewsOnListeners() {
-        for (int i=0; i<cards.size(); i++)
-            cards.get(i).setOnClickListener(this);
-    }
-
-    private void setCardCoordinates(float windowPercentage) {
-        statusBarHeight = getStatusBarHeight();
-        DisplayMetrics displayMetrics = getWindowDisplayMetrics();
-        float windowSize = currentOrientation == Configuration.ORIENTATION_PORTRAIT ? displayMetrics.widthPixels : displayMetrics.heightPixels;
-        float imgXOrY = getImageViewCoordinates(card1)[currentOrientation == Configuration.ORIENTATION_PORTRAIT ? 0 : 1];
-        float movementValue = windowSize * windowPercentage;
-
-        cardCoordinateXOrY = imgXOrY;
-        cardMovedCoordinateXOrY = imgXOrY - movementValue;
+        currentPlayerText = findViewById(R.id.textViewCurrentPlayerText);
+        currentPlayerName = findViewById(R.id.textViewCurrentPlayerName);
+        nextPlayerName = findViewById(R.id.textViewNextPlayerName);
     }
 
     private View.OnClickListener playCardButtonOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            manageWinnerPopupWindow(v);
+            pickedCard = outsideCard;
+            int pickedCardIdx = cards.indexOf(pickedCard);
+            if (isPickedCardRainbow(pickedCardIdx)) {
+                Toast.makeText(GameActivity.this, "AAAAAAAAA", Toast.LENGTH_SHORT).show();
+            } else {
+                WSC.getInstance().sendPlayCardMessage(pickedCardIdx, null);
+                playCardButton.setVisibility(View.GONE);
+                pickedCard = null;
+            }
         }
     };
 
     private void manageWinnerPopupWindow(View view) {
         //instantiate the popup.xml layout file
         LayoutInflater layoutInflater = (LayoutInflater) GameActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View customView = layoutInflater.inflate(R.layout.popup_winner,null);
+        View customView = layoutInflater.inflate(R.layout.popup_winner, null);
 
         closePopupButton = (Button) customView.findViewById(R.id.closePopupBtn);
 
@@ -187,6 +131,43 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         });
     }
 
+    private void initializeTurtles() {
+        blueTurtle = findViewById(R.id.imageViewTurtleBlue);
+        redTurtle = findViewById(R.id.imageViewTurtleRed);
+        greenTurtle = findViewById(R.id.imageViewTurtleGreen);
+        yellowTurtle = findViewById(R.id.imageViewTurtleYellow);
+        purpleTurtle = findViewById(R.id.imageViewTurtlePurple);
+    }
+
+    private void initializeCardImageViews() {
+        card1 = findViewById(R.id.imageViewCard1);
+        card2 = findViewById(R.id.imageViewCard2);
+        card3 = findViewById(R.id.imageViewCard3);
+        card4 = findViewById(R.id.imageViewCard4);
+        card5 = findViewById(R.id.imageViewCard5);
+        pickedCard = null;
+        outsideCard = null;
+
+        cards = Arrays.asList(card1, card2, card3, card4, card5);
+        addCardImageViewsOnListeners();
+    }
+
+    private void addCardImageViewsOnListeners() {
+        for (int i = 0; i < cards.size(); i++)
+            cards.get(i).setOnClickListener(this);
+    }
+
+    private void setCardCoordinates(float windowPercentage) {
+        statusBarHeight = getStatusBarHeight();
+        DisplayMetrics displayMetrics = getWindowDisplayMetrics();
+        float windowSize = currentOrientation == Configuration.ORIENTATION_PORTRAIT ? displayMetrics.widthPixels : displayMetrics.heightPixels;
+        float imgXOrY = getImageViewCoordinates(card1)[currentOrientation == Configuration.ORIENTATION_PORTRAIT ? 0 : 1];
+        float movementValue = windowSize * windowPercentage;
+
+        cardCoordinateXOrY = imgXOrY;
+        cardMovedCoordinateXOrY = imgXOrY - movementValue;
+    }
+
     @Override
     public void onClick(View view) {
         if (!cardCoordinatesHaveBeenSet) {
@@ -194,31 +175,44 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             cardCoordinatesHaveBeenSet = true;
         }
 
-        /* If we want to move card to the left, we need to move other cards to the right */
-        if (!isCardOutside(view)) {
-            int cardIdx = cards.indexOf((ImageView) view);
-            for (int i = 0; i < cards.size(); i++)
-                if (i != cardIdx && isCardOutside(cards.get(i)))
-                    moveCard(cards.get(i));
+        if (pickedCard == null) {  /* If we are not picking color of a rainbow card */
+            if (outsideCard != view) {  /* If clicked card is not outside */
+                if (outsideCard != null)
+                    moveCard(outsideCard, false);
+                moveCard(view, true);
+                outsideCard = (ImageView) view;
+            } else {  /* Clicked card is outside */
+                moveCard(view, false);
+                outsideCard = null;
+            }
         }
-        /* Move our card to the left :) */
-        moveCard(view);
+
+        if (gameActivityController.isPlayerAnActivePlayer()) {
+            setActivePlayerViews();
+            if (outsideCard != null) {
+                playCardButton.setBackgroundColor(getResources().getColor(R.color.buttonActiveRed));
+                playCardButton.setEnabled(true);
+            }
+//            final Handler handler = new Handler();
+//            handler.postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    playCardButton.setBackgroundColor(getResources().getColor(R.color.buttonActiveRed));
+//                    playCardButton.setEnabled(true);
+//                }
+//            }, 500);
+        }
     }
 
-    public void moveCard(View view) {
+    public void moveCard(View view, boolean moveOutside) {
         int[] coordinates = getImageViewCoordinates(view);
         int imgX = coordinates[0];
         int imgY = coordinates[1];
-
-        if (currentOrientation == Configuration.ORIENTATION_PORTRAIT) {
-            float newImgX = calculateNewCoordinateXOrY(imgX);
-            if (newImgX >= 0)
-                createAndAnimatePath(view, imgX, imgY, newImgX, imgY);
-        } else {
-            float newImgY = calculateNewCoordinateXOrY(imgY);
-            if (newImgY >= 0)
-                createAndAnimatePath(view, imgX, imgY, imgX, newImgY);
-        }
+        float newImgCoordinate = moveOutside ? cardMovedCoordinateXOrY : cardCoordinateXOrY;
+        if (currentOrientation == Configuration.ORIENTATION_PORTRAIT)
+            createAndAnimatePath(view, imgX, imgY, newImgCoordinate, imgY);
+        else
+            createAndAnimatePath(view, imgX, imgY, imgX, newImgCoordinate);
     }
 
     private boolean isCardOutside(View view) {
@@ -250,9 +244,9 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
     private float calculateNewCoordinateXOrY(int imgXOrY) {
         float xOrY = -1;
-        if (imgXOrY-1 < cardMovedCoordinateXOrY && cardMovedCoordinateXOrY < imgXOrY+1)
+        if (imgXOrY - 1 < cardMovedCoordinateXOrY && cardMovedCoordinateXOrY < imgXOrY + 1)
             xOrY = cardCoordinateXOrY;
-        if (imgXOrY-1 < cardCoordinateXOrY && cardCoordinateXOrY < imgXOrY+1)
+        if (imgXOrY - 1 < cardCoordinateXOrY && cardCoordinateXOrY < imgXOrY + 1)
             xOrY = cardMovedCoordinateXOrY;
         return xOrY;
     }
@@ -266,4 +260,20 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         animator.start();
     }
 
+
+    /* WEB SOCKET CLIENT METHODS */
+
+    public void setActivePlayerViews() {
+        currentPlayerText.setText(getResources().getString(R.string.your_turn));
+        currentPlayerName.setText(gameActivityController.getCurrentPlayerName());
+        nextPlayerName.setText(gameActivityController.getNextPlayerName());
+
+        playCardButton.setVisibility(View.VISIBLE);
+        playCardButton.setEnabled(false);
+        playCardButton.setBackgroundColor(getResources().getColor(R.color.buttonInactiveGray));
+    }
+
+    private boolean isPickedCardRainbow(int cardIdx) {
+        return gameActivityController.getCardColor(cardIdx) == TurtleColor.RAINBOW;
+    }
 }

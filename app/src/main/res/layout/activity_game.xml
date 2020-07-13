@@ -113,7 +113,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.3" />
+        app:layout_constraintGuide_percent="0.33" />
 
 
     <ImageView
@@ -253,7 +253,7 @@
         android:text="@string/turn_of_sb"
         android:textAllCaps="true"
         android:textColor="@color/black"
-        android:textSize="18sp"
+        android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/textViewCurrentPlayerName"
         app:layout_constraintEnd_toEndOf="parent"
@@ -264,9 +264,10 @@
         android:id="@+id/textViewCurrentPlayerName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingTop="6dp"
         android:text="Piotr"
         android:textColor="@color/black"
-        android:textSize="18sp"
+        android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/textViewNextPlayerName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guidelineBoard"
@@ -277,8 +278,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
+        android:paddingTop="6dp"
         android:text="Marta"
-        android:textSize="15sp"
+        android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/guidelineBottomTexts"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guidelineBoard"

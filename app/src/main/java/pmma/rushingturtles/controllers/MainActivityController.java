@@ -2,13 +2,8 @@ package pmma.rushingturtles.controllers;
 
 import android.content.SharedPreferences;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import pmma.rushingturtles.activities.MainActivity;
 import pmma.rushingturtles.enums.PlayerState;
-import pmma.rushingturtles.websocket.BasicToServerMessage;
-import pmma.rushingturtles.websocket.JsonObjectMapper;
 import pmma.rushingturtles.websocket.WSC;
 
 public class MainActivityController {

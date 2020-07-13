@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import pmma.rushingturtles.R;
+import pmma.rushingturtles.websocket.WSC;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -109,8 +110,15 @@ public class SettingsActivity extends AppCompatActivity {
             ipEditText.setEnabled(false);
             saveEditIpAddressButton.setText(getResources().getString(R.string.edit_button_text));
             String newIpAddress = ipEditText.getText().toString();
+            setNewServerConnection(newIpAddress);
             getSharedPreferences("settingsPreferences", MODE_PRIVATE).edit().putString("ip_address", newIpAddress).apply();
-            Toast.makeText(this, getResources().getString(R.string.toast_new_ip_address) + " " + newIpAddress + " " + getResources().getString(R.string.toast_has_been_saved), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void setNewServerConnection(String newIpAddress) {
+        String oldIpAddress = getSharedPreferences("settingsPreferences", MODE_PRIVATE).getString("ip_address", "127.0.0.1");
+        if (!newIpAddress.equals(oldIpAddress)) {
+            WSC.getInstance().reconnect(this, newIpAddress);
         }
     }
 }

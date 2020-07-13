@@ -34,6 +34,8 @@
     <string name="turn_of_sb">Rusza się</string>
     <string name="your_turn">Twoja kolej</string>
     <string name="play_card_on_deck">Zagraj</string>
+    <string name="pick_color_card">Wybierz\nkolor</string>
+    <string name="toast_pick_one_card">Musisz wybrać dokładnie jedną kartę</string>
 
     <!-- WINNER POPUP WINDOW -->
     <string name="popup_main_text">Werble xD</string>

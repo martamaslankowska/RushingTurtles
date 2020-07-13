@@ -1,10 +1,10 @@
-package pmma.rushingturtles.websocket;
+package pmma.rushingturtles.websocket.messages;
 
-public class BasicToServerMessage {
-    private String message;
-    private int playerId;
+public class BasicMsgToServer {
+    protected String message;
+    protected int playerId;
 
-    public BasicToServerMessage(String message, int playerId) {
+    public BasicMsgToServer(String message, int playerId) {
         this.message = message;
         this.playerId = playerId;
     }

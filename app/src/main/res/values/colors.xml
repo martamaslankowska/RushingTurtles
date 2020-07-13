@@ -15,6 +15,8 @@
     <color name="whiteAlpha">#BFEBEBEB</color>
     <color name="black">#000000</color>
     <color name="backgroundGray">#D5D5D5</color>
+    <color name="buttonInactiveGray">#626262</color>
+    <color name="buttonActiveRed">#A71D1D</color>
 
     <!-- SETTINGS ACTIVITY -->
     <color name="buttonGreen">#C6E4A8</color>
