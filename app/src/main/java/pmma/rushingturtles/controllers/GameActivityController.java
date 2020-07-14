@@ -22,10 +22,10 @@ public class GameActivityController {
 
     public GameActivityController() {
         Board board = new Board();
-        List<Card> cards = Arrays.asList(new Card(1, TurtleColor.BLUE, CardAction.ARROW),
+        List<Card> cards = Arrays.asList(new Card(1, TurtleColor.BLUE, CardAction.PLUS_PLUS),
                 new Card(33, TurtleColor.GREEN, CardAction.MINUS),
-                new Card(21, TurtleColor.RAINBOW, CardAction.PLUS),
-                new Card(13, TurtleColor.YELLOW, CardAction.ARROW_ARROW),
+                new Card(21, TurtleColor.RAINBOW, CardAction.ARROW_ARROW),
+                new Card(13, TurtleColor.YELLOW, CardAction.PLUS),
                 new Card(11, TurtleColor.RAINBOW, CardAction.MINUS));
         MyPlayer player = new MyPlayer(0, "Marta1", cards, TurtleColor.YELLOW);
         game = new Game(board, Arrays.asList("Marta1", "Marta2", "Marta3"), 0, player);

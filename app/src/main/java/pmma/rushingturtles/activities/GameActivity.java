@@ -28,18 +28,20 @@ import java.util.List;
 import java.util.logging.Handler;
 
 import pmma.rushingturtles.R;
+import pmma.rushingturtles.activityviewcontrollers.BoardViewController;
 import pmma.rushingturtles.activityviewcontrollers.CardDeckViewController;
 import pmma.rushingturtles.activityviewcontrollers.ColorPickerViewController;
 import pmma.rushingturtles.controllers.GameActivityController;
 import pmma.rushingturtles.enums.TurtleColor;
+import pmma.rushingturtles.objects.Card;
 import pmma.rushingturtles.websocket.WSC;
 
 public class GameActivity extends AppCompatActivity {
     ConstraintLayout mainLayout;
     PopupWindow popupWindowWinner;
     Button playCardButton, closePopupButton;
+    ImageView turtleColorTile;
 
-    ImageView blueTurtle, redTurtle, greenTurtle, yellowTurtle, purpleTurtle;
     TextView currentPlayerText, currentPlayerName, nextPlayerName;
 
     int statusBarHeight;
@@ -48,6 +50,7 @@ public class GameActivity extends AppCompatActivity {
     public GameActivityController gameActivityController;
     public ColorPickerViewController colorPickerViewController;
     public CardDeckViewController cardDeckViewController;
+    public BoardViewController boardViewController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,9 +64,12 @@ public class GameActivity extends AppCompatActivity {
         statusBarHeight = getStatusBarHeight();
 
         initializeXmlViews();
-        initializeTurtles();
         colorPickerViewController = new ColorPickerViewController(this, currentOrientation);
         cardDeckViewController = new CardDeckViewController(this, currentOrientation);
+        boardViewController = new BoardViewController(this, currentOrientation);
+
+        cardDeckViewController.updateCardImages(gameActivityController.game.getMyPlayer().getCards());
+        setTurtleTileColor();
 
         Log.i("GameActivity", String.valueOf(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT));
     }
@@ -76,6 +82,8 @@ public class GameActivity extends AppCompatActivity {
         currentPlayerText = findViewById(R.id.textViewCurrentPlayerText);
         currentPlayerName = findViewById(R.id.textViewCurrentPlayerName);
         nextPlayerName = findViewById(R.id.textViewNextPlayerName);
+
+        turtleColorTile = findViewById(R.id.imageViewTurtleColor);
     }
 
     private View.OnClickListener playCardButtonOnClickListener = new View.OnClickListener() {
@@ -137,15 +145,6 @@ public class GameActivity extends AppCompatActivity {
         });
     }
 
-    private void initializeTurtles() {
-        blueTurtle = findViewById(R.id.imageViewTurtleBlue);
-        redTurtle = findViewById(R.id.imageViewTurtleRed);
-        greenTurtle = findViewById(R.id.imageViewTurtleGreen);
-        yellowTurtle = findViewById(R.id.imageViewTurtleYellow);
-        purpleTurtle = findViewById(R.id.imageViewTurtlePurple);
-    }
-
-
     public int getStatusBarHeight() {
         Rect rectangle = new Rect();
         Window window = getWindow();
@@ -180,5 +179,12 @@ public class GameActivity extends AppCompatActivity {
 
     private boolean isPickedCardRainbow(int cardIdx) {
         return gameActivityController.getCardColor(cardIdx) == TurtleColor.RAINBOW;
+    }
+
+    private void setTurtleTileColor() {
+        String turtleColor = gameActivityController.game.getMyPlayer().getTurtle().toString().toLowerCase();
+        String resourceName = "turtle_color_card_" + turtleColor;
+        int resourceId = getResources().getIdentifier(resourceName, "drawable", getPackageName());
+        turtleColorTile.setImageResource(resourceId);
     }
 }

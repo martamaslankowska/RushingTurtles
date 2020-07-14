@@ -14,6 +14,7 @@ import java.util.List;
 import pmma.rushingturtles.R;
 import pmma.rushingturtles.activities.GameActivity;
 import pmma.rushingturtles.enums.TurtleColor;
+import pmma.rushingturtles.objects.Card;
 
 public class CardDeckViewController {
     ImageView card1, card2, card3, card4, card5;
@@ -140,5 +141,23 @@ public class CardDeckViewController {
 
     public void setCardsOnDeck(List<ImageView> cards) {
         this.cards = cards;
+    }
+
+    private int mapCardParametersToCardResourceId(Card card) {
+        String turtleColor = card.getColor().toString().toLowerCase();
+        String cardAction = card.getAction().toString().toLowerCase().replace("_", "");
+        String resourceName = "card_" + turtleColor + "_" + cardAction;
+        int resourceId = gameActivity.getResources().getIdentifier(resourceName, "drawable", gameActivity.getPackageName());
+        return resourceId;
+    }
+
+    private void updateCardImage(ImageView view, Card card) {
+        int resourceId = mapCardParametersToCardResourceId(card);
+        view.setImageResource(resourceId);
+    }
+
+    public void updateCardImages(List<Card> deckOfCards) {
+        for (int i=0; i<deckOfCards.size(); i++)
+            updateCardImage(cards.get(i), deckOfCards.get(i));
     }
 }
