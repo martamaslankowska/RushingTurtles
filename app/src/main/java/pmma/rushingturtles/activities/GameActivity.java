@@ -6,7 +6,6 @@ import android.content.res.Configuration;
 import android.graphics.Path;
 import android.graphics.Rect;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
@@ -26,6 +25,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Handler;
 
 import pmma.rushingturtles.R;
 import pmma.rushingturtles.activityviewcontrollers.ColorPickerViewController;
@@ -40,18 +40,10 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
     ImageView blueTurtle, redTurtle, greenTurtle, yellowTurtle, purpleTurtle;
 
-    ImageView colorPickerBackground;
-    ImageView blueColorPicker, redColorPicker, greenColorPicker, yellowColorPicker, purpleColorPicker;
-    ImageView blueColorTick, redColorTick, greenColorTick, yellowColorTick, purpleColorTick;
-    ImageView checkedColorPicker;
-    List<ImageView> colorTicks;
-    List<ImageView> colorPickers;
-
     TextView currentPlayerText, currentPlayerName, nextPlayerName;
 
     ImageView card1, card2, card3, card4, card5;
     List<ImageView> cards;
-    ImageView pickedCard;
     ImageView outsideCard;
 
     float cardCoordinateXOrY;
@@ -62,6 +54,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     boolean cardCoordinatesHaveBeenSet;
 
     public GameActivityController gameActivityController;
+    ColorPickerViewController colorPickerViewController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,12 +70,10 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         initializeXmlViews();
         initializeTurtles();
         initializeCardImageViews();
-        ColorPickerViewController colorPickerViewController = new ColorPickerViewController(this);
+        colorPickerViewController = new ColorPickerViewController(this, currentOrientation);
 
         Log.i("GameActivity", String.valueOf(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT));
     }
-
-
 
     private void initializeXmlViews() {
         playCardButton = findViewById(R.id.buttonPlayCardOnDeck);
@@ -97,17 +88,39 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private View.OnClickListener playCardButtonOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            pickedCard = outsideCard;
-            int pickedCardIdx = cards.indexOf(pickedCard);
+            int pickedCardIdx = cards.indexOf(outsideCard);
             if (isPickedCardRainbow(pickedCardIdx)) {
-                Toast.makeText(GameActivity.this, "AAAAAAAAA", Toast.LENGTH_SHORT).show();
+                if (!colorPickerViewController.isColorPickerVisible()) {
+                    setActivenessOfPlayCardButton(false);
+                    colorPickerViewController.animatePathsForColorPickers(true);
+                } else {
+                    if (colorPickerViewController.getCheckedColorPicker() != null) {
+                        sendPlayCardMessageToServer(pickedCardIdx, colorPickerViewController.getCheckedColor());
+                        colorPickerViewController.animatePathsForColorPickers(false);
+                    }
+                }
             } else {
-                WSC.getInstance().sendPlayCardMessage(pickedCardIdx, null);
-                playCardButton.setVisibility(View.GONE);
-                pickedCard = null;
+                sendPlayCardMessageToServer(pickedCardIdx, null);
             }
         }
     };
+
+    private void sendPlayCardMessageToServer(int pickedCardIdx, TurtleColor cardColor) {
+        WSC.getInstance().sendPlayCardMessage(pickedCardIdx, cardColor);
+        playCardButton.setVisibility(View.GONE);
+        moveCard(outsideCard, false);
+        outsideCard = null;
+    }
+
+    public void setActivenessOfPlayCardButton(boolean isActive) {
+        if (isActive) {
+            playCardButton.setBackgroundColor(getResources().getColor(R.color.buttonActiveRed));
+            playCardButton.setEnabled(true);
+        } else {
+            playCardButton.setBackgroundColor(getResources().getColor(R.color.buttonInactiveGray));
+            playCardButton.setEnabled(false);
+        }
+    }
 
     private void manageWinnerPopupWindow(View view) {
         //instantiate the popup.xml layout file
@@ -145,7 +158,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         card3 = findViewById(R.id.imageViewCard3);
         card4 = findViewById(R.id.imageViewCard4);
         card5 = findViewById(R.id.imageViewCard5);
-        pickedCard = null;
         outsideCard = null;
 
         cards = Arrays.asList(card1, card2, card3, card4, card5);
@@ -175,32 +187,30 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             cardCoordinatesHaveBeenSet = true;
         }
 
-        if (pickedCard == null) {  /* If we are not picking color of a rainbow card */
-            if (outsideCard != view) {  /* If clicked card is not outside */
-                if (outsideCard != null)
-                    moveCard(outsideCard, false);
-                moveCard(view, true);
-                outsideCard = (ImageView) view;
-            } else {  /* Clicked card is outside */
-                moveCard(view, false);
-                outsideCard = null;
-            }
+        if (outsideCard != view) {  /* If clicked card is not outside */
+            if (outsideCard != null)
+                moveCard(outsideCard, false);
+            moveCard(view, true);
+            outsideCard = (ImageView) view;
+        } else {  /* Clicked card is outside */
+            moveCard(view, false);
+            outsideCard = null;
+        }
+
+        if (outsideCard != null) {
+            if (gameActivityController.getCardColor(cards.indexOf(outsideCard)) == TurtleColor.RAINBOW)
+                playCardButton.setText(getResources().getString(R.string.pick_color_card));
+            else
+                playCardButton.setText(getResources().getString(R.string.play_card_on_deck));
         }
 
         if (gameActivityController.isPlayerAnActivePlayer()) {
             setActivePlayerViews();
-            if (outsideCard != null) {
-                playCardButton.setBackgroundColor(getResources().getColor(R.color.buttonActiveRed));
-                playCardButton.setEnabled(true);
+            if (colorPickerViewController.isColorPickerVisible()) {
+                colorPickerViewController.animatePathsForColorPickers(false);
             }
-//            final Handler handler = new Handler();
-//            handler.postDelayed(new Runnable() {
-//                @Override
-//                public void run() {
-//                    playCardButton.setBackgroundColor(getResources().getColor(R.color.buttonActiveRed));
-//                    playCardButton.setEnabled(true);
-//                }
-//            }, 500);
+            if (outsideCard != null)
+                setActivenessOfPlayCardButton(true);
         }
     }
 
@@ -215,12 +225,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             createAndAnimatePath(view, imgX, imgY, imgX, newImgCoordinate);
     }
 
-    private boolean isCardOutside(View view) {
-        int cardImgXOrY = getImageViewCoordinates(view)[currentOrientation == Configuration.ORIENTATION_PORTRAIT ? 0 : 1];
-        return calculateNewCoordinateXOrY(cardImgXOrY) == cardCoordinateXOrY;
-    }
-
-    private int getStatusBarHeight() {
+    public int getStatusBarHeight() {
         Rect rectangle = new Rect();
         Window window = getWindow();
         window.getDecorView().getWindowVisibleDisplayFrame(rectangle);
