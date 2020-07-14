@@ -106,21 +106,6 @@ public class ColorPickerViewController {
         }
     }
 
-    private DisplayMetrics getWindowDisplayMetrics() {
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        gameActivity.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        return displayMetrics;
-    }
-
-    private int[] getImageViewCoordinates(View view) {
-        Rect rect = new Rect();
-        view.getGlobalVisibleRect(rect);
-        int[] coordinates = new int[2];
-        coordinates[0] = rect.left;
-        coordinates[1] = rect.top;
-        return coordinates;
-    }
-
     public void animatePathsForColorPickers(boolean shouldBeVisible) {
         if (checkedColorPicker != null) {
             ImageView checkedColorTick = colorTicks.get(colorPickers.indexOf(checkedColorPicker));
@@ -158,7 +143,7 @@ public class ColorPickerViewController {
     }
 
     private void setColorPickerYOrX() {
-        DisplayMetrics displayMetrics = getWindowDisplayMetrics();
+        DisplayMetrics displayMetrics = gameActivity.getWindowDisplayMetrics();
         if (currentOrientation == Configuration.ORIENTATION_PORTRAIT) {
             colorPickerYOrX = (float) (displayMetrics.heightPixels * 0.01);
             colorPickerHiddenYOrX = - (float) (displayMetrics.heightPixels * 0.15);
@@ -172,10 +157,10 @@ public class ColorPickerViewController {
         if (xOrYCoordinatesOfColorPickers.isEmpty()) {
             int diff = currentOrientation == Configuration.ORIENTATION_PORTRAIT ? 0 : - gameActivity.getStatusBarHeight();
             colorPickerBackground.setVisibility(View.VISIBLE);
-            xOrYCoordinatesOfColorPickers.add(getImageViewCoordinates(colorPickerBackground)[currentOrientation - 1] + diff);
+            xOrYCoordinatesOfColorPickers.add(gameActivity.getImageViewCoordinates(colorPickerBackground)[currentOrientation - 1] + diff);
             for (int i = 0; i < colorPickers.size(); i++) {
                 colorPickers.get(i).setVisibility(View.VISIBLE);
-                xOrYCoordinatesOfColorPickers.add(getImageViewCoordinates(colorPickers.get(i))[currentOrientation - 1] + diff);
+                xOrYCoordinatesOfColorPickers.add(gameActivity.getImageViewCoordinates(colorPickers.get(i))[currentOrientation - 1] + diff);
             }
         }
     }
