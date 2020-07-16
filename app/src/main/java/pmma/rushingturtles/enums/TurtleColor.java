@@ -1,10 +1,10 @@
 package pmma.rushingturtles.enums;
 
 public enum TurtleColor {
-    YELLOW,
+    BLUE,
     RED,
     GREEN,
-    BLUE,
+    YELLOW,
     PURPLE,
     RAINBOW
 }

@@ -180,4 +180,12 @@ public class ColorPickerViewController {
     public TurtleColor getCheckedColor() {
         return colors.get(colorPickers.indexOf(checkedColorPicker));
     }
+
+    public void bringAllViewsToFront() {
+        colorPickerBackground.bringToFront();
+        for (ImageView colorPicker : colorPickers)
+            colorPicker.bringToFront();
+        for (ImageView tick : colorTicks)
+            tick.bringToFront();
+    }
 }

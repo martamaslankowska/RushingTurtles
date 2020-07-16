@@ -96,53 +96,47 @@
 
     <ImageView
         android:id="@+id/imageViewTurtlePurple"
-        android:layout_width="70dp"
-        android:layout_height="55dp"
-        android:layout_marginStart="6dp"
-        android:layout_marginBottom="24dp"
-        app:layout_constraintBottom_toTopOf="@+id/imageViewTurtleGreen"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewBoard"
+        app:layout_constraintStart_toStartOf="@id/imageViewBoard"
+        app:layout_constraintTop_toTopOf="@+id/imageViewBoard"
         app:srcCompat="@drawable/turtle_purple_horizontal" />
 
     <ImageView
         android:id="@+id/imageViewTurtleYellow"
-        android:layout_width="70dp"
-        android:layout_height="55dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/imageViewTurtleRed"
-        app:layout_constraintStart_toStartOf="@+id/imageViewTurtleRed"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewBoard"
+        app:layout_constraintStart_toStartOf="@id/imageViewBoard"
+        app:layout_constraintTop_toTopOf="@+id/imageViewBoard"
         app:srcCompat="@drawable/turtle_yellow_horizontal" />
 
     <ImageView
         android:id="@+id/imageViewTurtleGreen"
-        android:layout_width="70dp"
-        android:layout_height="55dp"
-        app:layout_constraintBottom_toTopOf="@+id/imageViewTurtleBlue"
-        app:layout_constraintStart_toStartOf="@+id/imageViewTurtlePurple"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewTurtlePurple"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewBoard"
+        app:layout_constraintStart_toStartOf="@id/imageViewBoard"
+        app:layout_constraintTop_toTopOf="@+id/imageViewBoard"
         app:srcCompat="@drawable/turtle_green_horizontal" />
 
     <ImageView
         android:id="@+id/imageViewTurtleRed"
-        android:layout_width="70dp"
-        android:layout_height="55dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toBottomOf="@id/guidelineBoard"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewTurtleYellow"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewBoard"
+        app:layout_constraintStart_toStartOf="@id/imageViewBoard"
+        app:layout_constraintTop_toTopOf="@+id/imageViewBoard"
         app:srcCompat="@drawable/turtle_red_horizontal" />
 
     <ImageView
         android:id="@+id/imageViewTurtleBlue"
-        android:layout_width="70dp"
-        android:layout_height="55dp"
-        android:layout_marginTop="24dp"
-        app:layout_constraintBottom_toBottomOf="@+id/guidelineBoard"
-        app:layout_constraintStart_toStartOf="@+id/imageViewTurtleGreen"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewTurtleGreen"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/imageViewBoard"
+        app:layout_constraintStart_toStartOf="@id/imageViewBoard"
+        app:layout_constraintTop_toTopOf="@+id/imageViewBoard"
         app:srcCompat="@drawable/turtle_blue_horizontal" />
 
 

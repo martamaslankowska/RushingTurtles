@@ -8,7 +8,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import pmma.rushingturtles.R;
@@ -159,5 +161,12 @@ public class CardDeckViewController {
     public void updateCardImages(List<Card> deckOfCards) {
         for (int i=0; i<deckOfCards.size(); i++)
             updateCardImage(cards.get(i), deckOfCards.get(i));
+    }
+
+    public void bringAllViewsToFront() {
+        List<ImageView> reversedCards = new ArrayList<>(cards);
+        Collections.reverse(reversedCards);
+        for (ImageView card : reversedCards)
+            card.bringToFront();
     }
 }

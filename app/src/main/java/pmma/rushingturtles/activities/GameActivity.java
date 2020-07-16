@@ -25,7 +25,6 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.logging.Handler;
 
 import pmma.rushingturtles.R;
 import pmma.rushingturtles.activityviewcontrollers.BoardViewController;
@@ -43,6 +42,7 @@ public class GameActivity extends AppCompatActivity {
     ImageView turtleColorTile;
 
     TextView currentPlayerText, currentPlayerName, nextPlayerName;
+    ImageView turtleYellow;
 
     int statusBarHeight;
     int currentOrientation;
@@ -70,6 +70,12 @@ public class GameActivity extends AppCompatActivity {
 
         cardDeckViewController.updateCardImages(gameActivityController.game.getMyPlayer().getCards());
         setTurtleTileColor();
+
+//        turtleYellow = findViewById(R.id.imageViewTurtleYellow);
+//        ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(200, 300);
+//        params.leftMargin = 400;
+//        params.topMargin = 900;
+//        turtleYellow.setLayoutParams(params);
 
         Log.i("GameActivity", String.valueOf(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT));
     }
