@@ -18,6 +18,7 @@ public class TurtleOnBoardPosition implements Comparable<TurtleOnBoardPosition> 
         this.turtleColor = turtleColor;
         this.rock = rock;
         this.position = position;
+        this.positionOnTheStartRock = new int[0];
     }
 
     public TurtleColor getTurtleColor() {

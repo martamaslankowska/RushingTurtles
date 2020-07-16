@@ -3,6 +3,7 @@ package pmma.rushingturtles.activityviewcontrollers;
 import android.animation.ObjectAnimator;
 import android.content.res.Configuration;
 import android.graphics.Path;
+import android.media.MediaPlayer;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Button;
@@ -38,6 +39,7 @@ public class CardDeckViewController {
         initializeCardImageViews();
         cardCoordinatesHaveBeenSet = false;
         playCardButton = gameActivity.findViewById(R.id.buttonPlayCardOnDeck);
+        bringAllViewsToFront();
     }
 
     private void initializeCardImageViews() {
@@ -161,6 +163,12 @@ public class CardDeckViewController {
     public void updateCardImages(List<Card> deckOfCards) {
         for (int i=0; i<deckOfCards.size(); i++)
             updateCardImage(cards.get(i), deckOfCards.get(i));
+    }
+
+    public void updateCardImagesWithSound(List<Card> deckOfCards) {
+        updateCardImages(deckOfCards);
+        final MediaPlayer mp = MediaPlayer.create(gameActivity, R.raw.new_card_short);
+        mp.start();
     }
 
     public void bringAllViewsToFront() {

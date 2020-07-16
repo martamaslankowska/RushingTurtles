@@ -6,11 +6,13 @@ import android.content.res.Configuration;
 import android.graphics.Path;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
@@ -42,7 +44,6 @@ public class GameActivity extends AppCompatActivity {
     ImageView turtleColorTile;
 
     TextView currentPlayerText, currentPlayerName, nextPlayerName;
-    ImageView turtleYellow;
 
     int statusBarHeight;
     int currentOrientation;
@@ -64,18 +65,12 @@ public class GameActivity extends AppCompatActivity {
         statusBarHeight = getStatusBarHeight();
 
         initializeXmlViews();
-        colorPickerViewController = new ColorPickerViewController(this, currentOrientation);
-        cardDeckViewController = new CardDeckViewController(this, currentOrientation);
         boardViewController = new BoardViewController(this, currentOrientation);
+        cardDeckViewController = new CardDeckViewController(this, currentOrientation);
+        colorPickerViewController = new ColorPickerViewController(this, currentOrientation);
 
         cardDeckViewController.updateCardImages(gameActivityController.game.getMyPlayer().getCards());
         setTurtleTileColor();
-
-//        turtleYellow = findViewById(R.id.imageViewTurtleYellow);
-//        ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(200, 300);
-//        params.leftMargin = 400;
-//        params.topMargin = 900;
-//        turtleYellow.setLayoutParams(params);
 
         Log.i("GameActivity", String.valueOf(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT));
     }
@@ -90,6 +85,29 @@ public class GameActivity extends AppCompatActivity {
         nextPlayerName = findViewById(R.id.textViewNextPlayerName);
 
         turtleColorTile = findViewById(R.id.imageViewTurtleColor);
+        turtleColorTile.setOnClickListener(tmpOnTurtleTileClickListener);
+    }
+
+    private View.OnClickListener tmpOnTurtleTileClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v){
+            updateGameState();
+            boardViewController.setTurtlesCoordinatePositions();
+        }
+    };
+
+    public void updateGameState() {
+        gameActivityController.changeState();
+        boardViewController.updateTurtlesPositions();
+        cardDeckViewController.updateCardImagesWithSound(gameActivityController.game.getMyPlayer().getCards());
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                boardViewController.bringTurtlesToFront();
+                cardDeckViewController.bringAllViewsToFront();
+                colorPickerViewController.bringAllViewsToFront();
+            }
+        }, 300);
     }
 
     private View.OnClickListener playCardButtonOnClickListener = new View.OnClickListener() {

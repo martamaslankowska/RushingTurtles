@@ -42,6 +42,7 @@ public class ColorPickerViewController {
         this.currentOrientation = currentOrientation;
         initializeColorPickerViews();
         setColorPickerYOrX();
+        bringAllViewsToFront();
 
         playCardButton = gameActivity.findViewById(R.id.buttonPlayCardOnDeck);
         isColorPickerVisible = false;

@@ -5,6 +5,7 @@ import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Path;
 import android.graphics.Rect;
+import android.media.Image;
 import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -30,10 +31,12 @@ public class BoardViewController {
     List<TurtleColor> turtleColors;
     ImageView board;
 
+    double[] borderMargins;
     double boardSizePercentage;
     double boardRatio = 0.37;
     List<Double> xPercent, yPercent, xCoords, yCoords;
-    List<Double> firstRowPercent, firstRowCoords;
+    List<Double> firstRowCoords;
+    List<List<Double>> firstRowPercents;
 
     int turtleWidth, turtleHeight, turtleXShift, turtleYShift;
     int turtleTailShift;
@@ -48,10 +51,12 @@ public class BoardViewController {
         singleTurtleRatio = currentOrientation == Configuration.ORIENTATION_PORTRAIT ? 0.644 : 0.73;
         initializeViews();
         initializeCoordinates();
-        double[] borderMargins = getBorderMarginCoordinates();
-        initializeCoordinateLists(borderMargins);
-        setTurtleImageViewHeight(borderMargins, 0.12);
+        borderMargins = getBorderMarginCoordinates();
+        initializeCoordinateLists();
+        setFirstRowCoordinates();
+        setTurtleImageViewHeight(0.12);
         setTurtlesCoordinatePositions();
+        bringTurtlesToFront();
 
         Log.i("BoardViewController", "Working on coordinates :)");
     }
@@ -60,15 +65,21 @@ public class BoardViewController {
         boardSizePercentage = currentOrientation == Configuration.ORIENTATION_PORTRAIT ? 0.66 : 0.7;
         xCoords = new ArrayList<>();
         yCoords = new ArrayList<>();
-        firstRowPercent = new ArrayList<>();
         firstRowCoords = new ArrayList<>();
 
+        firstRowPercents = new ArrayList<>();
+        firstRowPercents.add(Arrays.asList(0.6));
+        firstRowPercents.add(Arrays.asList(0.4, 0.7));
+        firstRowPercents.add(Arrays.asList(0.225, 0.5, 0.775));
+        firstRowPercents.add(Arrays.asList(0.15, 0.375, 0.625, 0.85));
+        firstRowPercents.add(Arrays.asList(0.1, 0.3, 0.5, 0.7, 0.9));
+
         if (currentOrientation == Configuration.ORIENTATION_PORTRAIT) {
-            yPercent = Arrays.asList(0.85, 0.72, 0.63, 0.54, 0.46, 0.37, 0.26, 0.17, 0.11, 0.02);
-            xPercent = Arrays.asList(0.00, 0.45, 0.23, 0.50, 0.80, 0.60, 0.80, 0.55, 0.25, 0.99);
+            yPercent = Arrays.asList(0.83, 0.71, 0.63, 0.54, 0.46, 0.37, 0.26, 0.17, 0.11, 0.02);
+            xPercent = Arrays.asList(0.00, 0.47, 0.23, 0.50, 0.80, 0.60, 0.80, 0.55, 0.25, 0.99);
         } else {
-            xPercent = Arrays.asList(0.93, 0.82, 0.72, 0.63, 0.54, 0.44, 0.33, 0.24, 0.17, 0.08);
-            yPercent = Arrays.asList(0.5, 0.05, 0.1, 0.05, 0.2, 0.3, 0.25, 0.2, 0.1, 0.2);
+            xPercent = Arrays.asList(0.85, 0.72, 0.63, 0.54, 0.46, 0.37, 0.26, 0.17, 0.11, 0.02);
+            yPercent = Arrays.asList(0.00, 0.45, 0.23, 0.50, 0.80, 0.60, 0.80, 0.55, 0.25, 0.99);
         }
     }
 
@@ -154,7 +165,7 @@ public class BoardViewController {
         return borderMargins;
     }
 
-    private void initializeCoordinateLists(double[] borderMargins) {
+    private void initializeCoordinateLists() {
         double left = borderMargins[0];
         double right = borderMargins[1];
         double bottom = borderMargins[2];
@@ -169,7 +180,7 @@ public class BoardViewController {
         }
     }
 
-    private void setTurtleImageViewHeight(double[] borderMargins, double boardSizeRatio) {
+    private void setTurtleImageViewHeight(double boardSizeRatio) {
         int turtleLongerSize = (int) ((borderMargins[3] - borderMargins[2]) * boardSizeRatio);
         for (int i=0; i<turtles.size(); i++)
             if (currentOrientation == Configuration.ORIENTATION_PORTRAIT) {
@@ -192,52 +203,71 @@ public class BoardViewController {
 
     public void setTurtlesCoordinatePositions() {
         List<TurtleOnBoardPosition> turtlePositions = gameActivity.gameActivityController.getTurtlesOnBoardPositions(turtleColors);
-        int highestTurtlePosition = 0;
-        // TODO set turtles positions on the start rock
         for (int i=0; i<turtlePositions.size(); i++) {
             TurtleOnBoardPosition turtlePosition = turtlePositions.get(i);
-            final ImageView turtleImageView = turtles.get(i);
-            if (currentOrientation == Configuration.ORIENTATION_PORTRAIT) {
-//                ((ViewGroup) turtleImageView.getParent()).removeView(turtleImageView);
-//                gameLayout.removeView(turtleImageView);
-
-                int x = xCoords.get(turtlePosition.getRock()).intValue() + turtleXShift;
-                int y = yCoords.get(turtlePosition.getRock()).intValue() + turtleTailShift * turtlePosition.getPosition(); //+ turtleYShift;
-                createAndAnimatePath(turtleImageView, x, y);
-
-//                final Handler handler = new Handler();
-//                handler.postDelayed(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                    }
-//                }, 1000);
-
-//                turtleImageView.setX(x);
-//                turtleImageView.setY(y);
-
-//                if (turtlePosition.getPosition() > highestTurtlePosition) {
-//                    highestTurtlePosition = turtlePosition.getPosition();
-//                    turtleImageView.bringToFront();
-//                }
-
-//                ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(turtleWidth, turtleHeight);
-//                params.leftMargin = x;
-//                params.topMargin = y;
-//                turtleImageView.setLayoutParams(params);
-
-//                gameLayout.addView(turtleImageView);
-//                gameLayout.updateViewLayout(turtleImageView, params);
-            }
+            if (turtlePosition.getRock() == 0)
+                setTurtleOnStartRockPosition(turtlePosition, i);
+            else
+                setTurtleInGamePositions(turtlePosition, i);
         }
     }
 
-    private void createAndAnimatePath(View view, int x, int y) {
+    public void bringTurtlesToFront() {
+        List<TurtleOnBoardPosition> turtlePositions = gameActivity.gameActivityController.getTurtlesOnBoardPositions(turtleColors);
+        List<ImageView> turtleInGameOrder = gameActivity.gameActivityController.getTurtleImageViewSortedByStackPositionsInGame(turtles, turtlePositions);
+        for (ImageView turtle : turtleInGameOrder)
+            turtle.bringToFront();
+        List<ImageView> turtleOnStartOrder = gameActivity.gameActivityController.getTurtleImageViewSortedByStackPositionsOnStartRock(turtles, turtlePositions);
+        for (ImageView turtle : turtleOnStartOrder)
+            turtle.bringToFront();
+    }
+
+    private void setTurtleOnStartRockPosition(TurtleOnBoardPosition turtlePosition, int i) {
+        final ImageView turtleImageView = turtles.get(i);
+        if (currentOrientation == Configuration.ORIENTATION_PORTRAIT) {
+            int x = firstRowCoords.get(turtlePosition.getPositionOnTheStartRock()[0]).intValue() + turtleXShift;
+            int y = yCoords.get(turtlePosition.getRock()).intValue() + turtleTailShift * turtlePosition.getPositionOnTheStartRock()[1]; //+ turtleYShift;
+            int[] imageViewCoordinates = gameActivity.getImageViewCoordinates(turtleImageView);
+            createAndAnimatePath(turtleImageView, imageViewCoordinates[0], imageViewCoordinates[1] - gameActivity.getStatusBarHeight(), x, y);
+        }
+    }
+
+    private void setTurtleInGamePositions(TurtleOnBoardPosition turtlePosition, int i) {
+        final ImageView turtleImageView = turtles.get(i);
+        if (currentOrientation == Configuration.ORIENTATION_PORTRAIT) {
+            int x = xCoords.get(turtlePosition.getRock()).intValue() + turtleXShift;
+            int y = yCoords.get(turtlePosition.getRock()).intValue() + turtleTailShift * turtlePosition.getPosition(); //+ turtleYShift;
+            int[] imageViewCoordinates = gameActivity.getImageViewCoordinates(turtleImageView);
+            createAndAnimatePath(turtleImageView, imageViewCoordinates[0], imageViewCoordinates[1] - gameActivity.getStatusBarHeight(), x, y);
+        }
+    }
+
+    private void createAndAnimatePath(View view, int xOld, int yOld, int xNew, int yNew) {
         Path path = new Path();
-//        path.moveTo(0, 0);
-        path.lineTo(x, y);
+        path.moveTo(xOld, yOld);
+        path.lineTo(xNew, yNew);
         ObjectAnimator animator = ObjectAnimator.ofFloat(view, View.X, View.Y, path);
         animator.setDuration(750);
         animator.start();
     }
+
+    private void setFirstRowCoordinates() {
+        int noOfTurtleStacks = gameActivity.gameActivityController.getNumberOfTurtleStacksOnStartRock();
+        if (noOfTurtleStacks > 0) {
+            List<Double> firstRowPercent = firstRowPercents.get(noOfTurtleStacks - 1);
+            firstRowCoords = new ArrayList<>();
+            initializeCoordinateList(borderMargins[0], borderMargins[1], firstRowPercent, firstRowCoords);
+        }
+    }
+
+    private void setTurtlesInitialPositions() {
+
+    }
+
+    public void updateTurtlesPositions() {
+        setFirstRowCoordinates();
+        setTurtlesCoordinatePositions();
+    }
+
 
 }
