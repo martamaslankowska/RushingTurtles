@@ -194,7 +194,7 @@ public class GameActivity extends AppCompatActivity {
         return coordinates;
     }
 
-    private void setActivePlayerViews() {
+    public void setActivePlayerViews() {
         currentPlayerText.setText(getResources().getString(R.string.your_turn));
         currentPlayerName.setText(gameActivityController.getCurrentPlayerName());
         nextPlayerName.setText(gameActivityController.getNextPlayerName());
@@ -204,7 +204,7 @@ public class GameActivity extends AppCompatActivity {
         playCardButton.setBackgroundColor(getResources().getColor(R.color.buttonInactiveGray));
     }
 
-    private void setInActivePlayerViews() {
+    public void setInActivePlayerViews() {
         currentPlayerText.setText(getResources().getString(R.string.turn_of_sb));
         currentPlayerName.setText(gameActivityController.getCurrentPlayerName());
         nextPlayerName.setText(gameActivityController.getNextPlayerName());

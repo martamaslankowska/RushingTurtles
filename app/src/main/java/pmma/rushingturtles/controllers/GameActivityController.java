@@ -44,14 +44,18 @@ public class GameActivityController {
     public GameActivityController() {
         List<List<TurtleColor>> turtlesOnStartPositions = new ArrayList<>();
         List<List<TurtleColor>> turtlesInGamePositions = new ArrayList<>();
-        turtlesOnStartPositions.add(Arrays.asList(TurtleColor.RED, TurtleColor.BLUE));
+        turtlesOnStartPositions.add(Arrays.asList(TurtleColor.RED));
+        turtlesOnStartPositions.add(Arrays.asList(TurtleColor.GREEN));
         turtlesOnStartPositions.add(Arrays.asList(TurtleColor.YELLOW));
+        turtlesOnStartPositions.add(Arrays.asList(TurtleColor.PURPLE));
+        turtlesOnStartPositions.add(Arrays.asList(TurtleColor.BLUE));
         for (int i=0; i<9; i++)
             turtlesInGamePositions.add(new ArrayList<TurtleColor>());
-//        turtlesInGamePositions.set(3, Arrays.asList(TurtleColor.YELLOW));
-//        turtlesInGamePositions.set(3, Arrays.asList(TurtleColor.RED, TurtleColor.BLUE));
-        turtlesInGamePositions.set(1, Arrays.asList(TurtleColor.PURPLE));
-        turtlesInGamePositions.set(2, Arrays.asList(TurtleColor.GREEN));
+//        turtlesInGamePositions.set(4, Arrays.asList(TurtleColor.YELLOW));
+//        turtlesInGamePositions.set(5, Arrays.asList(TurtleColor.RED));
+//        turtlesInGamePositions.set(6, Arrays.asList(TurtleColor.BLUE));
+//        turtlesInGamePositions.set(8, Arrays.asList(TurtleColor.PURPLE));
+//        turtlesInGamePositions.set(7, Arrays.asList(TurtleColor.GREEN));
         Board board = new Board(turtlesOnStartPositions, turtlesInGamePositions);
 
         List<Card> cards = Arrays.asList(new Card(1, TurtleColor.BLUE, CardAction.PLUS_PLUS),
@@ -67,10 +71,12 @@ public class GameActivityController {
     public void changeState() {
         List<List<TurtleColor>> turtlesOnStartPositions = new ArrayList<>();
         List<List<TurtleColor>> turtlesInGamePositions = new ArrayList<>();
+        turtlesOnStartPositions.add(Arrays.asList(TurtleColor.RED));
         for (int i=0; i<9; i++)
             turtlesInGamePositions.add(new ArrayList<TurtleColor>());
-        turtlesInGamePositions.set(0, Arrays.asList(TurtleColor.RED, TurtleColor.BLUE, TurtleColor.PURPLE, TurtleColor.YELLOW));
+        turtlesInGamePositions.set(0, Arrays.asList(TurtleColor.BLUE, TurtleColor.YELLOW));
         turtlesInGamePositions.set(4, Arrays.asList(TurtleColor.GREEN));
+        turtlesInGamePositions.set(8, Arrays.asList(TurtleColor.PURPLE));
         Board board = new Board(turtlesOnStartPositions, turtlesInGamePositions);
 
         List<Card> cards = Arrays.asList(new Card(21, TurtleColor.RED, CardAction.PLUS),

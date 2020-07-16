@@ -91,6 +91,8 @@ public class CardDeckViewController {
                 }
                 if (outsideCard != null)
                     gameActivity.setActivenessOfPlayCardButton(true);
+            } else {
+                gameActivity.setInActivePlayerViews();
             }
         }
     };
