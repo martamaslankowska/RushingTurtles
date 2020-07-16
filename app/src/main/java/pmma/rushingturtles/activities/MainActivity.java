@@ -95,8 +95,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (view.getId()) {
             case R.id.mainButton:
 //                Toast.makeText(getApplicationContext(), getResources().getString(R.string.test_string), Toast.LENGTH_SHORT).show();
-                Intent intentInfo = new Intent(this, GameActivity.class);
-                startActivity(intentInfo);
+                Intent intent = new Intent(this, GameActivity.class);
+                intent.putExtra("my_player_name", mainController.getPlayerName());
+                intent.putExtra("my_player_idx", mainController.getPlayerIdx());
+                startActivity(intent);
                 break;
         }
     }

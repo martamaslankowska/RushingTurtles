@@ -2,6 +2,8 @@ package pmma.rushingturtles.websocket.messages.gameactivity.fromserver;
 
 import java.util.List;
 
+import pmma.rushingturtles.activities.GameActivity;
+import pmma.rushingturtles.controllers.GameActivityController;
 import pmma.rushingturtles.enums.TurtleColor;
 import pmma.rushingturtles.objects.Board;
 import pmma.rushingturtles.objects.Card;
@@ -25,6 +27,8 @@ public class FullGameStateMsg extends BasicMsgFromServer {
         this.turtleColor = turtleColor;
         this.recentlyPlayedCard = recentlyPlayedCard;
     }
+
+
 
     public Board getBoard() {
         return board;
@@ -73,4 +77,6 @@ public class FullGameStateMsg extends BasicMsgFromServer {
     public void setRecentlyPlayedCard(Card recentlyPlayedCard) {
         this.recentlyPlayedCard = recentlyPlayedCard;
     }
+
+
 }

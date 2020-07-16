@@ -1,9 +1,7 @@
 package pmma.rushingturtles.controllers;
 
-import android.os.Build;
+import android.util.Log;
 import android.widget.ImageView;
-
-import androidx.annotation.RequiresApi;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,6 +9,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import pmma.rushingturtles.activities.GameActivity;
 import pmma.rushingturtles.enums.CardAction;
 import pmma.rushingturtles.enums.TurtleColor;
 import pmma.rushingturtles.objects.Board;
@@ -18,13 +17,28 @@ import pmma.rushingturtles.objects.Card;
 import pmma.rushingturtles.objects.Game;
 import pmma.rushingturtles.objects.MyPlayer;
 import pmma.rushingturtles.objects.TurtleOnBoardPosition;
+import pmma.rushingturtles.websocket.messages.ErrorMsg;
+import pmma.rushingturtles.websocket.messages.gameactivity.broadcast.GameStateUpdatedMsg;
+import pmma.rushingturtles.websocket.messages.gameactivity.broadcast.GameWonMsg;
+import pmma.rushingturtles.websocket.messages.gameactivity.fromserver.CardsUpdatedMsg;
+import pmma.rushingturtles.websocket.messages.gameactivity.fromserver.FullGameStateMsg;
 
 public class GameActivityController {
     public Game game;
+    private int myPlayerIdx;
+    private String myPlayerName;
+    private GameActivity gameActivity;
+    private boolean gameEnded;
 
     private static final GameActivityController instance = new GameActivityController();
     public static GameActivityController getInstance() {
         return instance;
+    }
+
+    public void setGameActivityVariables(int myPlayerIdx, String myPlayerName, GameActivity gameActivity) {
+        this.myPlayerIdx = myPlayerIdx;
+        this.myPlayerName = myPlayerName;
+        this.gameActivity = gameActivity;
     }
 
     public GameActivityController() {
@@ -166,4 +180,44 @@ public class GameActivityController {
         return turtleRocks.size();
     }
 
+    /* WEB SOCKET MESSAGES */
+
+    private void receiveFullGameState(FullGameStateMsg fullGameState) {
+        game.setBoard(fullGameState.getBoard());
+        game.setPlayersNames(fullGameState.getPlayersNames());
+        game.setActivePlayerIdx(fullGameState.getActivePlayerIdx());
+        game.setRecentlyPlayedCard(fullGameState.getRecentlyPlayedCard());
+        MyPlayer player = new MyPlayer(myPlayerIdx, myPlayerName, fullGameState.getPlayerCards(), fullGameState.getTurtleColor());
+        game.setMyPlayer(player);
+    }
+
+    private void receiveGameState(GameStateUpdatedMsg gameStateUpdated) {
+        game.setBoard(gameStateUpdated.getBoard());
+        game.setActivePlayerIdx(gameStateUpdated.getActivePlayerIdx());
+        game.setRecentlyPlayedCard(gameStateUpdated.getRecentlyPlayedCard());
+    }
+
+    public void receiveAndUpdateFullGameState(FullGameStateMsg fullGameState) {
+        receiveFullGameState(fullGameState);
+        gameActivity.updateFullGameState();
+    }
+
+    public void updateCardsOnDeck(CardsUpdatedMsg cardsUpdatedMsg) {
+        gameActivity.cardDeckViewController.updateCardImagesWithSound(cardsUpdatedMsg.getPlayerCards());
+    }
+
+    public void receiveAndUpdateGameState(GameStateUpdatedMsg gameStateUpdatedMsg) {
+        receiveGameState(gameStateUpdatedMsg);
+        gameActivity.updateGameState();
+    }
+
+    public void showGameWonMessage(GameWonMsg gameWon) {
+        String winnerName = gameWon.getWinnerName();
+        gameActivity.manageWinnerPopupWindow();
+        gameEnded = true;
+    }
+
+    public void errorMessage(ErrorMsg error) {
+        Log.i("WebSocket ErrorMsg", error.getDescription());
+    }
 }

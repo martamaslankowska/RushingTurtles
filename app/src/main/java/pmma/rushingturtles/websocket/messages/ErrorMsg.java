@@ -1,5 +1,7 @@
 package pmma.rushingturtles.websocket.messages;
 
+import android.util.Log;
+
 public class ErrorMsg extends BasicMsgFromServer {
 
     private String description;
@@ -16,4 +18,5 @@ public class ErrorMsg extends BasicMsgFromServer {
     public void setDescription(String description) {
         this.description = description;
     }
+
 }

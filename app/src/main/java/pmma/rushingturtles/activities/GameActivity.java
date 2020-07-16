@@ -1,9 +1,7 @@
 package pmma.rushingturtles.activities;
 
-import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.res.Configuration;
-import android.graphics.Path;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,21 +10,15 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import pmma.rushingturtles.R;
 import pmma.rushingturtles.activityviewcontrollers.BoardViewController;
@@ -34,7 +26,6 @@ import pmma.rushingturtles.activityviewcontrollers.CardDeckViewController;
 import pmma.rushingturtles.activityviewcontrollers.ColorPickerViewController;
 import pmma.rushingturtles.controllers.GameActivityController;
 import pmma.rushingturtles.enums.TurtleColor;
-import pmma.rushingturtles.objects.Card;
 import pmma.rushingturtles.websocket.WSC;
 
 public class GameActivity extends AppCompatActivity {
@@ -58,7 +49,15 @@ public class GameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
         mainLayout = findViewById(R.id.gameLayout);
+        Bundle extras = getIntent().getExtras();
+        int playerIdx = -1;
+        String playerName = "Marta HAHA";
+        if (extras != null) {
+            playerIdx = extras.getInt("my_player_idx");
+            playerName = extras.getString("my_player_name");
+        }
         gameActivityController = GameActivityController.getInstance();
+        gameActivityController.setGameActivityVariables(playerIdx, playerName, this);
         WSC.getInstance().setGameController(gameActivityController);
 
         currentOrientation = getResources().getConfiguration().orientation;
@@ -91,15 +90,19 @@ public class GameActivity extends AppCompatActivity {
     private View.OnClickListener tmpOnTurtleTileClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v){
-            updateGameState();
-            boardViewController.setTurtlesCoordinatePositions();
+            gameActivityController.changeState();
+            updateFullGameState();
         }
     };
 
-    public void updateGameState() {
-        gameActivityController.changeState();
-        boardViewController.updateTurtlesPositions();
+    public void updateFullGameState() {
         cardDeckViewController.updateCardImagesWithSound(gameActivityController.game.getMyPlayer().getCards());
+        updateGameState();
+    }
+
+    public void updateGameState() {
+        setPlayerViews();
+        boardViewController.updateTurtlesPositions();
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -147,7 +150,7 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
-    private void manageWinnerPopupWindow(View view) {
+    public void manageWinnerPopupWindow() {
         //instantiate the popup.xml layout file
         LayoutInflater layoutInflater = (LayoutInflater) GameActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View customView = layoutInflater.inflate(R.layout.popup_winner, null);
@@ -191,7 +194,7 @@ public class GameActivity extends AppCompatActivity {
         return coordinates;
     }
 
-    public void setActivePlayerViews() {
+    private void setActivePlayerViews() {
         currentPlayerText.setText(getResources().getString(R.string.your_turn));
         currentPlayerName.setText(gameActivityController.getCurrentPlayerName());
         nextPlayerName.setText(gameActivityController.getNextPlayerName());
@@ -199,6 +202,20 @@ public class GameActivity extends AppCompatActivity {
         playCardButton.setVisibility(View.VISIBLE);
         playCardButton.setEnabled(false);
         playCardButton.setBackgroundColor(getResources().getColor(R.color.buttonInactiveGray));
+    }
+
+    private void setInActivePlayerViews() {
+        currentPlayerText.setText(getResources().getString(R.string.turn_of_sb));
+        currentPlayerName.setText(gameActivityController.getCurrentPlayerName());
+        nextPlayerName.setText(gameActivityController.getNextPlayerName());
+        playCardButton.setVisibility(View.INVISIBLE);
+    }
+
+    private void setPlayerViews() {
+        if (gameActivityController.isPlayerAnActivePlayer())
+            setActivePlayerViews();
+        else
+            setInActivePlayerViews();
     }
 
     private boolean isPickedCardRainbow(int cardIdx) {

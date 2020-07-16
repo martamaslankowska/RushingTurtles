@@ -1,5 +1,6 @@
 package pmma.rushingturtles.websocket.messages.gameactivity.broadcast;
 
+import pmma.rushingturtles.controllers.GameActivityController;
 import pmma.rushingturtles.objects.Board;
 import pmma.rushingturtles.objects.Card;
 import pmma.rushingturtles.websocket.messages.BasicMsgFromServer;
@@ -40,4 +41,5 @@ public class GameStateUpdatedMsg extends BasicMsgFromServer {
     public void setRecentlyPlayedCard(Card recentlyPlayedCard) {
         this.recentlyPlayedCard = recentlyPlayedCard;
     }
+
 }

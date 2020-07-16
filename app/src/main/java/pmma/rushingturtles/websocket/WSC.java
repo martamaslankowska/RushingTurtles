@@ -11,7 +11,13 @@ import java.net.URISyntaxException;
 import pmma.rushingturtles.controllers.GameActivityController;
 import pmma.rushingturtles.controllers.MainActivityController;
 import pmma.rushingturtles.enums.TurtleColor;
+import pmma.rushingturtles.websocket.messages.BasicMsgFromServer;
 import pmma.rushingturtles.websocket.messages.BasicMsgToServer;
+import pmma.rushingturtles.websocket.messages.ErrorMsg;
+import pmma.rushingturtles.websocket.messages.gameactivity.broadcast.GameStateUpdatedMsg;
+import pmma.rushingturtles.websocket.messages.gameactivity.broadcast.GameWonMsg;
+import pmma.rushingturtles.websocket.messages.gameactivity.fromserver.CardsUpdatedMsg;
+import pmma.rushingturtles.websocket.messages.gameactivity.fromserver.FullGameStateMsg;
 import pmma.rushingturtles.websocket.messages.gameactivity.toserver.PlayCardMsg;
 import tech.gusavila92.websocketclient.WebSocketClient;
 
@@ -85,10 +91,33 @@ public class WSC {
             }
 
             @Override
-            public void onTextReceived(String s) {
+            public void onTextReceived(String msg) {
                 Log.i("WebSocket", "Message received");
-                final String message = s;
+                String message = getMessageFromMsg(msg);
                 Log.i("WebSocket", message);
+
+                switch (message) {
+                    case "full game state":
+                        FullGameStateMsg fullGameState = JsonObjectMapper.getObjectFromJson(msg, FullGameStateMsg.class);
+                        gameController.receiveAndUpdateFullGameState(fullGameState);
+                        break;
+                    case "player cards updated":
+                        CardsUpdatedMsg cardsUpdated = JsonObjectMapper.getObjectFromJson(msg, CardsUpdatedMsg.class);
+                        gameController.updateCardsOnDeck(cardsUpdated);
+                        break;
+                    case "game state updated":
+                        GameStateUpdatedMsg gameStateUpdated = JsonObjectMapper.getObjectFromJson(msg, GameStateUpdatedMsg.class);
+                        gameController.receiveAndUpdateGameState(gameStateUpdated);
+                        break;
+                    case "game won":
+                        GameWonMsg gameWon = JsonObjectMapper.getObjectFromJson(msg, GameWonMsg.class);
+                        gameController.showGameWonMessage(gameWon);
+                        break;
+                    case "error":
+                        ErrorMsg error = JsonObjectMapper.getObjectFromJson(msg, ErrorMsg.class);
+                        gameController.errorMessage(error);
+                        break;
+                }
 
 //                runOnUiThread(new Runnable() {
 //                    @Override
@@ -100,7 +129,7 @@ public class WSC {
 //                            e.printStackTrace();
 //                        }
 //                    }
-//                });
+//
             }
 
             @Override
@@ -146,6 +175,12 @@ public class WSC {
         webSocketClient.send(jsonMessage);
     }
 
+    public String getMessageFromMsg(String msg) {
+        int messageIdx = msg.indexOf("message");
+        msg = msg.substring(messageIdx + 11);
+        String[] msgParts = msg.split("\"");
+        return msgParts[0];
+    }
 
 
     public WebSocketClient getWebSocketClient() {

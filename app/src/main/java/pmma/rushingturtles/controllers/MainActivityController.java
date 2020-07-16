@@ -5,10 +5,12 @@ import android.content.SharedPreferences;
 import pmma.rushingturtles.activities.MainActivity;
 import pmma.rushingturtles.enums.PlayerState;
 import pmma.rushingturtles.websocket.WSC;
+import pmma.rushingturtles.websocket.messages.gameactivity.fromserver.CardsUpdatedMsg;
 
 public class MainActivityController {
     private String playerName;
     private int playerId;
+    private int playerIdx;
     private PlayerState playerState;
     private MainActivity mainActivity;
     private WSC wsc;
@@ -69,5 +71,14 @@ public class MainActivityController {
     public WSC getWsc() {
         return wsc;
     }
+
+    public int getPlayerIdx() {
+        return playerIdx;
+    }
+
+    public void setPlayerIdx(int playerIdx) {
+        this.playerIdx = playerIdx;
+    }
+
 
 }

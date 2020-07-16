@@ -2,6 +2,7 @@ package pmma.rushingturtles.websocket.messages.gameactivity.broadcast;
 
 import java.util.List;
 
+import pmma.rushingturtles.controllers.GameActivityController;
 import pmma.rushingturtles.enums.TurtleColor;
 import pmma.rushingturtles.websocket.messages.BasicMsgFromServer;
 
@@ -41,4 +42,5 @@ public class GameWonMsg extends BasicMsgFromServer {
     public void setPlayersTurtleColors(List<TurtleColor> playersTurtleColors) {
         this.playersTurtleColors = playersTurtleColors;
     }
+
 }
