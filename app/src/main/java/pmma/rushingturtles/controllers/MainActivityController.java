@@ -6,6 +6,7 @@ import pmma.rushingturtles.activities.MainActivity;
 import pmma.rushingturtles.enums.PlayerState;
 import pmma.rushingturtles.websocket.WSC;
 import pmma.rushingturtles.websocket.messages.gameactivity.fromserver.CardsUpdatedMsg;
+import pmma.rushingturtles.websocket.messages.mainactivity.fromserver.HelloClientMsg;
 
 public class MainActivityController {
     private String playerName;
@@ -79,6 +80,16 @@ public class MainActivityController {
     public void setPlayerIdx(int playerIdx) {
         this.playerIdx = playerIdx;
     }
+
+    /* WEB SOCKET MESSAGES */
+
+    public void manageHelloClientMessage(HelloClientMsg helloClientMsg) {
+        switch(helloClientMsg.getStatus()) {
+            case "can create":
+
+        }
+    }
+
 
 
 }

@@ -27,6 +27,13 @@
     <!-- MAIN ACTIVITY -->
     <string name="main_button_start">Start game</string>
     <string name="main_button_join">Join game</string>
+    <string name="main_button_resume">Resume game</string>
+    <string name="main_button_start_the_game">Let\'s play</string>
+
+    <string name="main_button_toast_almost_start_the_game">You have to wait for at least 2 players.</string>
+    <string name="main_button_toast_limit">There are too many players in the game - you can\'t join for now.</string>
+    <string name="main_button_toast_ongoing">The game has started - you can\'t join.</string>
+
     <string name="waiting_room_text">Players waiting for the game start</string>
     <string name="websocket_connection">You are now connected to</string>
 

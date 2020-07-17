@@ -23,6 +23,7 @@ public class CardDeckViewController {
     ImageView card1, card2, card3, card4, card5;
     List<ImageView> cards;
     ImageView outsideCard;
+    ImageView cardOnDeck;
 
     float cardCoordinateXOrY;
     float cardMovedCoordinateXOrY;
@@ -38,6 +39,7 @@ public class CardDeckViewController {
         this.currentOrientation = currentOrientation;
         initializeCardImageViews();
         cardCoordinatesHaveBeenSet = false;
+        cardOnDeck = gameActivity.findViewById(R.id.imageViewDeckOfCards);
         playCardButton = gameActivity.findViewById(R.id.buttonPlayCardOnDeck);
         bringAllViewsToFront();
     }
@@ -178,5 +180,13 @@ public class CardDeckViewController {
         Collections.reverse(reversedCards);
         for (ImageView card : reversedCards)
             card.bringToFront();
+    }
+
+    public void updateCardOnDeck(Card card) {
+        cardOnDeck.setImageResource(mapCardParametersToCardResourceId(card));
+    }
+
+    public void setPlayedCardAsEmptyGray() {
+        outsideCard.setImageResource(gameActivity.getResources().getIdentifier("card_gray_empty", "drawable", gameActivity.getPackageName()));
     }
 }

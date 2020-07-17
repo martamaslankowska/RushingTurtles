@@ -111,6 +111,10 @@ public class GameActivityController {
         return game.getPlayersNames().get(game.getActivePlayerIdx());
     }
 
+    public Card getCard(int cardIdx) {
+        return game.getMyPlayer().getCards().get(cardIdx);
+    }
+
     public String getNextPlayerName() {
         int currentPlayerIdx = game.getActivePlayerIdx();
         int nextPlayerIdx = game.getActivePlayerIdx() == game.getPlayersNames().size() - 1 ? 0 : currentPlayerIdx + 1;

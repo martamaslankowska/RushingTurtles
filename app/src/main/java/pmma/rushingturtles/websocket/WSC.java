@@ -10,8 +10,8 @@ import java.net.URISyntaxException;
 
 import pmma.rushingturtles.controllers.GameActivityController;
 import pmma.rushingturtles.controllers.MainActivityController;
+import pmma.rushingturtles.enums.ButtonState;
 import pmma.rushingturtles.enums.TurtleColor;
-import pmma.rushingturtles.websocket.messages.BasicMsgFromServer;
 import pmma.rushingturtles.websocket.messages.BasicMsgToServer;
 import pmma.rushingturtles.websocket.messages.ErrorMsg;
 import pmma.rushingturtles.websocket.messages.gameactivity.broadcast.GameStateUpdatedMsg;
@@ -19,6 +19,8 @@ import pmma.rushingturtles.websocket.messages.gameactivity.broadcast.GameWonMsg;
 import pmma.rushingturtles.websocket.messages.gameactivity.fromserver.CardsUpdatedMsg;
 import pmma.rushingturtles.websocket.messages.gameactivity.fromserver.FullGameStateMsg;
 import pmma.rushingturtles.websocket.messages.gameactivity.toserver.PlayCardMsg;
+import pmma.rushingturtles.websocket.messages.mainactivity.fromserver.HelloClientMsg;
+import pmma.rushingturtles.websocket.messages.mainactivity.toserver.WantToJoinGameMsg;
 import tech.gusavila92.websocketclient.WebSocketClient;
 
 public class WSC {
@@ -87,7 +89,7 @@ public class WSC {
             @Override
             public void onOpen() {
                 Log.i("WebSocket", "Session is starting");
-                sendHelloServerMessage();
+                sendHelloServerMsg();
             }
 
             @Override
@@ -97,6 +99,10 @@ public class WSC {
                 Log.i("WebSocket", message);
 
                 switch (message) {
+                    case "hello client":
+                        HelloClientMsg helloClient = JsonObjectMapper.getObjectFromJson(msg, HelloClientMsg.class);
+                        mainController.manageHelloClientMessage(helloClient);
+                        break;
                     case "full game state":
                         FullGameStateMsg fullGameState = JsonObjectMapper.getObjectFromJson(msg, FullGameStateMsg.class);
                         gameController.receiveAndUpdateFullGameState(fullGameState);
@@ -161,17 +167,23 @@ public class WSC {
         isAlreadyConnected = false;
     }
 
-    private void sendHelloServerMessage() {
+    private void sendHelloServerMsg() {
         String msg = "hello server";
         BasicMsgToServer helloSeverMsg = new BasicMsgToServer(msg, playerId);
         String jsonMessage = JsonObjectMapper.getJsonFromObject(helloSeverMsg);
         webSocketClient.send(jsonMessage);
     }
 
-    public void sendPlayCardMessage(int cardIdx, TurtleColor cardColor) {
+    public void sendPlayCardMsg(int cardIdx, TurtleColor cardColor) {
         int cardId = gameController.getCardId(cardIdx);
         PlayCardMsg playCardMessage = new PlayCardMsg(playerId, cardId, cardColor);
         String jsonMessage = JsonObjectMapper.getJsonFromObject(playCardMessage);
+        webSocketClient.send(jsonMessage);
+    }
+
+    public void sendWantToJoinTheGameMsg(String status) {
+        WantToJoinGameMsg wantToJoinGameMsg = new WantToJoinGameMsg(playerId, status);
+        String jsonMessage = JsonObjectMapper.getJsonFromObject(wantToJoinGameMsg);
         webSocketClient.send(jsonMessage);
     }
 

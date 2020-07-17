@@ -10,6 +10,7 @@
     <!-- MAIN ACTIVITY -->
     <color name="buttonColorStart">#B71C1C</color>
     <color name="buttonColorJoin">#880E4F</color>
+    <color name="buttonColorStartTheGame">#527A2A</color>
 
     <!-- GAME ACTIVITY -->
     <color name="whiteAlpha">#BFEBEBEB</color>

@@ -27,6 +27,13 @@
     <!-- MAIN ACTIVITY -->
     <string name="main_button_start">Rozpocznij grę</string>
     <string name="main_button_join">Dołącz do gry</string>
+    <string name="main_button_resume">Wznów grę</string>
+    <string name="main_button_start_the_game">Zaczynamy grę</string>
+
+    <string name="main_button_toast_almost_start_the_game">Musisz zaczekać aż zbierze się co najmniej 2 graczy.</string>
+    <string name="main_button_toast_limit">W grze bierze udział maksymalna liczba graczy - nie możesz już dołączyć.</string>
+    <string name="main_button_toast_ongoing">Gra już się rozpoczęła - nie możesz dołaczyć.</string>
+
     <string name="waiting_room_text">Gracze oczekujący na rozpoczęcie gry</string>
     <string name="websocket_connection">Zostało nawiązane połaczenie</string>
 

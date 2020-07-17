@@ -134,9 +134,11 @@ public class GameActivity extends AppCompatActivity {
     };
 
     private void sendPlayCardMessageToServer(int pickedCardIdx, TurtleColor cardColor) {
-        WSC.getInstance().sendPlayCardMessage(pickedCardIdx, cardColor);
+        WSC.getInstance().sendPlayCardMsg(pickedCardIdx, cardColor);
         playCardButton.setVisibility(View.GONE);
+        cardDeckViewController.setPlayedCardAsEmptyGray();
         cardDeckViewController.moveCard(cardDeckViewController.getOutsideCard(), false);
+        cardDeckViewController.updateCardOnDeck(gameActivityController.getCard(pickedCardIdx));
         cardDeckViewController.setOutsideCard(null);
     }
 
