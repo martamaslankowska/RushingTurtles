@@ -1,11 +1,18 @@
 package pmma.rushingturtles.controllers;
 
 import android.content.SharedPreferences;
+import android.util.Log;
+import android.widget.Toast;
 
+import pmma.rushingturtles.R;
 import pmma.rushingturtles.activities.MainActivity;
+import pmma.rushingturtles.enums.ButtonState;
 import pmma.rushingturtles.enums.PlayerState;
 import pmma.rushingturtles.websocket.WSC;
+import pmma.rushingturtles.websocket.messages.ErrorMsg;
 import pmma.rushingturtles.websocket.messages.gameactivity.fromserver.CardsUpdatedMsg;
+import pmma.rushingturtles.websocket.messages.mainactivity.broadcast.GameReadyToStartMsg;
+import pmma.rushingturtles.websocket.messages.mainactivity.broadcast.RoomUpdateMsg;
 import pmma.rushingturtles.websocket.messages.mainactivity.fromserver.HelloClientMsg;
 
 public class MainActivityController {
@@ -23,6 +30,7 @@ public class MainActivityController {
 
     public MainActivityController() {
         this.playerName = null;
+        this.mainActivity = null;
     }
 
     public void initializeMainController(MainActivity activity) {
@@ -83,13 +91,44 @@ public class MainActivityController {
 
     /* WEB SOCKET MESSAGES */
 
-    public void manageHelloClientMessage(HelloClientMsg helloClientMsg) {
-        switch(helloClientMsg.getStatus()) {
-            case "can create":
-
-        }
+    public void manageHelloClientMsg(final HelloClientMsg helloClientMsg) {
+        mainActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                switch (helloClientMsg.getStatus()) {
+                    case "can create":
+                        mainActivity.setButtonForStart();
+                        break;
+                    case "can join":
+                        mainActivity.setButtonForJoin();
+                        break;
+                    case "limit":
+                        mainActivity.setButtonForInactive(ButtonState.LIMIT);
+                        break;
+                    case "ongoing":
+                        mainActivity.setButtonForInactive(ButtonState.ONGOING);
+                        break;
+                    case "can resume":
+                        break;
+                }
+            }
+        });
     }
 
+    public void receiveGameReadyToStart(GameReadyToStartMsg gameReadyToStartMsg) {
+        playerIdx = gameReadyToStartMsg.getPlayerIdx();
+        mainActivity.startTheGame();
+    }
+
+    public void receiveRoomUpdateMsg(RoomUpdateMsg roomUpdateMsg) {
+        mainActivity.updateRoomWithPlayers(roomUpdateMsg.getListOfPlayersInTheRoom());
+        mainActivity.setListViewVisibility();
+    }
+
+    public void errorMessage(ErrorMsg error) {
+        Log.i("WebSocket ErrorMsg", error.getDescription());
+        Toast.makeText(mainActivity, mainActivity.getResources().getString(R.string.toast_error), Toast.LENGTH_SHORT).show();
+    }
 
 
 }

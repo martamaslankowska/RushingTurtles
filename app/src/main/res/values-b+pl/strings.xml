@@ -3,6 +3,7 @@
 
     <!-- TESTS -->
     <string name="test_string">Ups, coś poszło nie tak xD</string>
+    <string name="toast_error">Coś poszło nie tak - serwer rzuca errorem</string>
 
     <!-- TOOLBAR -->
     <string name="info_toolbar">Informacje</string>
@@ -29,6 +30,7 @@
     <string name="main_button_join">Dołącz do gry</string>
     <string name="main_button_resume">Wznów grę</string>
     <string name="main_button_start_the_game">Zaczynamy grę</string>
+    <string name="main_button_wait_for_start_the_game">Oczekiwanie na serwer...</string>
 
     <string name="main_button_toast_almost_start_the_game">Musisz zaczekać aż zbierze się co najmniej 2 graczy.</string>
     <string name="main_button_toast_limit">W grze bierze udział maksymalna liczba graczy - nie możesz już dołączyć.</string>

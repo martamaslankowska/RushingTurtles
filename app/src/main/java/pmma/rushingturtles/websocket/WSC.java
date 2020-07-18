@@ -3,14 +3,15 @@ package pmma.rushingturtles.websocket;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import pmma.rushingturtles.R;
 import pmma.rushingturtles.controllers.GameActivityController;
 import pmma.rushingturtles.controllers.MainActivityController;
-import pmma.rushingturtles.enums.ButtonState;
 import pmma.rushingturtles.enums.TurtleColor;
 import pmma.rushingturtles.websocket.messages.BasicMsgToServer;
 import pmma.rushingturtles.websocket.messages.ErrorMsg;
@@ -19,7 +20,11 @@ import pmma.rushingturtles.websocket.messages.gameactivity.broadcast.GameWonMsg;
 import pmma.rushingturtles.websocket.messages.gameactivity.fromserver.CardsUpdatedMsg;
 import pmma.rushingturtles.websocket.messages.gameactivity.fromserver.FullGameStateMsg;
 import pmma.rushingturtles.websocket.messages.gameactivity.toserver.PlayCardMsg;
+import pmma.rushingturtles.websocket.messages.mainactivity.broadcast.GameReadyToStartMsg;
+import pmma.rushingturtles.websocket.messages.mainactivity.broadcast.RoomUpdateMsg;
 import pmma.rushingturtles.websocket.messages.mainactivity.fromserver.HelloClientMsg;
+import pmma.rushingturtles.websocket.messages.mainactivity.toserver.HelloServerMsg;
+import pmma.rushingturtles.websocket.messages.mainactivity.toserver.StartTheGameMsg;
 import pmma.rushingturtles.websocket.messages.mainactivity.toserver.WantToJoinGameMsg;
 import tech.gusavila92.websocketclient.WebSocketClient;
 
@@ -75,7 +80,7 @@ public class WSC {
         connect(currentActivity);
     }
 
-    public void initializeServerConnection(Activity currentActivity) {
+    public void initializeServerConnection(final Activity currentActivity) {
         URI uri;
         try {
             uri = new URI("ws://" + ipAddress + ":8000/websocket");
@@ -98,10 +103,78 @@ public class WSC {
                 String message = getMessageFromMsg(msg);
                 Log.i("WebSocket", message);
 
+//                mainController.getMainActivity().runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        switch (message) {
+//                            case "hello client":
+//                                HelloClientMsg helloClient = JsonObjectMapper.getObjectFromJson(msg, HelloClientMsg.class);
+//                                mainController.manageHelloClientMsg(helloClient);
+//                                break;
+//                            case "room update":
+//                                RoomUpdateMsg roomUpdateMsg = JsonObjectMapper.getObjectFromJson(msg, RoomUpdateMsg.class);
+//                                mainController.receiveRoomUpdateMsg(roomUpdateMsg);
+//                                break;
+//                            case "game ready to start":
+//                                GameReadyToStartMsg gameReadyToStartMsg = JsonObjectMapper.getObjectFromJson(msg, GameReadyToStartMsg.class);
+//                                mainController.receiveGameReadyToStart(gameReadyToStartMsg);
+//                                break;
+//                            case "error":
+//                                ErrorMsg error = JsonObjectMapper.getObjectFromJson(msg, ErrorMsg.class);
+//                                try {
+//                                    mainController.errorMessage(error);
+//                                } catch (Exception e2) {
+//                                    Log.i("WebSocket error msg", e2.toString());
+//                                }
+//                                break;
+//                        }
+//                    }
+//                });
+//
+//                gameController.getGameActivity().runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        switch (message) {
+//                            case "full game state":
+//                                FullGameStateMsg fullGameState = JsonObjectMapper.getObjectFromJson(msg, FullGameStateMsg.class);
+//                                gameController.receiveAndUpdateFullGameState(fullGameState);
+//                                break;
+//                            case "player cards updated":
+//                                CardsUpdatedMsg cardsUpdated = JsonObjectMapper.getObjectFromJson(msg, CardsUpdatedMsg.class);
+//                                gameController.updateCardsOnDeck(cardsUpdated);
+//                                break;
+//                            case "game state updated":
+//                                GameStateUpdatedMsg gameStateUpdated = JsonObjectMapper.getObjectFromJson(msg, GameStateUpdatedMsg.class);
+//                                gameController.receiveAndUpdateGameState(gameStateUpdated);
+//                                break;
+//                            case "game won":
+//                                GameWonMsg gameWon = JsonObjectMapper.getObjectFromJson(msg, GameWonMsg.class);
+//                                gameController.showGameWonMessage(gameWon);
+//                                break;
+//                            case "error":
+//                                ErrorMsg error = JsonObjectMapper.getObjectFromJson(msg, ErrorMsg.class);
+//                                try {
+//                                    gameController.errorMessage(error);
+//                                } catch (Exception e1) {
+//                                    Log.i("WebSocket error msg", e1.toString());
+//                                }
+//                                break;
+//                        }
+//                    }
+//                });
+
                 switch (message) {
                     case "hello client":
                         HelloClientMsg helloClient = JsonObjectMapper.getObjectFromJson(msg, HelloClientMsg.class);
-                        mainController.manageHelloClientMessage(helloClient);
+                        mainController.manageHelloClientMsg(helloClient);
+                        break;
+                    case "room update":
+                        RoomUpdateMsg roomUpdateMsg = JsonObjectMapper.getObjectFromJson(msg, RoomUpdateMsg.class);
+                        mainController.receiveRoomUpdateMsg(roomUpdateMsg);
+                        break;
+                    case "game ready to start":
+                        GameReadyToStartMsg gameReadyToStartMsg = JsonObjectMapper.getObjectFromJson(msg, GameReadyToStartMsg.class);
+                        mainController.receiveGameReadyToStart(gameReadyToStartMsg);
                         break;
                     case "full game state":
                         FullGameStateMsg fullGameState = JsonObjectMapper.getObjectFromJson(msg, FullGameStateMsg.class);
@@ -121,7 +194,15 @@ public class WSC {
                         break;
                     case "error":
                         ErrorMsg error = JsonObjectMapper.getObjectFromJson(msg, ErrorMsg.class);
-                        gameController.errorMessage(error);
+                        try {
+                            gameController.errorMessage(error);
+                        } catch (Exception e1) {
+                            try {
+                                mainController.errorMessage(error);
+                            } catch (Exception e2) {
+                                Log.i("WebSocket error msg", e2.toString());
+                            }
+                        }
                         break;
                 }
 
@@ -135,7 +216,7 @@ public class WSC {
 //                            e.printStackTrace();
 //                        }
 //                    }
-//
+
             }
 
             @Override
@@ -168,8 +249,7 @@ public class WSC {
     }
 
     private void sendHelloServerMsg() {
-        String msg = "hello server";
-        BasicMsgToServer helloSeverMsg = new BasicMsgToServer(msg, playerId);
+        HelloServerMsg helloSeverMsg = new HelloServerMsg(playerId, playerName);
         String jsonMessage = JsonObjectMapper.getJsonFromObject(helloSeverMsg);
         webSocketClient.send(jsonMessage);
     }
@@ -184,6 +264,12 @@ public class WSC {
     public void sendWantToJoinTheGameMsg(String status) {
         WantToJoinGameMsg wantToJoinGameMsg = new WantToJoinGameMsg(playerId, status);
         String jsonMessage = JsonObjectMapper.getJsonFromObject(wantToJoinGameMsg);
+        webSocketClient.send(jsonMessage);
+    }
+
+    public void sendStartTheGameMsg() {
+        StartTheGameMsg startTheGameMsg = new StartTheGameMsg(playerId);
+        String jsonMessage = JsonObjectMapper.getJsonFromObject(startTheGameMsg);
         webSocketClient.send(jsonMessage);
     }
 

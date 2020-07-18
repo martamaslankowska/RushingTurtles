@@ -187,6 +187,6 @@ public class CardDeckViewController {
     }
 
     public void setPlayedCardAsEmptyGray() {
-        outsideCard.setImageResource(gameActivity.getResources().getIdentifier("card_gray_empty", "drawable", gameActivity.getPackageName()));
+        outsideCard.setImageResource(gameActivity.getResources().getIdentifier("card_invisible", "drawable", gameActivity.getPackageName()));
     }
 }

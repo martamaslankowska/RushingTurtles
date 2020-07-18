@@ -5,6 +5,9 @@ import pmma.rushingturtles.websocket.messages.BasicMsgFromServer;
 public class GameReadyToStartMsg extends BasicMsgFromServer {
     private int playerIdx;
 
+    public GameReadyToStartMsg() {
+    }
+
     public GameReadyToStartMsg(String message, int playerIdx) {
         super(message);
         this.playerIdx = playerIdx;

@@ -5,12 +5,15 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.SystemClock;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -23,6 +26,7 @@ import pmma.rushingturtles.websocket.WSC;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
+    TextView playersInTheRoomTextView;
     List<String> playersInTheRoomNames;
     ListView listView;
     ArrayAdapter<String> adapter;
@@ -41,27 +45,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mainController = MainActivityController.getInstance();
         mainController.initializeMainController(this);
 
-        wsc = WSC.getInstance();
-        if (!wsc.isAlreadyConnected()) {
-            wsc.setClassVariables(this, mainController);
-            wsc.connect(this);
-        }
-
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
 
         mainButton = findViewById(R.id.mainButton);
         mainButton.setOnClickListener(this);
         buttonState = ButtonState.START;
-
         initializeListView();
         setListViewVisibility();
+
+        SystemClock.sleep(500);
+        wsc = WSC.getInstance();
+        if (!wsc.isAlreadyConnected()) {
+            wsc.setClassVariables(mainController.getMainActivity(), mainController);
+            wsc.connect(mainController.getMainActivity());
+        }
+//        new Handler().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//            }
+//        }, 1000);
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -92,6 +97,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initializeListView() {
+        playersInTheRoomTextView = findViewById(R.id.textViewWaitingRoomPlayers);
         playersInTheRoomNames = new ArrayList<>();
         playersInTheRoomNames.add("Marta");
         playersInTheRoomNames.add("Piotr");
@@ -103,11 +109,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         listView.setEnabled(false);
     }
 
-    private void setListViewVisibility() {
+    public void setListViewVisibility() {
         if (playersInTheRoomNames.isEmpty()) {
-            listView.setVisibility(View.INVISIBLE);
+            listView.setVisibility(View.GONE);
+            playersInTheRoomTextView.setVisibility(View.GONE);
         } else {
             listView.setVisibility(View.VISIBLE);
+            playersInTheRoomTextView.setVisibility(View.VISIBLE);
         }
     }
 
@@ -145,14 +153,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    private void setButtonForWaitingFromServerForGameStart() {
+        mainButton.setBackgroundColor(getResources().getColor(R.color.buttonInactiveGray));
+        mainButton.setText(getResources().getString(R.string.main_button_wait_for_start_the_game));
+    }
+
+    public void startTheGame() {
+        Intent intent = new Intent(this, GameActivity.class);
+        intent.putExtra("my_player_name", mainController.getPlayerName());
+        intent.putExtra("my_player_idx", mainController.getPlayerIdx());
+        startActivity(intent);
+    }
+
     @Override
     public void onClick(View view) {
         switch (buttonState) {
             case START_GAME:
-                Intent intent = new Intent(this, GameActivity.class);
-                intent.putExtra("my_player_name", mainController.getPlayerName());
-                intent.putExtra("my_player_idx", mainController.getPlayerIdx());
-                startActivity(intent);
+//                WSC.getInstance().sendStartTheGameMsg();
+//                setButtonForWaitingFromServerForGameStart();
+                startTheGame();
                 break;
             case ALMOST_START_GAME:
                 Toast.makeText(this, getResources().getString(R.string.main_button_toast_almost_start_the_game), Toast.LENGTH_SHORT).show();

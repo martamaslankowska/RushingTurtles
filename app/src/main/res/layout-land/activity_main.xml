@@ -19,18 +19,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
+
     <ImageView
         android:id="@+id/imageViewBackgroundTurtles"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
         android:alpha="0.25"
-        android:scaleType="centerCrop"
-        android:layout_marginTop="36dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guidelineBottomButton"
-        app:layout_constraintVertical_bias="1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:layout_constraintVertical_bias="0"
         app:srcCompat="@drawable/turtle_background_main" />
 
     <Button
@@ -43,32 +43,46 @@
         android:text="@string/main_button_start"
         android:textColor="@color/whiteTextColor"
         android:textSize="@dimen/button_text_size"
-        app:layout_constraintBottom_toTopOf="@+id/guidelineBottomButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guidelineTopButton" />
-
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guidelineTopButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.15" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineLeftWaitingList"
+        app:layout_constraintStart_toStartOf="@+id/guidelineLeftButton"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:layout_constraintVertical_bias="0.4" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelineBottomButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.33" />
+        app:layout_constraintGuide_percent="0.4" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guidelineTopWaitingList"
+        android:id="@+id/guidelineLeftButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.45" />
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.05" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineTopWaitingListRight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.95" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineLeftWaitingList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.4" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineRightWaitingList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.95" />
 
 
     <ListView
@@ -76,26 +90,27 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="48dp"
-        android:layout_marginBottom="48dp"
         android:background="@drawable/xml_waiting_players_background"
         android:paddingHorizontal="24dp"
         android:paddingVertical="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guidelineTopWaitingList"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineRightWaitingList"
+        app:layout_constraintHorizontal_bias="0.52"
+        app:layout_constraintStart_toStartOf="@+id/guidelineLeftWaitingList"
+        app:layout_constraintTop_toTopOf="@+id/guidelineBottomButton"
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/textViewWaitingRoomPlayers"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp"
         android:text="@string/waiting_room_text"
-        android:layout_marginBottom="16dp"
         android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/guidelineTopWaitingList"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintBottom_toTopOf="@+id/listViewOfPlayersInTheWaitingRoom"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineRightWaitingList"
+        app:layout_constraintStart_toStartOf="@+id/guidelineLeftWaitingList" />
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

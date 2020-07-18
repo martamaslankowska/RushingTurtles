@@ -230,4 +230,9 @@ public class GameActivity extends AppCompatActivity {
         int resourceId = getResources().getIdentifier(resourceName, "drawable", getPackageName());
         turtleColorTile.setImageResource(resourceId);
     }
+
+    @Override
+    public void onBackPressed() {
+        Log.i("GameActivity", "onBackPressed");
+    }
 }

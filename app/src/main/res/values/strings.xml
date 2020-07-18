@@ -3,6 +3,7 @@
 
     <!-- TESTS -->
     <string name="test_string">Heh, something is wrong</string>
+    <string name="toast_error">Something went wrong - error message from server</string>
 
     <!-- TOOLBAR -->
     <string name="info_toolbar">Information</string>
@@ -29,6 +30,7 @@
     <string name="main_button_join">Join game</string>
     <string name="main_button_resume">Resume game</string>
     <string name="main_button_start_the_game">Let\'s play</string>
+    <string name="main_button_wait_for_start_the_game">Waiting for server...</string>
 
     <string name="main_button_toast_almost_start_the_game">You have to wait for at least 2 players.</string>
     <string name="main_button_toast_limit">There are too many players in the game - you can\'t join for now.</string>

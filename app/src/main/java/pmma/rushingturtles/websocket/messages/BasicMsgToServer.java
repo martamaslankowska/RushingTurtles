@@ -1,7 +1,10 @@
 package pmma.rushingturtles.websocket.messages;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class BasicMsgToServer {
     protected String message;
+    @JsonProperty("player_id")
     protected int playerId;
 
     public BasicMsgToServer(String message, int playerId) {

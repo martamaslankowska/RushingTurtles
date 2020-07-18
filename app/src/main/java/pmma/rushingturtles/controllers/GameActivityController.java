@@ -2,13 +2,17 @@ package pmma.rushingturtles.controllers;
 
 import android.util.Log;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import pmma.rushingturtles.R;
 import pmma.rushingturtles.activities.GameActivity;
 import pmma.rushingturtles.enums.CardAction;
 import pmma.rushingturtles.enums.TurtleColor;
@@ -111,6 +115,11 @@ public class GameActivityController {
         return game.getPlayersNames().get(game.getActivePlayerIdx());
     }
 
+    public GameActivity getGameActivity() {
+        return gameActivity;
+    }
+
+
     public Card getCard(int cardIdx) {
         return game.getMyPlayer().getCards().get(cardIdx);
     }
@@ -207,9 +216,14 @@ public class GameActivityController {
         game.setRecentlyPlayedCard(gameStateUpdated.getRecentlyPlayedCard());
     }
 
-    public void receiveAndUpdateFullGameState(FullGameStateMsg fullGameState) {
-        receiveFullGameState(fullGameState);
-        gameActivity.updateFullGameState();
+    public void receiveAndUpdateFullGameState(final FullGameStateMsg fullGameState) {
+        gameActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                receiveFullGameState(fullGameState);
+                gameActivity.updateFullGameState();
+            }
+        });
     }
 
     public void updateCardsOnDeck(CardsUpdatedMsg cardsUpdatedMsg) {
@@ -229,5 +243,6 @@ public class GameActivityController {
 
     public void errorMessage(ErrorMsg error) {
         Log.i("WebSocket ErrorMsg", error.getDescription());
+        Toast.makeText(gameActivity, gameActivity.getResources().getString(R.string.toast_error), Toast.LENGTH_SHORT).show();
     }
 }
