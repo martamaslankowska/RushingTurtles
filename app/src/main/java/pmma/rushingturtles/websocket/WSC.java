@@ -3,9 +3,9 @@ package pmma.rushingturtles.websocket;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.util.Log;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import java.net.ConnectException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -32,7 +32,9 @@ public class WSC {
     private String playerName;
     private int playerId;
     private String ipAddress;
+
     private boolean isAlreadyConnected;
+    private boolean hasShowedConnectionStatus;
 
     private MainActivityController mainController;
     private GameActivityController gameController;
@@ -68,9 +70,6 @@ public class WSC {
         if (!isAlreadyConnected) {
             initializeServerConnection(currentActivity);
             webSocketClient.connect();
-            isAlreadyConnected = true;
-            Log.i("WebSocket", "Connected with server :)");
-            Toast.makeText(currentActivity, currentActivity.getResources().getString(pmma.rushingturtles.R.string.websocket_connection) + " " + ipAddress, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -101,7 +100,8 @@ public class WSC {
             public void onTextReceived(String msg) {
                 Log.i("WebSocket", "Message received");
                 String message = getMessageFromMsg(msg);
-                Log.i("WebSocket", message);
+                Log.i("WebSocket msg", message);
+                Log.i("WebSocket json", msg);
 
 //                mainController.getMainActivity().runOnUiThread(new Runnable() {
 //                    @Override
@@ -167,6 +167,16 @@ public class WSC {
                     case "hello client":
                         HelloClientMsg helloClient = JsonObjectMapper.getObjectFromJson(msg, HelloClientMsg.class);
                         mainController.manageHelloClientMsg(helloClient);
+
+                        isAlreadyConnected = true;
+                        hasShowedConnectionStatus = true;
+                        Log.i("WebSocket", "Connected with server :)");
+                        mainController.getMainActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(currentActivity, currentActivity.getResources().getString(pmma.rushingturtles.R.string.toast_websocket_connection) + " " + ipAddress, Toast.LENGTH_SHORT).show();
+                            }
+                        });
                         break;
                     case "room update":
                         RoomUpdateMsg roomUpdateMsg = JsonObjectMapper.getObjectFromJson(msg, RoomUpdateMsg.class);
@@ -221,16 +231,29 @@ public class WSC {
 
             @Override
             public void onBinaryReceived(byte[] data) {
+//                Log.i("WebSocket", "onBinaryReceived");
             }
             @Override
             public void onPingReceived(byte[] data) {
+//                Log.i("WebSocket", "onPingReceived");
             }
             @Override
             public void onPongReceived(byte[] data) {
+//                Log.i("WebSocket", "onPongReceived");
             }
             @Override
             public void onException(Exception e) {
                 System.out.println(e.getMessage());
+                Log.i("WebSocket", "onException - " + e.toString());
+                if (e instanceof ConnectException && !hasShowedConnectionStatus) {
+                    currentActivity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(currentActivity, currentActivity.getResources().getString(R.string.toast_no_connection), Toast.LENGTH_SHORT).show();
+                            hasShowedConnectionStatus = true;
+                        }
+                    });
+                }
             }
             @Override
             public void onCloseReceived() {
@@ -278,6 +301,12 @@ public class WSC {
         msg = msg.substring(messageIdx + 11);
         String[] msgParts = msg.split("\"");
         return msgParts[0];
+    }
+
+    public void sendReadyToReceiveGameStateMsg() {
+        BasicMsgToServer readyToReceiveGameStateMsg = new BasicMsgToServer("ready to receive game state", playerId);
+        String jsonMessage = JsonObjectMapper.getJsonFromObject(readyToReceiveGameStateMsg);
+        webSocketClient.send(jsonMessage);
     }
 
 

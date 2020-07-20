@@ -1,5 +1,7 @@
 package pmma.rushingturtles.websocket.messages.gameactivity.fromserver;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 import pmma.rushingturtles.activities.GameActivity;
@@ -12,11 +14,19 @@ import pmma.rushingturtles.websocket.messages.BasicMsgFromServer;
 public class FullGameStateMsg extends BasicMsgFromServer {
 
     private Board board;
+    @JsonProperty("players_names")
     private List<String> playersNames;
+    @JsonProperty("active_player_idx")
     private int activePlayerIdx;
+    @JsonProperty("player_cards")
     private List<Card> playerCards;
+    @JsonProperty("player_turtle_color")
     private TurtleColor turtleColor;
+    @JsonProperty("recently_played_card")
     private Card recentlyPlayedCard;
+
+    public FullGameStateMsg() {
+    }
 
     public FullGameStateMsg(String message, Board board, List<String> playersNames, int activePlayerIdx, List<Card> playerCards, TurtleColor turtleColor, Card recentlyPlayedCard) {
         super(message);

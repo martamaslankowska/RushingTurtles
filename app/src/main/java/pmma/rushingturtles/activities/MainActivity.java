@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -50,21 +51,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         mainButton = findViewById(R.id.mainButton);
         mainButton.setOnClickListener(this);
-        buttonState = ButtonState.START;
+        buttonState = ButtonState.OTHER;
         initializeListView();
         setListViewVisibility();
 
-        SystemClock.sleep(500);
         wsc = WSC.getInstance();
         if (!wsc.isAlreadyConnected()) {
             wsc.setClassVariables(mainController.getMainActivity(), mainController);
             wsc.connect(mainController.getMainActivity());
         }
-//        new Handler().postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//            }
-//        }, 1000);
     }
 
 
@@ -99,9 +94,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void initializeListView() {
         playersInTheRoomTextView = findViewById(R.id.textViewWaitingRoomPlayers);
         playersInTheRoomNames = new ArrayList<>();
-        playersInTheRoomNames.add("Marta");
-        playersInTheRoomNames.add("Piotr");
-        playersInTheRoomNames.add("Maciek");
 
         adapter = new ArrayAdapter<>(this, R.layout.item_listview_waiting_players, R.id.textViewListView, playersInTheRoomNames);
         listView = findViewById(R.id.listViewOfPlayersInTheWaitingRoom);
@@ -121,7 +113,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void updateRoomWithPlayers(List<String> playersNames) {
         playersInTheRoomNames = playersNames;
+        adapter.clear();
+        adapter.addAll(playersInTheRoomNames);
         adapter.notifyDataSetChanged();
+        Log.i("WebSocket", playersInTheRoomNames.toString());
+        if (buttonState == ButtonState.ALMOST_START_GAME || buttonState == ButtonState.START_GAME)
+            setButtonForStartTheGame();
     }
 
     public void setButtonForStart() {
@@ -133,7 +130,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void setButtonForJoin() {
         mainButton.setBackgroundColor(getResources().getColor(R.color.buttonColorJoin));
         mainButton.setText(getResources().getString(R.string.main_button_join));
+        buttonState = ButtonState.JOIN;
+    }
 
+    private void setButtonForAfterJoin() {
+        mainButton.setBackgroundColor(getResources().getColor(R.color.buttonInactiveGray));
+        mainButton.setText(getResources().getString(R.string.main_button_after_join));
+        mainButton.setEnabled(false);
     }
 
     public void setButtonForInactive(ButtonState state) {
@@ -169,9 +172,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         switch (buttonState) {
             case START_GAME:
-//                WSC.getInstance().sendStartTheGameMsg();
-//                setButtonForWaitingFromServerForGameStart();
-                startTheGame();
+                WSC.getInstance().sendStartTheGameMsg();
+                setButtonForWaitingFromServerForGameStart();
+//                startTheGame();
                 break;
             case ALMOST_START_GAME:
                 Toast.makeText(this, getResources().getString(R.string.main_button_toast_almost_start_the_game), Toast.LENGTH_SHORT).show();
@@ -182,6 +185,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case JOIN:
                 WSC.getInstance().sendWantToJoinTheGameMsg("join the game");
+                setButtonForAfterJoin();
                 break;
             case RESUME:
                 Toast.makeText(this, "RESUME THE GAME <?>", Toast.LENGTH_SHORT).show();
@@ -193,6 +197,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Toast.makeText(this, getResources().getString(R.string.main_button_toast_ongoing), Toast.LENGTH_SHORT).show();
                 break;
             case OTHER:
+                startTheGame();
                 break;
 
         }

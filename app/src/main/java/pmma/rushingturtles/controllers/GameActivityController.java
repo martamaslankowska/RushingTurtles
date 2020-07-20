@@ -87,7 +87,7 @@ public class GameActivityController {
                 new Card(1, TurtleColor.BLUE, CardAction.PLUS_PLUS),
                 new Card(33, TurtleColor.GREEN, CardAction.MINUS),
                 new Card(13, TurtleColor.YELLOW, CardAction.PLUS),
-                new Card(11, TurtleColor.RAINBOW, CardAction.MINUS));
+                new Card(11, TurtleColor.RAINBOW, CardAction.ARROW));
         MyPlayer player = new MyPlayer(0, "Marta1", cards, TurtleColor.YELLOW);
 
         game = new Game(board, Arrays.asList("Marta1", "Marta2", "Marta3"), 1, player);
@@ -119,7 +119,6 @@ public class GameActivityController {
         return gameActivity;
     }
 
-
     public Card getCard(int cardIdx) {
         return game.getMyPlayer().getCards().get(cardIdx);
     }
@@ -128,6 +127,10 @@ public class GameActivityController {
         int currentPlayerIdx = game.getActivePlayerIdx();
         int nextPlayerIdx = game.getActivePlayerIdx() == game.getPlayersNames().size() - 1 ? 0 : currentPlayerIdx + 1;
         return game.getPlayersNames().get(nextPlayerIdx);
+    }
+
+    public boolean isPickedCardRainbow(int cardIdx) {
+        return getCardColor(cardIdx) == TurtleColor.RAINBOW;
     }
 
     public List<TurtleOnBoardPosition> getTurtlesOnBoardPositions(List<TurtleColor> turtleColors) {
@@ -139,10 +142,26 @@ public class GameActivityController {
         return turtleOnBoardPositions;
     }
 
-    public TurtleOnBoardPosition getTurtleOnBoardPosition(TurtleColor turtleColor) {
+    public int getTurtleOnBoardPositionRock(TurtleColor turtleColor) {
         game.getBoard().setTurtlePositions();
         List<TurtleOnBoardPosition> turtlePositions = game.getBoard().getTurtlePositions();
-        return turtlePositions.get(findTurtlePositionInTurtlesPositions(turtleColor, turtlePositions));
+        try {
+            TurtleOnBoardPosition turtlePosition = turtlePositions.get(findTurtlePositionInTurtlesPositions(turtleColor, turtlePositions));
+            return turtlePosition.getRock();
+        } catch (Exception e) {
+            return Integer.MAX_VALUE;
+        }
+    }
+
+    public boolean isTurtleGoingBackFromStart(int pickedIdx) {
+        TurtleColor pickedColor = getCardColor(pickedIdx);
+        return isTurtleGoingBackFromStart(pickedIdx, pickedColor);
+    }
+
+    public boolean isTurtleGoingBackFromStart(int pickedIdx, TurtleColor pickedColor) {
+        boolean firstCondition = getTurtleOnBoardPositionRock(pickedColor) == 0;
+        boolean secondCondition = getCard(pickedIdx).getAction() == CardAction.MINUS;
+        return firstCondition && secondCondition;
     }
 
     private int findTurtlePositionInTurtlesPositions(TurtleColor turtleColor, List<TurtleOnBoardPosition> turtlePositions) {
@@ -201,19 +220,29 @@ public class GameActivityController {
 
     /* WEB SOCKET MESSAGES */
 
-    private void receiveFullGameState(FullGameStateMsg fullGameState) {
-        game.setBoard(fullGameState.getBoard());
-        game.setPlayersNames(fullGameState.getPlayersNames());
-        game.setActivePlayerIdx(fullGameState.getActivePlayerIdx());
-        game.setRecentlyPlayedCard(fullGameState.getRecentlyPlayedCard());
-        MyPlayer player = new MyPlayer(myPlayerIdx, myPlayerName, fullGameState.getPlayerCards(), fullGameState.getTurtleColor());
-        game.setMyPlayer(player);
+    private void receiveFullGameState(final FullGameStateMsg fullGameState) {
+        gameActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                game.setBoard(fullGameState.getBoard());
+                game.setPlayersNames(fullGameState.getPlayersNames());
+                game.setActivePlayerIdx(fullGameState.getActivePlayerIdx());
+                game.setRecentlyPlayedCard(fullGameState.getRecentlyPlayedCard());
+                MyPlayer player = new MyPlayer(myPlayerIdx, myPlayerName, fullGameState.getPlayerCards(), fullGameState.getTurtleColor());
+                game.setMyPlayer(player);
+            }
+        });
     }
 
-    private void receiveGameState(GameStateUpdatedMsg gameStateUpdated) {
-        game.setBoard(gameStateUpdated.getBoard());
-        game.setActivePlayerIdx(gameStateUpdated.getActivePlayerIdx());
-        game.setRecentlyPlayedCard(gameStateUpdated.getRecentlyPlayedCard());
+    private void receiveGameState(final GameStateUpdatedMsg gameStateUpdated) {
+        gameActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                game.setBoard(gameStateUpdated.getBoard());
+                game.setActivePlayerIdx(gameStateUpdated.getActivePlayerIdx());
+                game.setRecentlyPlayedCard(gameStateUpdated.getRecentlyPlayedCard());
+            }
+        });
     }
 
     public void receiveAndUpdateFullGameState(final FullGameStateMsg fullGameState) {
@@ -226,23 +255,43 @@ public class GameActivityController {
         });
     }
 
-    public void updateCardsOnDeck(CardsUpdatedMsg cardsUpdatedMsg) {
-        gameActivity.cardDeckViewController.updateCardImagesWithSound(cardsUpdatedMsg.getPlayerCards());
+    public void updateCardsOnDeck(final CardsUpdatedMsg cardsUpdatedMsg) {
+        gameActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                gameActivity.cardDeckViewController.updateCardImagesWithSound(cardsUpdatedMsg.getPlayerCards());
+            }
+        });
     }
 
-    public void receiveAndUpdateGameState(GameStateUpdatedMsg gameStateUpdatedMsg) {
-        receiveGameState(gameStateUpdatedMsg);
-        gameActivity.updateGameState();
+    public void receiveAndUpdateGameState(final GameStateUpdatedMsg gameStateUpdatedMsg) {
+        gameActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                receiveGameState(gameStateUpdatedMsg);
+                gameActivity.updateGameState();
+            }
+        });
     }
 
-    public void showGameWonMessage(GameWonMsg gameWon) {
-        String winnerName = gameWon.getWinnerName();
-        gameActivity.manageWinnerPopupWindow();
-        gameEnded = true;
+    public void showGameWonMessage(final GameWonMsg gameWon) {
+        gameActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                String winnerName = gameWon.getWinnerName();
+                gameActivity.manageWinnerPopupWindow(winnerName);
+                gameEnded = true;
+            }
+        });
     }
 
-    public void errorMessage(ErrorMsg error) {
-        Log.i("WebSocket ErrorMsg", error.getDescription());
-        Toast.makeText(gameActivity, gameActivity.getResources().getString(R.string.toast_error), Toast.LENGTH_SHORT).show();
+    public void errorMessage(final ErrorMsg error) {
+        gameActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Log.i("WebSocket ErrorMsg", error.getDescription());
+                Toast.makeText(gameActivity, gameActivity.getResources().getString(R.string.toast_error), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

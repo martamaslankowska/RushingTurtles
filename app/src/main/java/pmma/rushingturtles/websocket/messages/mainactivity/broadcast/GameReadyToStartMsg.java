@@ -1,8 +1,11 @@
 package pmma.rushingturtles.websocket.messages.mainactivity.broadcast;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import pmma.rushingturtles.websocket.messages.BasicMsgFromServer;
 
 public class GameReadyToStartMsg extends BasicMsgFromServer {
+    @JsonProperty("player_idx")
     private int playerIdx;
 
     public GameReadyToStartMsg() {

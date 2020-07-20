@@ -1,12 +1,16 @@
 package pmma.rushingturtles.objects;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import pmma.rushingturtles.enums.TurtleColor;
 
 public class Board {
+    @JsonProperty("turtles_in_game_positions")
     private List<List<TurtleColor>> turtlesInGamePositions;
+    @JsonProperty("turtles_on_start_positions")
     private List<List<TurtleColor>> turtlesOnStartPositions;
     private List<TurtleOnBoardPosition> turtlePositions;
 

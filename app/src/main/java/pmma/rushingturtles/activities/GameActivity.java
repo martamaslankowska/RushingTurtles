@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -31,6 +32,7 @@ import pmma.rushingturtles.websocket.WSC;
 public class GameActivity extends AppCompatActivity {
     ConstraintLayout mainLayout;
     PopupWindow popupWindowWinner;
+    TextView winnerNameTextView;
     Button playCardButton, closePopupButton;
     ImageView turtleColorTile;
 
@@ -59,6 +61,7 @@ public class GameActivity extends AppCompatActivity {
         gameActivityController = GameActivityController.getInstance();
         gameActivityController.setGameActivityVariables(playerIdx, playerName, this);
         WSC.getInstance().setGameController(gameActivityController);
+        WSC.getInstance().sendReadyToReceiveGameStateMsg();
 
         currentOrientation = getResources().getConfiguration().orientation;
         statusBarHeight = getStatusBarHeight();
@@ -85,6 +88,8 @@ public class GameActivity extends AppCompatActivity {
 
         turtleColorTile = findViewById(R.id.imageViewTurtleColor);
         turtleColorTile.setOnClickListener(tmpOnTurtleTileClickListener);
+
+        winnerNameTextView = findViewById(R.id.textViewWinnerName);
     }
 
     private View.OnClickListener tmpOnTurtleTileClickListener = new View.OnClickListener() {
@@ -97,6 +102,8 @@ public class GameActivity extends AppCompatActivity {
 
     public void updateFullGameState() {
         cardDeckViewController.updateCardImagesWithSound(gameActivityController.game.getMyPlayer().getCards());
+        String resourceName = "turtle_color_card_" + gameActivityController.game.getMyPlayer().getTurtle().toString().toLowerCase();
+        turtleColorTile.setImageResource(getResources().getIdentifier(resourceName, "drawable", getPackageName()));
         updateGameState();
     }
 
@@ -117,18 +124,25 @@ public class GameActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             int pickedCardIdx = cardDeckViewController.getCardsFromDeck().indexOf(cardDeckViewController.getOutsideCard());
-            if (isPickedCardRainbow(pickedCardIdx)) {
-                if (!colorPickerViewController.isColorPickerVisible()) {
-                    setActivenessOfPlayCardButton(false);
-                    colorPickerViewController.animatePathsForColorPickers(true);
-                } else {
-                    if (colorPickerViewController.getCheckedColorPicker() != null) {
-                        sendPlayCardMessageToServer(pickedCardIdx, colorPickerViewController.getCheckedColor());
-                        colorPickerViewController.animatePathsForColorPickers(false);
+            if (!gameActivityController.isTurtleGoingBackFromStart(pickedCardIdx)) {
+                if (gameActivityController.isPickedCardRainbow(pickedCardIdx)) {
+                    if (!colorPickerViewController.isColorPickerVisible()) {
+                        setActivenessOfPlayCardButton(false);
+                        colorPickerViewController.animatePathsForColorPickers(true);
+                    } else {
+                        if (colorPickerViewController.getCheckedColorPicker() != null) {
+                            if (!gameActivityController.isTurtleGoingBackFromStart(pickedCardIdx, colorPickerViewController.getCheckedColor())) {
+                                sendPlayCardMessageToServer(pickedCardIdx, colorPickerViewController.getCheckedColor());
+                                colorPickerViewController.animatePathsForColorPickers(false);
+                            } else
+                                Toast.makeText(GameActivity.this, getResources().getString(R.string.toast_cant_move_turtle_back), Toast.LENGTH_SHORT).show();
+                        }
                     }
+                } else {
+                    sendPlayCardMessageToServer(pickedCardIdx, null);
                 }
             } else {
-                sendPlayCardMessageToServer(pickedCardIdx, null);
+                Toast.makeText(GameActivity.this, getResources().getString(R.string.toast_cant_move_turtle_back), Toast.LENGTH_SHORT).show();
             }
         }
     };
@@ -152,7 +166,7 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
-    public void manageWinnerPopupWindow() {
+    public void manageWinnerPopupWindow(String winnerName) {
         //instantiate the popup.xml layout file
         LayoutInflater layoutInflater = (LayoutInflater) GameActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View customView = layoutInflater.inflate(R.layout.popup_winner, null);
@@ -161,9 +175,8 @@ public class GameActivity extends AppCompatActivity {
 
         //instantiate popup window
         popupWindowWinner = new PopupWindow(customView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-
-        //display the popup window
         popupWindowWinner.showAtLocation(mainLayout, Gravity.CENTER, 0, 0);
+        winnerNameTextView.setText(winnerName.toUpperCase());
 
         //close the popup window on button click
         closePopupButton.setOnClickListener(new View.OnClickListener() {
@@ -218,10 +231,6 @@ public class GameActivity extends AppCompatActivity {
             setActivePlayerViews();
         else
             setInActivePlayerViews();
-    }
-
-    private boolean isPickedCardRainbow(int cardIdx) {
-        return gameActivityController.getCardColor(cardIdx) == TurtleColor.RAINBOW;
     }
 
     private void setTurtleTileColor() {

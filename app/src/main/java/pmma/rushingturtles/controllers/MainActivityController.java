@@ -101,12 +101,18 @@ public class MainActivityController {
                         break;
                     case "can join":
                         mainActivity.setButtonForJoin();
+                        mainActivity.updateRoomWithPlayers(helloClientMsg.getListOfPlayersInTheRoom());
+                        mainActivity.setListViewVisibility();
                         break;
                     case "limit":
                         mainActivity.setButtonForInactive(ButtonState.LIMIT);
+                        mainActivity.updateRoomWithPlayers(helloClientMsg.getListOfPlayersInTheRoom());
+                        mainActivity.setListViewVisibility();
                         break;
                     case "ongoing":
                         mainActivity.setButtonForInactive(ButtonState.ONGOING);
+                        mainActivity.updateRoomWithPlayers(helloClientMsg.getListOfPlayersInTheRoom());
+                        mainActivity.setListViewVisibility();
                         break;
                     case "can resume":
                         break;
@@ -115,19 +121,34 @@ public class MainActivityController {
         });
     }
 
-    public void receiveGameReadyToStart(GameReadyToStartMsg gameReadyToStartMsg) {
-        playerIdx = gameReadyToStartMsg.getPlayerIdx();
-        mainActivity.startTheGame();
+    public void receiveGameReadyToStart(final GameReadyToStartMsg gameReadyToStartMsg) {
+        mainActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                playerIdx = gameReadyToStartMsg.getPlayerIdx();
+                mainActivity.startTheGame();
+            }
+        });
     }
 
-    public void receiveRoomUpdateMsg(RoomUpdateMsg roomUpdateMsg) {
-        mainActivity.updateRoomWithPlayers(roomUpdateMsg.getListOfPlayersInTheRoom());
-        mainActivity.setListViewVisibility();
+    public void receiveRoomUpdateMsg(final RoomUpdateMsg roomUpdateMsg) {
+        mainActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mainActivity.updateRoomWithPlayers(roomUpdateMsg.getListOfPlayersInTheRoom());
+                mainActivity.setListViewVisibility();
+            }
+        });
     }
 
-    public void errorMessage(ErrorMsg error) {
-        Log.i("WebSocket ErrorMsg", error.getDescription());
-        Toast.makeText(mainActivity, mainActivity.getResources().getString(R.string.toast_error), Toast.LENGTH_SHORT).show();
+    public void errorMessage(final ErrorMsg error) {
+        mainActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Log.i("WebSocket ErrorMsg", error.getDescription());
+                Toast.makeText(mainActivity, mainActivity.getResources().getString(R.string.toast_error), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 

@@ -1,12 +1,19 @@
 package pmma.rushingturtles.objects;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import pmma.rushingturtles.enums.CardAction;
 import pmma.rushingturtles.enums.TurtleColor;
 
 public class Card {
+
+    @JsonProperty("card_id")
     private int cardId;
     private TurtleColor color;
     private CardAction action;
+
+    public Card() {
+    }
 
     public Card(int cardId, TurtleColor color, CardAction action) {
         this.cardId = cardId;

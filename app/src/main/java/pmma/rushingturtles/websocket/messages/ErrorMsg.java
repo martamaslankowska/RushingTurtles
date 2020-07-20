@@ -6,6 +6,9 @@ public class ErrorMsg extends BasicMsgFromServer {
 
     private String description;
 
+    public ErrorMsg() {
+    }
+
     public ErrorMsg(String message, String description) {
         super(message);
         this.description = description;

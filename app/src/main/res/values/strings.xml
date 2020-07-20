@@ -28,16 +28,16 @@
     <!-- MAIN ACTIVITY -->
     <string name="main_button_start">Start game</string>
     <string name="main_button_join">Join game</string>
+    <string name="main_button_after_join">Waiting for the game to start</string>
     <string name="main_button_resume">Resume game</string>
     <string name="main_button_start_the_game">Let\'s play</string>
     <string name="main_button_wait_for_start_the_game">Waiting for server...</string>
 
-    <string name="main_button_toast_almost_start_the_game">You have to wait for at least 2 players.</string>
-    <string name="main_button_toast_limit">There are too many players in the game - you can\'t join for now.</string>
-    <string name="main_button_toast_ongoing">The game has started - you can\'t join.</string>
+    <string name="main_button_toast_almost_start_the_game">You have to wait for at least 2 players</string>
+    <string name="main_button_toast_limit">There are too many players in the game - you can\'t join for now</string>
+    <string name="main_button_toast_ongoing">The game has started - you can\'t join</string>
 
     <string name="waiting_room_text">Players waiting for the game start</string>
-    <string name="websocket_connection">You are now connected to</string>
 
     <!-- GAME ACTIVITY -->
     <string name="turn_of_sb">Over to</string>
@@ -45,9 +45,13 @@
     <string name="play_card_on_deck">Play card</string>
     <string name="pick_color_card">Pick color</string>
     <string name="toast_pick_one_card">You have to pick exactly one card</string>
+    <string name="toast_cant_move_turtle_back">You can\'t move the turtle backward from the Start</string>
 
     <!-- WINNER POPUP WINDOW -->
     <string name="popup_main_text">And the winner is...</string>
 
+    <!-- WEBSOCKET -->
+    <string name="toast_no_connection">There is no connection with the server...</string>
+    <string name="toast_websocket_connection">You are now connected to</string>
 
 </resources>
