@@ -1,6 +1,7 @@
 package pmma.rushingturtles.activities;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -58,6 +59,7 @@ public class GameActivity extends AppCompatActivity {
             playerIdx = extras.getInt("my_player_idx");
             playerName = extras.getString("my_player_name");
         }
+
         gameActivityController = GameActivityController.getInstance();
         gameActivityController.setGameActivityVariables(playerIdx, playerName, this);
         WSC.getInstance().setGameController(gameActivityController);
@@ -71,10 +73,21 @@ public class GameActivity extends AppCompatActivity {
         cardDeckViewController = new CardDeckViewController(this, currentOrientation);
         colorPickerViewController = new ColorPickerViewController(this, currentOrientation);
 
-        cardDeckViewController.updateCardImages(gameActivityController.game.getMyPlayer().getCards());
-        setTurtleTileColor();
+//        cardDeckViewController.updateCardImages(gameActivityController.game.getMyPlayer().getCards());
+//        setTurtleTileColor();
 
         Log.i("GameActivity", String.valueOf(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT));
+    }
+
+    @Override
+    protected void onSaveInstanceState(final Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(final Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+            updateFullGameStateWithoutSound();
     }
 
     private void initializeXmlViews() {
@@ -87,28 +100,34 @@ public class GameActivity extends AppCompatActivity {
         nextPlayerName = findViewById(R.id.textViewNextPlayerName);
 
         turtleColorTile = findViewById(R.id.imageViewTurtleColor);
-        turtleColorTile.setOnClickListener(tmpOnTurtleTileClickListener);
+//        turtleColorTile.setOnClickListener(tmpOnTurtleTileClickListener);
 
         winnerNameTextView = findViewById(R.id.textViewWinnerName);
     }
 
-    private View.OnClickListener tmpOnTurtleTileClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v){
-            gameActivityController.changeState();
-            updateFullGameState();
-        }
-    };
+//    private View.OnClickListener tmpOnTurtleTileClickListener = new View.OnClickListener() {
+//        @Override
+//        public void onClick(View v){
+//            gameActivityController.changeState();
+//            updateFullGameState();
+//        }
+//    };
 
-    public void updateFullGameState() {
+    public void updateFullGameStateWithSound() {
         cardDeckViewController.updateCardImagesWithSound(gameActivityController.game.getMyPlayer().getCards());
-        String resourceName = "turtle_color_card_" + gameActivityController.game.getMyPlayer().getTurtle().toString().toLowerCase();
-        turtleColorTile.setImageResource(getResources().getIdentifier(resourceName, "drawable", getPackageName()));
+        setTurtleTileColor();
+        updateGameState();
+    }
+
+    public void updateFullGameStateWithoutSound() {
+        cardDeckViewController.updateCardImages(gameActivityController.game.getMyPlayer().getCards());
+        setTurtleTileColor();
         updateGameState();
     }
 
     public void updateGameState() {
         setPlayerViews();
+        cardDeckViewController.updateCardOnDeck(gameActivityController.game.getRecentlyPlayedCard());
         boardViewController.updateTurtlesPositions();
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -244,4 +263,5 @@ public class GameActivity extends AppCompatActivity {
     public void onBackPressed() {
         Log.i("GameActivity", "onBackPressed");
     }
+
 }

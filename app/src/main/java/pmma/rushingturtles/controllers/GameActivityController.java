@@ -6,8 +6,6 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -53,45 +51,45 @@ public class GameActivityController {
         turtlesOnStartPositions.add(Arrays.asList(TurtleColor.YELLOW));
         turtlesOnStartPositions.add(Arrays.asList(TurtleColor.PURPLE));
         turtlesOnStartPositions.add(Arrays.asList(TurtleColor.BLUE));
-        for (int i=0; i<9; i++)
-            turtlesInGamePositions.add(new ArrayList<TurtleColor>());
-//        turtlesInGamePositions.set(4, Arrays.asList(TurtleColor.YELLOW));
-//        turtlesInGamePositions.set(5, Arrays.asList(TurtleColor.RED));
-//        turtlesInGamePositions.set(6, Arrays.asList(TurtleColor.BLUE));
+//        for (int i=0; i<9; i++)
+//            turtlesInGamePositions.add(new ArrayList<TurtleColor>());
+////        turtlesInGamePositions.set(4, Arrays.asList(TurtleColor.YELLOW));
+////        turtlesInGamePositions.set(5, Arrays.asList(TurtleColor.RED));
+////        turtlesInGamePositions.set(6, Arrays.asList(TurtleColor.BLUE));
+////        turtlesInGamePositions.set(8, Arrays.asList(TurtleColor.PURPLE));
+////        turtlesInGamePositions.set(7, Arrays.asList(TurtleColor.GREEN));
+        Board board = new Board(turtlesOnStartPositions, turtlesInGamePositions);
+//
+//        List<Card> cards = Arrays.asList(new Card(1, TurtleColor.BLUE, CardAction.PLUS_PLUS),
+//                new Card(33, TurtleColor.GREEN, CardAction.MINUS),
+//                new Card(21, TurtleColor.RAINBOW, CardAction.ARROW_ARROW),
+//                new Card(13, TurtleColor.YELLOW, CardAction.PLUS),
+//                new Card(11, TurtleColor.RAINBOW, CardAction.MINUS));
+//        MyPlayer player = new MyPlayer(0, "Marta1", cards, TurtleColor.YELLOW);
+//
+        game = new Game(board);
+    }
+
+//    public void changeState() {
+//        List<List<TurtleColor>> turtlesOnStartPositions = new ArrayList<>();
+//        List<List<TurtleColor>> turtlesInGamePositions = new ArrayList<>();
+//        turtlesOnStartPositions.add(Arrays.asList(TurtleColor.RED));
+//        for (int i=0; i<9; i++)
+//            turtlesInGamePositions.add(new ArrayList<TurtleColor>());
+//        turtlesInGamePositions.set(0, Arrays.asList(TurtleColor.BLUE, TurtleColor.YELLOW));
+//        turtlesInGamePositions.set(4, Arrays.asList(TurtleColor.GREEN));
 //        turtlesInGamePositions.set(8, Arrays.asList(TurtleColor.PURPLE));
-//        turtlesInGamePositions.set(7, Arrays.asList(TurtleColor.GREEN));
-        Board board = new Board(turtlesOnStartPositions, turtlesInGamePositions);
-
-        List<Card> cards = Arrays.asList(new Card(1, TurtleColor.BLUE, CardAction.PLUS_PLUS),
-                new Card(33, TurtleColor.GREEN, CardAction.MINUS),
-                new Card(21, TurtleColor.RAINBOW, CardAction.ARROW_ARROW),
-                new Card(13, TurtleColor.YELLOW, CardAction.PLUS),
-                new Card(11, TurtleColor.RAINBOW, CardAction.MINUS));
-        MyPlayer player = new MyPlayer(0, "Marta1", cards, TurtleColor.YELLOW);
-
-        game = new Game(board, Arrays.asList("Marta1", "Marta2", "Marta3"), 0, player);
-    }
-
-    public void changeState() {
-        List<List<TurtleColor>> turtlesOnStartPositions = new ArrayList<>();
-        List<List<TurtleColor>> turtlesInGamePositions = new ArrayList<>();
-        turtlesOnStartPositions.add(Arrays.asList(TurtleColor.RED));
-        for (int i=0; i<9; i++)
-            turtlesInGamePositions.add(new ArrayList<TurtleColor>());
-        turtlesInGamePositions.set(0, Arrays.asList(TurtleColor.BLUE, TurtleColor.YELLOW));
-        turtlesInGamePositions.set(4, Arrays.asList(TurtleColor.GREEN));
-        turtlesInGamePositions.set(8, Arrays.asList(TurtleColor.PURPLE));
-        Board board = new Board(turtlesOnStartPositions, turtlesInGamePositions);
-
-        List<Card> cards = Arrays.asList(new Card(21, TurtleColor.RED, CardAction.PLUS),
-                new Card(1, TurtleColor.BLUE, CardAction.PLUS_PLUS),
-                new Card(33, TurtleColor.GREEN, CardAction.MINUS),
-                new Card(13, TurtleColor.YELLOW, CardAction.PLUS),
-                new Card(11, TurtleColor.RAINBOW, CardAction.ARROW));
-        MyPlayer player = new MyPlayer(0, "Marta1", cards, TurtleColor.YELLOW);
-
-        game = new Game(board, Arrays.asList("Marta1", "Marta2", "Marta3"), 1, player);
-    }
+//        Board board = new Board(turtlesOnStartPositions, turtlesInGamePositions);
+//
+//        List<Card> cards = Arrays.asList(new Card(21, TurtleColor.RED, CardAction.PLUS),
+//                new Card(1, TurtleColor.BLUE, CardAction.PLUS_PLUS),
+//                new Card(33, TurtleColor.GREEN, CardAction.MINUS),
+//                new Card(13, TurtleColor.YELLOW, CardAction.PLUS),
+//                new Card(11, TurtleColor.RAINBOW, CardAction.ARROW));
+//        MyPlayer player = new MyPlayer(0, "Marta1", cards, TurtleColor.YELLOW);
+//
+//        game = new Game(board, Arrays.asList("Marta1", "Marta2", "Marta3"), 1, player);
+//    }
 
     public GameActivityController(Board board, ArrayList<String> playersNames, int activePlayerIdx, int myPlayerId, String myPlayerName, List<Card> cards, TurtleColor turtleColor) {
         MyPlayer player = new MyPlayer(myPlayerId, myPlayerName, cards, turtleColor);
@@ -250,7 +248,7 @@ public class GameActivityController {
             @Override
             public void run() {
                 receiveFullGameState(fullGameState);
-                gameActivity.updateFullGameState();
+                gameActivity.updateFullGameStateWithSound();
             }
         });
     }
@@ -259,7 +257,8 @@ public class GameActivityController {
         gameActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                gameActivity.cardDeckViewController.updateCardImagesWithSound(cardsUpdatedMsg.getPlayerCards());
+                game.getMyPlayer().setCards(cardsUpdatedMsg.getPlayerCards());
+                gameActivity.cardDeckViewController.updateCardImagesWithSound(game.getMyPlayer().getCards());
             }
         });
     }

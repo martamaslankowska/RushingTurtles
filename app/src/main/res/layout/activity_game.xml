@@ -238,7 +238,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guidelineBoard"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/turtle_color" />
+        app:srcCompat="@drawable/turtle_color_card_default" />
 
     <TextView
         android:id="@+id/textViewCurrentPlayerText"

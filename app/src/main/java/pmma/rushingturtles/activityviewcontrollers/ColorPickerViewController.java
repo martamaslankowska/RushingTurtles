@@ -37,6 +37,10 @@ public class ColorPickerViewController {
     int currentOrientation;
     boolean isColorPickerVisible;
 
+    // TODO obsługa strzałek w kolorowych żółwiach
+    // - wyszarzenie kolorów niedostępnych
+    // - przesuwanie automatycznie ostatniego żółwia, jeśli jest jeden
+
     public ColorPickerViewController(GameActivity gameActivity, int currentOrientation) {
         this.gameActivity = gameActivity;
         this.currentOrientation = currentOrientation;

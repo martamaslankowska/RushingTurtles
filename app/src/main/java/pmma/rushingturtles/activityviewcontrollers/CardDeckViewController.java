@@ -183,7 +183,11 @@ public class CardDeckViewController {
     }
 
     public void updateCardOnDeck(Card card) {
-        cardOnDeck.setImageResource(mapCardParametersToCardResourceId(card));
+        if (card != null)
+            cardOnDeck.setImageResource(mapCardParametersToCardResourceId(card));
+        else {
+            cardOnDeck.setImageResource(gameActivity.getResources().getIdentifier("card_invisible", "drawable", gameActivity.getPackageName()));
+        }
     }
 
     public void setPlayedCardAsEmptyGray() {

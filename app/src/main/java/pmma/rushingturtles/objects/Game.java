@@ -18,6 +18,11 @@ public class Game {
         this.recentlyPlayedCard = null;
     }
 
+    public Game(Board board) {
+        this.board = board;
+        this.recentlyPlayedCard = null;
+    }
+
     public Board getBoard() {
         return board;
     }

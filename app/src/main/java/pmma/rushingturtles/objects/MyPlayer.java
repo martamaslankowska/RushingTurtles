@@ -61,4 +61,8 @@ public class MyPlayer {
     public void setActiveCardPosition(int activeCardPosition) {
         this.activeCardPosition = activeCardPosition;
     }
+
+    public void setCards(List<Card> cards) {
+        this.cards = cards;
+    }
 }
