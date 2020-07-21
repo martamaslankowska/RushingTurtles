@@ -204,4 +204,10 @@ public class CardDeckViewController {
     public void setPlayedCardAsEmptyGray() {
         outsideCard.setImageResource(gameActivity.getResources().getIdentifier("card_invisible", "drawable", gameActivity.getPackageName()));
     }
+
+    public void setAllViewsDisabled() {
+        for (int i=0; i<cards.size(); i++)
+            cards.get(i).setEnabled(false);
+        playCardButton.setEnabled(false);
+    }
 }

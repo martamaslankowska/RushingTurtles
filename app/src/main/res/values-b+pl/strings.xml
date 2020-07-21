@@ -46,6 +46,7 @@
     <string name="pick_color_card">Wybierz\nkolor</string>
     <string name="toast_pick_one_card">Musisz wybrać dokładnie jedną kartę</string>
     <string name="toast_cant_move_turtle_back">Nie możesz cofnąć żółwia na starcie</string>
+    <string name="toast_exit_activity">Aby wyjść z gry, naciśnij przycisk 2x</string>
 
     <!-- WINNER POPUP WINDOW -->
     <string name="popup_main_text">Tę rundę wygrywaaaa...</string>

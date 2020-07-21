@@ -4,6 +4,7 @@ import android.util.Log;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import java.io.DataOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -69,6 +70,10 @@ public class GameActivityController {
 
     public TurtleColor getCardColor(int cardIdx) {
         return game.getMyPlayer().getCards().get(cardIdx).getColor();
+    }
+
+    public CardAction getCardAction(int cardIdx) {
+        return game.getMyPlayer().getCards().get(cardIdx).getAction();
     }
 
     public int getCardId(int cardIdx) {
@@ -182,6 +187,38 @@ public class GameActivityController {
         return turtleRocks.size();
     }
 
+    public List<TurtleOnBoardPosition> getUnorderedTurtlesPositions() {
+//        game.getBoard().setTurtlePositions();
+        return game.getBoard().getTurtlePositions();
+    }
+
+    public List<TurtleOnBoardPosition> getListOfTurtlesOnLastRock() {
+        List<TurtleOnBoardPosition> allTurtlePositions = getUnorderedTurtlesPositions();
+        List<TurtleOnBoardPosition> turtlesOnLastRock = new ArrayList<>();
+        int lastRock = 10;
+        for (TurtleOnBoardPosition turtle : allTurtlePositions) {
+            if (turtle.getRock() < lastRock) {
+                turtlesOnLastRock = new ArrayList<>();
+                turtlesOnLastRock.add(turtle);
+                lastRock = turtle.getRock();
+            } else if (turtle.getRock() == lastRock)
+                turtlesOnLastRock.add(turtle);
+        }
+        return turtlesOnLastRock;
+    }
+
+    public boolean isOnlyOneTurtleLast() {
+        return getListOfTurtlesOnLastRock().size() == 1;
+    }
+
+    public boolean isCardArrow(int pickedCardIdx) {
+        return getCardAction(pickedCardIdx) == CardAction.ARROW || getCardAction(pickedCardIdx) == CardAction.ARROW_ARROW;
+    }
+
+    public TurtleColor getLastTurtlesColor() {
+        return getListOfTurtlesOnLastRock().get(0).getTurtleColor();
+    }
+
     /* WEB SOCKET MESSAGES */
 
     private void receiveFullGameState(final FullGameStateMsg fullGameState) {
@@ -244,6 +281,7 @@ public class GameActivityController {
             @Override
             public void run() {
                 gameActivity.winnerPopupViewController.manageWinnerPopupWindow(gameWon.getWinnerName(), gameWon.getPlayersNamesPlaces(), gameWon.getPlayersTurtleColors());
+                gameActivity.cardDeckViewController.setAllViewsDisabled();
                 gameEnded = true;
                 game.setActivePlayerIdx(-1);
             }

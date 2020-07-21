@@ -62,6 +62,45 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    @Override
+    protected void onSaveInstanceState(final Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("playersState", buttonState.toString());
+        outState.putStringArrayList("playersInTheRoomNames", (ArrayList<String>) playersInTheRoomNames);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(final Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        String playersState = savedInstanceState.getString("playersState");
+        buttonState = ButtonState.valueOf(playersState);
+        updateViewsAfterOrientationChange(savedInstanceState);
+    }
+
+    private void updateViewsAfterOrientationChange(Bundle savedInstanceState) {
+        updateRoomWithPlayers(savedInstanceState.getStringArrayList("playersInTheRoomNames"));
+        setListViewVisibility();
+        switch (buttonState) {
+            case START:
+                setButtonForStart();
+                break;
+            case JOIN:
+                setButtonForJoin();
+                break;
+            case ALMOST_START_GAME:
+            case START_GAME:
+                setButtonForStartTheGame();
+                break;
+            case LIMIT:
+                setButtonForInactive(ButtonState.LIMIT);
+                break;
+            case ONGOING:
+                setButtonForInactive(ButtonState.ONGOING);
+                break;
+            case RESUME:
+                break;
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -197,7 +236,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Toast.makeText(this, getResources().getString(R.string.main_button_toast_ongoing), Toast.LENGTH_SHORT).show();
                 break;
             case OTHER:
-                startTheGame();
+//                startTheGame();
                 break;
 
         }

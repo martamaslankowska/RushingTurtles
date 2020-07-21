@@ -263,7 +263,7 @@ public class BoardViewController {
         path.moveTo(xOld, yOld);
         path.lineTo(xNew, yNew);
         ObjectAnimator animator = ObjectAnimator.ofFloat(view, View.X, View.Y, path);
-        animator.setDuration(750);
+        animator.setDuration(600);
         animator.start();
     }
 

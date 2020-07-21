@@ -17,6 +17,8 @@ import android.os.Handler;
 import pmma.rushingturtles.R;
 import pmma.rushingturtles.activities.GameActivity;
 import pmma.rushingturtles.enums.TurtleColor;
+import pmma.rushingturtles.objects.Card;
+import pmma.rushingturtles.objects.TurtleOnBoardPosition;
 
 public class ColorPickerViewController {
     ImageView colorPickerBackground;
@@ -192,5 +194,32 @@ public class ColorPickerViewController {
             colorPicker.bringToFront();
         for (ImageView tick : colorTicks)
             tick.bringToFront();
+    }
+
+    public void prepareColorPickerColorsForArrowCards() {
+        List<TurtleOnBoardPosition> lastTurtlesPositions = gameActivity.gameActivityController.getListOfTurtlesOnLastRock();
+        List<TurtleColor> lastTurtlesColors = new ArrayList<>();
+        for (TurtleOnBoardPosition turtle : lastTurtlesPositions)
+            lastTurtlesColors.add(turtle.getTurtleColor());
+
+        for (int i=0; i<colorPickers.size(); i++) {
+            if (!lastTurtlesColors.contains(colors.get(i))) {
+                colorPickers.get(i).setImageResource(getColorResourceId("gray"));
+                colorPickers.get(i).setEnabled(false);
+            }
+        }
+    }
+
+    public void restartColorPickerViews() {
+        for (int i = 0; i < colorPickers.size(); i++) {
+            colorPickers.get(i).setImageResource(getColorResourceId(colors.get(i).toString().toLowerCase()));
+            colorPickers.get(i).setEnabled(true);
+        }
+    }
+
+    private int getColorResourceId(String color) {
+        String resourceName = "color_picker_" + color;
+        int resourceId = gameActivity.getResources().getIdentifier(resourceName, "drawable", gameActivity.getPackageName());
+        return resourceId;
     }
 }

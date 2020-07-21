@@ -35,15 +35,14 @@ import pmma.rushingturtles.websocket.WSC;
 
 public class GameActivity extends AppCompatActivity {
     ConstraintLayout mainLayout;
-    PopupWindow popupWindowWinner;
-    TextView winnerNameTextView;
-    Button playCardButton, closePopupButton;
+    Button playCardButton;
     ImageView turtleColorTile;
 
     TextView currentPlayerText, currentPlayerName, nextPlayerName;
 
     int statusBarHeight;
     int currentOrientation;
+    boolean doubleBackToExitPressedOnce;
 
     public GameActivityController gameActivityController;
     public ColorPickerViewController colorPickerViewController;
@@ -71,12 +70,10 @@ public class GameActivity extends AppCompatActivity {
 
         currentOrientation = getResources().getConfiguration().orientation;
         statusBarHeight = getStatusBarHeight();
+        doubleBackToExitPressedOnce = false;
 
         initializeXmlViews();
-        boardViewController = new BoardViewController(this, currentOrientation);
-        cardDeckViewController = new CardDeckViewController(this, currentOrientation);
-        colorPickerViewController = new ColorPickerViewController(this, currentOrientation);
-        winnerPopupViewController = new WinnerPopupViewController(this, currentOrientation);
+        initializeViewControllers();
 
 //        cardDeckViewController.updateCardImages(gameActivityController.game.getMyPlayer().getCards());
 //        setTurtleTileColor();
@@ -93,6 +90,13 @@ public class GameActivity extends AppCompatActivity {
     protected void onRestoreInstanceState(final Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
             updateFullGameStateWithoutSound();
+    }
+
+    private void initializeViewControllers() {
+        boardViewController = new BoardViewController(this, currentOrientation);
+        cardDeckViewController = new CardDeckViewController(this, currentOrientation);
+        colorPickerViewController = new ColorPickerViewController(this, currentOrientation);
+        winnerPopupViewController = new WinnerPopupViewController(this, currentOrientation);
     }
 
     private void initializeXmlViews() {
@@ -148,9 +152,16 @@ public class GameActivity extends AppCompatActivity {
             int pickedCardIdx = cardDeckViewController.getCardsFromDeck().indexOf(cardDeckViewController.getOutsideCard());
             if (!gameActivityController.isTurtleGoingBackFromStart(pickedCardIdx)) {
                 if (gameActivityController.isPickedCardRainbow(pickedCardIdx)) {
-                    if (!colorPickerViewController.isColorPickerVisible()) {
+
+                    if (gameActivityController.isCardArrow(pickedCardIdx) && gameActivityController.isOnlyOneTurtleLast())
+                        sendPlayCardMessageToServer(pickedCardIdx, gameActivityController.getLastTurtlesColor());
+
+                    else if (!colorPickerViewController.isColorPickerVisible()) {
                         setActivenessOfPlayCardButton(false);
+                        if (gameActivityController.isCardArrow(pickedCardIdx))
+                            colorPickerViewController.prepareColorPickerColorsForArrowCards();
                         colorPickerViewController.animatePathsForColorPickers(true);
+
                     } else {
                         if (colorPickerViewController.getCheckedColorPicker() != null) {
                             if (!gameActivityController.isTurtleGoingBackFromStart(pickedCardIdx, colorPickerViewController.getCheckedColor())) {
@@ -174,8 +185,8 @@ public class GameActivity extends AppCompatActivity {
         playCardButton.setVisibility(View.GONE);
         cardDeckViewController.setPlayedCardAsEmptyGray();
         cardDeckViewController.moveCard(cardDeckViewController.getOutsideCard(), false);
-//        cardDeckViewController.updateCardOnDeck(gameActivityController.getCard(pickedCardIdx));
         cardDeckViewController.setOutsideCard(null);
+        colorPickerViewController.restartColorPickerViews();
     }
 
     public void setActivenessOfPlayCardButton(boolean isActive) {
@@ -265,6 +276,20 @@ public class GameActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         Log.i("GameActivity", "onBackPressed");
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed();
+            return;
+        }
+
+        doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce = false;
+            }
+        }, 2000);
     }
 
 }

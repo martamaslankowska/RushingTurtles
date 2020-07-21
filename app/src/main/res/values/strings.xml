@@ -46,6 +46,7 @@
     <string name="pick_color_card">Pick color</string>
     <string name="toast_pick_one_card">You have to pick exactly one card</string>
     <string name="toast_cant_move_turtle_back">You can\'t move the turtle backward from the Start</string>
+    <string name="toast_exit_activity">To exit the game click BACK button twice</string>
 
     <!-- WINNER POPUP WINDOW -->
     <string name="popup_main_text">And the winner is...</string>
