@@ -103,66 +103,6 @@ public class WSC {
                 Log.i("WebSocket msg", message);
                 Log.i("WebSocket json", msg);
 
-//                mainController.getMainActivity().runOnUiThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        switch (message) {
-//                            case "hello client":
-//                                HelloClientMsg helloClient = JsonObjectMapper.getObjectFromJson(msg, HelloClientMsg.class);
-//                                mainController.manageHelloClientMsg(helloClient);
-//                                break;
-//                            case "room update":
-//                                RoomUpdateMsg roomUpdateMsg = JsonObjectMapper.getObjectFromJson(msg, RoomUpdateMsg.class);
-//                                mainController.receiveRoomUpdateMsg(roomUpdateMsg);
-//                                break;
-//                            case "game ready to start":
-//                                GameReadyToStartMsg gameReadyToStartMsg = JsonObjectMapper.getObjectFromJson(msg, GameReadyToStartMsg.class);
-//                                mainController.receiveGameReadyToStart(gameReadyToStartMsg);
-//                                break;
-//                            case "error":
-//                                ErrorMsg error = JsonObjectMapper.getObjectFromJson(msg, ErrorMsg.class);
-//                                try {
-//                                    mainController.errorMessage(error);
-//                                } catch (Exception e2) {
-//                                    Log.i("WebSocket error msg", e2.toString());
-//                                }
-//                                break;
-//                        }
-//                    }
-//                });
-//
-//                gameController.getGameActivity().runOnUiThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        switch (message) {
-//                            case "full game state":
-//                                FullGameStateMsg fullGameState = JsonObjectMapper.getObjectFromJson(msg, FullGameStateMsg.class);
-//                                gameController.receiveAndUpdateFullGameState(fullGameState);
-//                                break;
-//                            case "player cards updated":
-//                                CardsUpdatedMsg cardsUpdated = JsonObjectMapper.getObjectFromJson(msg, CardsUpdatedMsg.class);
-//                                gameController.updateCardsOnDeck(cardsUpdated);
-//                                break;
-//                            case "game state updated":
-//                                GameStateUpdatedMsg gameStateUpdated = JsonObjectMapper.getObjectFromJson(msg, GameStateUpdatedMsg.class);
-//                                gameController.receiveAndUpdateGameState(gameStateUpdated);
-//                                break;
-//                            case "game won":
-//                                GameWonMsg gameWon = JsonObjectMapper.getObjectFromJson(msg, GameWonMsg.class);
-//                                gameController.showGameWonMessage(gameWon);
-//                                break;
-//                            case "error":
-//                                ErrorMsg error = JsonObjectMapper.getObjectFromJson(msg, ErrorMsg.class);
-//                                try {
-//                                    gameController.errorMessage(error);
-//                                } catch (Exception e1) {
-//                                    Log.i("WebSocket error msg", e1.toString());
-//                                }
-//                                break;
-//                        }
-//                    }
-//                });
-
                 switch (message) {
                     case "hello client":
                         HelloClientMsg helloClient = JsonObjectMapper.getObjectFromJson(msg, HelloClientMsg.class);
@@ -215,17 +155,6 @@ public class WSC {
                         }
                         break;
                 }
-
-//                runOnUiThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        try {
-//                            TextView textView = findViewById(R.id.animalSound);
-//                            textView.setText(message);
-//                        } catch (Exception e){
-//                            e.printStackTrace();
-//                        }
-//                    }
 
             }
 

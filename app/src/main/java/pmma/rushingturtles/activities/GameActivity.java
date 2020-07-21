@@ -22,10 +22,13 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import java.util.Arrays;
+
 import pmma.rushingturtles.R;
 import pmma.rushingturtles.activityviewcontrollers.BoardViewController;
 import pmma.rushingturtles.activityviewcontrollers.CardDeckViewController;
 import pmma.rushingturtles.activityviewcontrollers.ColorPickerViewController;
+import pmma.rushingturtles.activityviewcontrollers.WinnerPopupViewController;
 import pmma.rushingturtles.controllers.GameActivityController;
 import pmma.rushingturtles.enums.TurtleColor;
 import pmma.rushingturtles.websocket.WSC;
@@ -46,6 +49,7 @@ public class GameActivity extends AppCompatActivity {
     public ColorPickerViewController colorPickerViewController;
     public CardDeckViewController cardDeckViewController;
     public BoardViewController boardViewController;
+    public WinnerPopupViewController winnerPopupViewController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +76,7 @@ public class GameActivity extends AppCompatActivity {
         boardViewController = new BoardViewController(this, currentOrientation);
         cardDeckViewController = new CardDeckViewController(this, currentOrientation);
         colorPickerViewController = new ColorPickerViewController(this, currentOrientation);
+        winnerPopupViewController = new WinnerPopupViewController(this, currentOrientation);
 
 //        cardDeckViewController.updateCardImages(gameActivityController.game.getMyPlayer().getCards());
 //        setTurtleTileColor();
@@ -101,15 +106,13 @@ public class GameActivity extends AppCompatActivity {
 
         turtleColorTile = findViewById(R.id.imageViewTurtleColor);
 //        turtleColorTile.setOnClickListener(tmpOnTurtleTileClickListener);
-
-        winnerNameTextView = findViewById(R.id.textViewWinnerName);
+//        winnerNameTextView = findViewById(R.id.textViewWinnerName);
     }
 
 //    private View.OnClickListener tmpOnTurtleTileClickListener = new View.OnClickListener() {
 //        @Override
 //        public void onClick(View v){
-//            gameActivityController.changeState();
-//            updateFullGameState();
+//            winnerPopupViewController.manageWinnerPopupWindow("Marta", Arrays.asList("Marta", "Piotr", "Twoja Stara"), Arrays.asList(TurtleColor.RED, TurtleColor.YELLOW, TurtleColor.PURPLE));
 //        }
 //    };
 
@@ -171,7 +174,7 @@ public class GameActivity extends AppCompatActivity {
         playCardButton.setVisibility(View.GONE);
         cardDeckViewController.setPlayedCardAsEmptyGray();
         cardDeckViewController.moveCard(cardDeckViewController.getOutsideCard(), false);
-        cardDeckViewController.updateCardOnDeck(gameActivityController.getCard(pickedCardIdx));
+//        cardDeckViewController.updateCardOnDeck(gameActivityController.getCard(pickedCardIdx));
         cardDeckViewController.setOutsideCard(null);
     }
 
@@ -185,26 +188,26 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
-    public void manageWinnerPopupWindow(String winnerName) {
-        //instantiate the popup.xml layout file
-        LayoutInflater layoutInflater = (LayoutInflater) GameActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View customView = layoutInflater.inflate(R.layout.popup_winner, null);
-
-        closePopupButton = (Button) customView.findViewById(R.id.closePopupBtn);
-
-        //instantiate popup window
-        popupWindowWinner = new PopupWindow(customView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        popupWindowWinner.showAtLocation(mainLayout, Gravity.CENTER, 0, 0);
-        winnerNameTextView.setText(winnerName.toUpperCase());
-
-        //close the popup window on button click
-        closePopupButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                popupWindowWinner.dismiss();
-            }
-        });
-    }
+//    public void manageWinnerPopupWindow(String winnerName) {
+//        //instantiate the popup.xml layout file
+//        LayoutInflater layoutInflater = (LayoutInflater) GameActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//        View customView = layoutInflater.inflate(R.layout.popup_winner, null);
+//
+//        closePopupButton = (Button) customView.findViewById(R.id.closePopupBtn);
+//
+//        //instantiate popup window
+//        popupWindowWinner = new PopupWindow(customView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+//        popupWindowWinner.showAtLocation(mainLayout, Gravity.CENTER, 0, 0);
+//        winnerNameTextView.setText(winnerName.toUpperCase());
+//
+//        //close the popup window on button click
+//        closePopupButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                popupWindowWinner.dismiss();
+//            }
+//        });
+//    }
 
     public int getStatusBarHeight() {
         Rect rectangle = new Rect();

@@ -23,7 +23,8 @@ public class CardDeckViewController {
     ImageView card1, card2, card3, card4, card5;
     List<ImageView> cards;
     ImageView outsideCard;
-    ImageView cardOnDeck;
+    ImageView cardOnDeck, cardOnDeckBackground;
+    int cardCounter;
 
     float cardCoordinateXOrY;
     float cardMovedCoordinateXOrY;
@@ -34,12 +35,16 @@ public class CardDeckViewController {
     GameActivity gameActivity;
     int currentOrientation;
 
+    // TODO zmieniać tło color_deck dla pierwszej i drugiej położonej karty
+
     public CardDeckViewController(GameActivity gameActivity, int currentOrientation) {
         this.gameActivity = gameActivity;
         this.currentOrientation = currentOrientation;
         initializeCardImageViews();
         cardCoordinatesHaveBeenSet = false;
         cardOnDeck = gameActivity.findViewById(R.id.imageViewDeckOfCards);
+        cardOnDeckBackground = gameActivity.findViewById(R.id.imageViewBottomDeckOfCards);
+        cardCounter = -1;
         playCardButton = gameActivity.findViewById(R.id.buttonPlayCardOnDeck);
         bringAllViewsToFront();
     }
@@ -183,11 +188,17 @@ public class CardDeckViewController {
     }
 
     public void updateCardOnDeck(Card card) {
-        if (card != null)
+        if (card != null) {
             cardOnDeck.setImageResource(mapCardParametersToCardResourceId(card));
-        else {
+            if (cardCounter == 1)
+                cardOnDeckBackground.setImageResource(gameActivity.getResources().getIdentifier("deck_of_1_card", "drawable", gameActivity.getPackageName()));
+            else if (cardCounter > 1)
+                cardOnDeckBackground.setImageResource(gameActivity.getResources().getIdentifier("deck_of_2_cards", "drawable", gameActivity.getPackageName()));
+        } else {
             cardOnDeck.setImageResource(gameActivity.getResources().getIdentifier("card_invisible", "drawable", gameActivity.getPackageName()));
+            cardOnDeckBackground.setImageResource(gameActivity.getResources().getIdentifier("card_invisible", "drawable", gameActivity.getPackageName()));
         }
+        cardCounter++;
     }
 
     public void setPlayedCardAsEmptyGray() {

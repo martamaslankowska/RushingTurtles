@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
-import pmma.rushingturtles.controllers.GameActivityController;
 import pmma.rushingturtles.enums.TurtleColor;
 import pmma.rushingturtles.websocket.messages.BasicMsgFromServer;
 
@@ -12,18 +11,18 @@ public class GameWonMsg extends BasicMsgFromServer {
 
     @JsonProperty("winner_name")
     private String winnerName;
-    @JsonProperty("players_places")
-    private List<Integer> playersPlaces;
-    @JsonProperty("players_turtle_colors")
+    @JsonProperty("sorted_list_of_player_places")
+    private List<String> playersNamesPlaces;
+    @JsonProperty("sorted_list_of_players_turtle_colors")
     private List<TurtleColor> playersTurtleColors;
 
     public GameWonMsg() {
     }
 
-    public GameWonMsg(String message, String winnerName, List<Integer> playersPlaces, List<TurtleColor> playersTurtleColors) {
+    public GameWonMsg(String message, String winnerName, List<String> playersNamesPlaces, List<TurtleColor> playersTurtleColors) {
         super(message);
         this.winnerName = winnerName;
-        this.playersPlaces = playersPlaces;
+        this.playersNamesPlaces = playersNamesPlaces;
         this.playersTurtleColors = playersTurtleColors;
     }
 
@@ -35,12 +34,12 @@ public class GameWonMsg extends BasicMsgFromServer {
         this.winnerName = winnerName;
     }
 
-    public List<Integer> getPlayersPlaces() {
-        return playersPlaces;
+    public List<String> getPlayersNamesPlaces() {
+        return playersNamesPlaces;
     }
 
-    public void setPlayersPlaces(List<Integer> playersPlaces) {
-        this.playersPlaces = playersPlaces;
+    public void setPlayersNamesPlaces(List<String> playersNamesPlaces) {
+        this.playersNamesPlaces = playersNamesPlaces;
     }
 
     public List<TurtleColor> getPlayersTurtleColors() {

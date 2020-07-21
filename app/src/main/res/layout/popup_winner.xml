@@ -17,7 +17,7 @@
         android:text="@string/popup_main_text"
         android:textColor="#fff"
         android:textSize="15sp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/textViewWinnerName"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -25,23 +25,45 @@
         android:id="@+id/textViewWinnerName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text=""
+        android:text="xD"
         android:textColor="#fff"
         android:textSize="15sp"
-        android:layout_marginTop="6dp"
+        android:textStyle="bold"
+        android:layout_marginStart="6dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewWinnerText"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.493"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewWinnerText" />
+        app:layout_constraintStart_toEndOf="@+id/textViewWinnerText"
+        app:layout_constraintTop_toTopOf="@+id/textViewWinnerText" />
+
+<!--    <ScrollView-->
+<!--        android:layout_width="230dp"-->
+<!--        android:layout_height="14dp">-->
+
+    <ListView
+        android:id="@+id/listViewOfPlayersFinalPlaces"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="12dp"
+        android:paddingVertical="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/closePopupBtn"
+        app:layout_constraintEnd_toEndOf="@+id/textViewWinnerName"
+        app:layout_constraintStart_toStartOf="@+id/textViewWinnerText"
+        app:layout_constraintTop_toBottomOf="@+id/textViewWinnerText"
+        app:layout_constraintVertical_bias="0.0" />
+
+<!--    </ScrollView>-->
 
     <Button
         android:id="@+id/closePopupBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/close_button_text"
         android:layout_marginTop="12dp"
-        app:layout_constraintEnd_toEndOf="@+id/textViewWinnerText"
-        app:layout_constraintStart_toStartOf="@+id/textViewWinnerText"
-        app:layout_constraintTop_toBottomOf="@+id/textViewWinnerName" />
+        android:text="@string/close_button_text"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewWinnerName"
+        app:layout_constraintVertical_bias="1.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

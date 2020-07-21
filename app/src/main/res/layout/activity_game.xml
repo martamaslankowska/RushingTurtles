@@ -290,7 +290,7 @@
         app:layout_constraintEnd_toStartOf="@+id/guidelineVerticalDeckOfCards"
         app:layout_constraintStart_toStartOf="@+id/imageViewBoard"
         app:layout_constraintTop_toTopOf="@+id/guidelineBottomTexts"
-        app:srcCompat="@drawable/deck_of_2_cards" />
+        app:srcCompat="@drawable/card_invisible" />
 
     <ImageView
         android:id="@+id/imageViewDeckOfCards"
@@ -301,7 +301,7 @@
         app:layout_constraintEnd_toStartOf="@+id/guidelineVerticalDeckOfCards"
         app:layout_constraintStart_toStartOf="@+id/imageViewBoard"
         app:layout_constraintTop_toTopOf="@+id/guidelineBottomTexts"
-        app:srcCompat="@drawable/red_card_arrow" />
+        app:srcCompat="@drawable/card_invisible" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelineVerticalDeckOfCards"

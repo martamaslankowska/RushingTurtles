@@ -48,7 +48,7 @@
     <string name="toast_cant_move_turtle_back">Nie możesz cofnąć żółwia na starcie</string>
 
     <!-- WINNER POPUP WINDOW -->
-    <string name="popup_main_text">Werble xD</string>
+    <string name="popup_main_text">Tę rundę wygrywaaaa...</string>
 
     <!-- WEBSOCKET -->
     <string name="toast_no_connection">Brak połączenia z serwerem</string>
