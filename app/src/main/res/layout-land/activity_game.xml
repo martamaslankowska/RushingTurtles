@@ -148,7 +148,7 @@
         android:layout_marginHorizontal="@dimen/card_padding_horizontal"
         android:layout_marginTop="@dimen/card_padding_vertical"
         android:scaleType="fitStart"
-        android:src="@drawable/turtle_card"
+        android:src="@drawable/card_rainbow_arrowarrow"
         app:layout_constraintEnd_toStartOf="@+id/guidelineRightOfCard5"
         app:layout_constraintStart_toStartOf="@+id/guidelineRightOfCard3"
         app:layout_constraintTop_toTopOf="@+id/guidelineBoard" />
@@ -161,7 +161,7 @@
         android:layout_marginHorizontal="@dimen/card_padding_horizontal"
         android:layout_marginTop="@dimen/card_padding_vertical"
         android:scaleType="fitStart"
-        android:src="@drawable/turtle_card"
+        android:src="@drawable/card_rainbow_arrowarrow"
         app:layout_constraintEnd_toStartOf="@+id/guidelineRightOfCard4"
         app:layout_constraintStart_toStartOf="@+id/guidelineRightOfCard2"
         app:layout_constraintTop_toTopOf="@+id/guidelineBoard" />
@@ -174,7 +174,7 @@
         android:layout_marginHorizontal="@dimen/card_padding_horizontal"
         android:layout_marginTop="@dimen/card_padding_vertical"
         android:scaleType="fitStart"
-        android:src="@drawable/turtle_card"
+        android:src="@drawable/card_rainbow_arrowarrow"
         app:layout_constraintEnd_toStartOf="@+id/guidelineRightOfCard3"
         app:layout_constraintStart_toStartOf="@+id/guidelineRightOfCard1"
         app:layout_constraintTop_toTopOf="@+id/guidelineBoard" />
@@ -187,7 +187,7 @@
         android:layout_marginHorizontal="@dimen/card_padding_horizontal"
         android:layout_marginTop="@dimen/card_padding_vertical"
         android:scaleType="fitStart"
-        android:src="@drawable/turtle_card"
+        android:src="@drawable/card_rainbow_arrowarrow"
         app:layout_constraintEnd_toStartOf="@+id/guidelineRightOfCard2"
         app:layout_constraintStart_toStartOf="@+id/guidelineLeftOfCard2"
         app:layout_constraintTop_toTopOf="@+id/guidelineBoard" />
@@ -200,7 +200,7 @@
         android:layout_marginHorizontal="@dimen/card_padding_horizontal"
         android:layout_marginTop="@dimen/card_padding_vertical"
         android:scaleType="fitStart"
-        android:src="@drawable/turtle_card"
+        android:src="@drawable/card_rainbow_arrowarrow"
         app:layout_constraintEnd_toStartOf="@+id/guidelineRightOfCard1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guidelineBoard" />

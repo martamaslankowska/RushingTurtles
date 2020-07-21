@@ -50,6 +50,7 @@
 
     <!-- WINNER POPUP WINDOW -->
     <string name="popup_main_text">Tę rundę wygrywaaaa...</string>
+    <string name="popup_button_text">Zagraj ponownie</string>
 
     <!-- WEBSOCKET -->
     <string name="toast_no_connection">Brak połączenia z serwerem</string>

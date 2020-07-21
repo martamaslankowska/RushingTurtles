@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         mainButton = findViewById(R.id.mainButton);
         mainButton.setOnClickListener(this);
+        mainButton.setVisibility(View.INVISIBLE);
         buttonState = ButtonState.OTHER;
         initializeListView();
         setListViewVisibility();
@@ -79,7 +80,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void updateViewsAfterOrientationChange(Bundle savedInstanceState) {
         updateRoomWithPlayers(savedInstanceState.getStringArrayList("playersInTheRoomNames"));
-        setListViewVisibility();
         switch (buttonState) {
             case START:
                 setButtonForStart();
@@ -100,6 +100,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case RESUME:
                 break;
         }
+        setListViewVisibility();
     }
 
     @Override
@@ -163,12 +164,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void setButtonForStart() {
         mainButton.setBackgroundColor(getResources().getColor(R.color.buttonColorStart));
         mainButton.setText(getResources().getString(R.string.main_button_start));
+        mainButton.setVisibility(View.VISIBLE);
         buttonState = ButtonState.START;
     }
 
     public void setButtonForJoin() {
         mainButton.setBackgroundColor(getResources().getColor(R.color.buttonColorJoin));
         mainButton.setText(getResources().getString(R.string.main_button_join));
+        mainButton.setVisibility(View.VISIBLE);
         buttonState = ButtonState.JOIN;
     }
 
@@ -181,6 +184,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void setButtonForInactive(ButtonState state) {
         mainButton.setBackgroundColor(getResources().getColor(R.color.buttonInactiveGray));
         mainButton.setText(getResources().getString(R.string.main_button_join));
+        mainButton.setVisibility(View.VISIBLE);
         buttonState = state;
     }
 
@@ -200,7 +204,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mainButton.setText(getResources().getString(R.string.main_button_wait_for_start_the_game));
     }
 
+    private void restartView() {
+        playersInTheRoomNames = new ArrayList<>();
+        setListViewVisibility();
+        buttonState = ButtonState.OTHER;
+        mainButton.setVisibility(View.INVISIBLE);
+    }
+
     public void startTheGame() {
+        restartView();
         Intent intent = new Intent(this, GameActivity.class);
         intent.putExtra("my_player_name", mainController.getPlayerName());
         intent.putExtra("my_player_idx", mainController.getPlayerIdx());

@@ -28,7 +28,7 @@
     <!-- MAIN ACTIVITY -->
     <string name="main_button_start">Start game</string>
     <string name="main_button_join">Join game</string>
-    <string name="main_button_after_join">Waiting for the game to start</string>
+    <string name="main_button_after_join">Waiting for the game start</string>
     <string name="main_button_resume">Resume game</string>
     <string name="main_button_start_the_game">Let\'s play</string>
     <string name="main_button_wait_for_start_the_game">Waiting for server...</string>
@@ -50,6 +50,7 @@
 
     <!-- WINNER POPUP WINDOW -->
     <string name="popup_main_text">And the winner is...</string>
+    <string name="popup_button_text">Play again</string>
 
     <!-- WEBSOCKET -->
     <string name="toast_no_connection">There is no connection with the server...</string>

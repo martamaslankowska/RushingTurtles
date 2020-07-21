@@ -35,8 +35,6 @@ public class CardDeckViewController {
     GameActivity gameActivity;
     int currentOrientation;
 
-    // TODO zmieniać tło color_deck dla pierwszej i drugiej położonej karty
-
     public CardDeckViewController(GameActivity gameActivity, int currentOrientation) {
         this.gameActivity = gameActivity;
         this.currentOrientation = currentOrientation;

@@ -200,6 +200,13 @@ public class WSC {
         isAlreadyConnected = false;
     }
 
+    public String getMessageFromMsg(String msg) {
+        int messageIdx = msg.indexOf("message");
+        msg = msg.substring(messageIdx + 11);
+        String[] msgParts = msg.split("\"");
+        return msgParts[0];
+    }
+
     private void sendHelloServerMsg() {
         HelloServerMsg helloSeverMsg = new HelloServerMsg(playerId, playerName);
         String jsonMessage = JsonObjectMapper.getJsonFromObject(helloSeverMsg);
@@ -225,15 +232,14 @@ public class WSC {
         webSocketClient.send(jsonMessage);
     }
 
-    public String getMessageFromMsg(String msg) {
-        int messageIdx = msg.indexOf("message");
-        msg = msg.substring(messageIdx + 11);
-        String[] msgParts = msg.split("\"");
-        return msgParts[0];
-    }
-
     public void sendReadyToReceiveGameStateMsg() {
         BasicMsgToServer readyToReceiveGameStateMsg = new BasicMsgToServer("ready to receive game state", playerId);
+        String jsonMessage = JsonObjectMapper.getJsonFromObject(readyToReceiveGameStateMsg);
+        webSocketClient.send(jsonMessage);
+    }
+
+    public void sendPlayAgainMsg() {
+        BasicMsgToServer readyToReceiveGameStateMsg = new BasicMsgToServer("play again", playerId);
         String jsonMessage = JsonObjectMapper.getJsonFromObject(readyToReceiveGameStateMsg);
         webSocketClient.send(jsonMessage);
     }

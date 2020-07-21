@@ -146,6 +146,9 @@ public class GameActivity extends AppCompatActivity {
         }, 300);
     }
 
+    // TODO dodać w ustawieniach możliwość usunięcia przycisku 'PLAY CARD'
+    // TODO zmienić nazwę przycisku z 'PICK COLOR' na 'PLAY CARD' gdy rusza się automatycznie ostatni żółw przy strzałce
+
     private View.OnClickListener playCardButtonOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {

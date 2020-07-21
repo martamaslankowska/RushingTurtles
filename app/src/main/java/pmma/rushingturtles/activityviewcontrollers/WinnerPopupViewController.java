@@ -21,6 +21,7 @@ import java.util.List;
 import pmma.rushingturtles.R;
 import pmma.rushingturtles.activities.GameActivity;
 import pmma.rushingturtles.enums.TurtleColor;
+import pmma.rushingturtles.websocket.WSC;
 
 public class WinnerPopupViewController {
 
@@ -68,6 +69,9 @@ public class WinnerPopupViewController {
             @Override
             public void onClick(View v) {
                 popupWindowWinner.dismiss();
+                // TODO wysyłanie wiadomości do serwera o chęci ponownego zagrania w grę :)
+                WSC.getInstance().sendPlayAgainMsg();
+                gameActivity.finish();
             }
         });
     }
