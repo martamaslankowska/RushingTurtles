@@ -184,6 +184,7 @@ public class WSC {
                     });
                 }
             }
+
             @Override
             public void onCloseReceived() {
                 Log.i("WebSocket", "Server closed connection");
@@ -220,8 +221,8 @@ public class WSC {
         webSocketClient.send(jsonMessage);
     }
 
-    public void sendWantToJoinTheGameMsg(String status) {
-        WantToJoinGameMsg wantToJoinGameMsg = new WantToJoinGameMsg(playerId, status);
+    public void sendWantToJoinTheGameMsg() {
+        WantToJoinGameMsg wantToJoinGameMsg = new WantToJoinGameMsg(playerId);
         String jsonMessage = JsonObjectMapper.getJsonFromObject(wantToJoinGameMsg);
         webSocketClient.send(jsonMessage);
     }

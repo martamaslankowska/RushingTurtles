@@ -5,8 +5,6 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.SystemClock;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -40,6 +38,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.i("MainActivity", "onCreate()");
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -52,8 +52,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mainButton = findViewById(R.id.mainButton);
         mainButton.setOnClickListener(this);
         mainButton.setVisibility(View.INVISIBLE);
-        buttonState = ButtonState.OTHER;
+        buttonState = mainController.getButtonState();
         initializeListView();
+        updateButtonBasedOnButtonState();
+        updateRoomWithPlayers();
         setListViewVisibility();
 
         wsc = WSC.getInstance();
@@ -61,6 +63,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             wsc.setClassVariables(mainController.getMainActivity(), mainController);
             wsc.connect(mainController.getMainActivity());
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.i("MainActivity", "onStart()");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.i("MainActivity", "onResume()");
     }
 
     @Override
@@ -78,8 +92,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         updateViewsAfterOrientationChange(savedInstanceState);
     }
 
-    private void updateViewsAfterOrientationChange(Bundle savedInstanceState) {
-        updateRoomWithPlayers(savedInstanceState.getStringArrayList("playersInTheRoomNames"));
+    private void updateButtonBasedOnButtonState() {
         switch (buttonState) {
             case START:
                 setButtonForStart();
@@ -100,6 +113,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case RESUME:
                 break;
         }
+    }
+
+    private void updateViewsAfterOrientationChange(Bundle savedInstanceState) {
+        updateRoomWithPlayers(savedInstanceState.getStringArrayList("playersInTheRoomNames"));
+        updateButtonBasedOnButtonState();
         setListViewVisibility();
     }
 
@@ -142,6 +160,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void setListViewVisibility() {
+        playersInTheRoomNames = mainController.getPlayersInTheRoomNames();
         if (playersInTheRoomNames.isEmpty()) {
             listView.setVisibility(View.GONE);
             playersInTheRoomTextView.setVisibility(View.GONE);
@@ -152,11 +171,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void updateRoomWithPlayers(List<String> playersNames) {
-        playersInTheRoomNames = playersNames;
+        mainController.setPlayersInTheRoomNames(playersNames);
+        updateRoomWithPlayers();
+    }
+
+    public void updateRoomWithPlayers() {
+        playersInTheRoomNames = mainController.getPlayersInTheRoomNames();
         adapter.clear();
         adapter.addAll(playersInTheRoomNames);
         adapter.notifyDataSetChanged();
         Log.i("WebSocket", playersInTheRoomNames.toString());
+
         if (buttonState == ButtonState.ALMOST_START_GAME || buttonState == ButtonState.START_GAME)
             setButtonForStartTheGame();
     }
@@ -175,9 +200,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         buttonState = ButtonState.JOIN;
     }
 
-    private void setButtonForAfterJoin() {
+    public void setButtonForResume() {
+        mainButton.setBackgroundColor(getResources().getColor(R.color.buttonColorJoin));
+        mainButton.setText(getResources().getString(R.string.main_button_resume));
+        mainButton.setVisibility(View.VISIBLE);
+        buttonState = ButtonState.RESUME;
+    }
+
+    private void setButtonForAfterJoinOrResume() {
         mainButton.setBackgroundColor(getResources().getColor(R.color.buttonInactiveGray));
         mainButton.setText(getResources().getString(R.string.main_button_after_join));
+        mainButton.setVisibility(View.VISIBLE);
         mainButton.setEnabled(false);
     }
 
@@ -190,6 +223,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void setButtonForStartTheGame() {
         mainButton.setText(getResources().getString(R.string.main_button_start_the_game));
+        mainButton.setVisibility(View.VISIBLE);
         if (playersInTheRoomNames.size() < 2) {
             mainButton.setBackgroundColor(getResources().getColor(R.color.buttonInactiveGray));
             buttonState = ButtonState.ALMOST_START_GAME;
@@ -197,26 +231,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             mainButton.setBackgroundColor(getResources().getColor(R.color.buttonColorStartTheGame));
             buttonState = ButtonState.START_GAME;
         }
+        mainController.setButtonState(buttonState);
     }
 
     private void setButtonForWaitingFromServerForGameStart() {
+        mainButton.setVisibility(View.VISIBLE);
         mainButton.setBackgroundColor(getResources().getColor(R.color.buttonInactiveGray));
         mainButton.setText(getResources().getString(R.string.main_button_wait_for_start_the_game));
     }
 
-    private void restartView() {
-        playersInTheRoomNames = new ArrayList<>();
-        setListViewVisibility();
-        buttonState = ButtonState.OTHER;
-        mainButton.setVisibility(View.INVISIBLE);
-    }
-
     public void startTheGame() {
-        restartView();
         Intent intent = new Intent(this, GameActivity.class);
         intent.putExtra("my_player_name", mainController.getPlayerName());
         intent.putExtra("my_player_idx", mainController.getPlayerIdx());
         startActivity(intent);
+//        finish();
     }
 
     @Override
@@ -231,15 +260,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Toast.makeText(this, getResources().getString(R.string.main_button_toast_almost_start_the_game), Toast.LENGTH_SHORT).show();
                 break;
             case START:
-                WSC.getInstance().sendWantToJoinTheGameMsg("create the game");
+                WSC.getInstance().sendWantToJoinTheGameMsg();
                 setButtonForStartTheGame();
                 break;
             case JOIN:
-                WSC.getInstance().sendWantToJoinTheGameMsg("join the game");
-                setButtonForAfterJoin();
+                WSC.getInstance().sendWantToJoinTheGameMsg();
+                setButtonForAfterJoinOrResume();
                 break;
             case RESUME:
                 Toast.makeText(this, "RESUME THE GAME <?>", Toast.LENGTH_SHORT).show();
+                WSC.getInstance().sendWantToJoinTheGameMsg();
+                setButtonForAfterJoinOrResume();
                 break;
             case LIMIT:
                 Toast.makeText(this, getResources().getString(R.string.main_button_toast_limit), Toast.LENGTH_SHORT).show();
@@ -254,4 +285,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.i("MainActivity", "onPause()");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.i("MainActivity", "onStop()");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.i("MainActivity", "onDestroy()");
+    }
 }

@@ -293,7 +293,7 @@ public class GameActivityController {
             @Override
             public void run() {
                 Log.i("WebSocket ErrorMsg", error.getDescription());
-                Toast.makeText(gameActivity, gameActivity.getResources().getString(R.string.toast_error), Toast.LENGTH_SHORT).show();
+                Toast.makeText(gameActivity, gameActivity.getResources().getString(R.string.toast_error) + "\n" + error.getDescription(), Toast.LENGTH_LONG).show();
             }
         });
     }
