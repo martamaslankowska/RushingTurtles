@@ -239,11 +239,11 @@ public class WSC {
         webSocketClient.send(jsonMessage);
     }
 
-    public void sendPlayAgainMsg() {
-        BasicMsgToServer readyToReceiveGameStateMsg = new BasicMsgToServer("play again", playerId);
-        String jsonMessage = JsonObjectMapper.getJsonFromObject(readyToReceiveGameStateMsg);
-        webSocketClient.send(jsonMessage);
-    }
+//    public void sendPlayAgainMsg() {
+//        BasicMsgToServer readyToReceiveGameStateMsg = new BasicMsgToServer("play again", playerId);
+//        String jsonMessage = JsonObjectMapper.getJsonFromObject(readyToReceiveGameStateMsg);
+//        webSocketClient.send(jsonMessage);
+//    }
 
 
     public WebSocketClient getWebSocketClient() {

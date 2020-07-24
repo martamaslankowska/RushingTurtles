@@ -1,6 +1,7 @@
 package pmma.rushingturtles.activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Rect;
@@ -280,8 +281,11 @@ public class GameActivity extends AppCompatActivity {
     public void onBackPressed() {
         Log.i("GameActivity", "onBackPressed");
         if (doubleBackToExitPressedOnce) {
+//            Intent output = new Intent();
+//            output.putExtra("play_again_msg", true);
+//            setResult(RESULT_OK, output);
+//            finish();
             super.onBackPressed();
-            return;
         }
 
         doubleBackToExitPressedOnce = true;

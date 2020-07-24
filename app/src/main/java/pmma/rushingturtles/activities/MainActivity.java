@@ -25,7 +25,9 @@ import pmma.rushingturtles.websocket.WSC;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    TextView playersInTheRoomTextView;
+    final static Integer REQUEST_CODE = 123;
+
+    TextView playersInTheRoomTextView, initialTextInfo;
     List<String> playersInTheRoomNames;
     ListView listView;
     ArrayAdapter<String> adapter;
@@ -46,17 +48,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mainController = MainActivityController.getInstance();
         mainController.initializeMainController(this);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        mainButton = findViewById(R.id.mainButton);
-        mainButton.setOnClickListener(this);
-        mainButton.setVisibility(View.INVISIBLE);
-        buttonState = mainController.getButtonState();
+        initializeXmlViews();
         initializeListView();
-        updateButtonBasedOnButtonState();
-        updateRoomWithPlayers();
-        setListViewVisibility();
 
         wsc = WSC.getInstance();
         if (!wsc.isAlreadyConnected()) {
@@ -75,6 +68,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onResume() {
         super.onResume();
         Log.i("MainActivity", "onResume()");
+
+        buttonState = mainController.getButtonState();
+        updateButtonBasedOnButtonState();
+        updateRoomWithPlayers();
+        setListViewVisibility();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.i("MainActivity", "onActivityResult()");
+
+        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK && data != null) {
+            if (data.getBooleanExtra("play_again_msg", false)) {
+                WSC.getInstance().sendWantToJoinTheGameMsg();
+                mainController.setButtonState(ButtonState.AFTER_JOIN);
+                mainController.setPlayersInTheRoomNames(new ArrayList<String>());
+            }
+        }
     }
 
     @Override
@@ -94,11 +106,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void updateButtonBasedOnButtonState() {
         switch (buttonState) {
+            case OTHER:
+                setViewForOther();
+                break;
             case START:
                 setButtonForStart();
                 break;
             case JOIN:
                 setButtonForJoin();
+                break;
+            case AFTER_JOIN:
+                setButtonForAfterJoinOrResume();
                 break;
             case ALMOST_START_GAME:
             case START_GAME:
@@ -111,6 +129,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 setButtonForInactive(ButtonState.ONGOING);
                 break;
             case RESUME:
+                setButtonForResume();
                 break;
         }
     }
@@ -149,6 +168,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return true;
     }
 
+    private void initializeXmlViews() {
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        mainButton = findViewById(R.id.mainButton);
+        mainButton.setOnClickListener(this);
+        initialTextInfo = findViewById(R.id.textViewInfo);
+    }
+
     private void initializeListView() {
         playersInTheRoomTextView = findViewById(R.id.textViewWaitingRoomPlayers);
         playersInTheRoomNames = new ArrayList<>();
@@ -182,48 +210,67 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         adapter.notifyDataSetChanged();
         Log.i("WebSocket", playersInTheRoomNames.toString());
 
-        if (buttonState == ButtonState.ALMOST_START_GAME || buttonState == ButtonState.START_GAME)
+        if (buttonState == ButtonState.ALMOST_START_GAME || buttonState == ButtonState.START_GAME || isPlayerFirstOnTheList())
             setButtonForStartTheGame();
+    }
+
+    private boolean isPlayerFirstOnTheList() {
+        return !playersInTheRoomNames.isEmpty() && playersInTheRoomNames.get(0).equals(mainController.getPlayerName());
+    }
+
+    private void setViewForOther() {
+        mainButton.setVisibility(View.INVISIBLE);
+        initialTextInfo.setText(getResources().getString(R.string.initial_info));
+        initialTextInfo.setVisibility(View.VISIBLE);
+    }
+
+    private void setButtonVisibility(boolean shouldBeEnabled) {
+        mainButton.setVisibility(View.VISIBLE);
+        initialTextInfo.setVisibility(View.GONE);
+        mainButton.setEnabled(shouldBeEnabled);
+    }
+
+    private void setButtonVisibility() {
+        setButtonVisibility(true);
     }
 
     public void setButtonForStart() {
         mainButton.setBackgroundColor(getResources().getColor(R.color.buttonColorStart));
         mainButton.setText(getResources().getString(R.string.main_button_start));
-        mainButton.setVisibility(View.VISIBLE);
         buttonState = ButtonState.START;
+        setButtonVisibility();
     }
 
     public void setButtonForJoin() {
         mainButton.setBackgroundColor(getResources().getColor(R.color.buttonColorJoin));
         mainButton.setText(getResources().getString(R.string.main_button_join));
-        mainButton.setVisibility(View.VISIBLE);
         buttonState = ButtonState.JOIN;
+        setButtonVisibility();
     }
 
     public void setButtonForResume() {
         mainButton.setBackgroundColor(getResources().getColor(R.color.buttonColorJoin));
         mainButton.setText(getResources().getString(R.string.main_button_resume));
-        mainButton.setVisibility(View.VISIBLE);
         buttonState = ButtonState.RESUME;
+        setButtonVisibility();
     }
 
     private void setButtonForAfterJoinOrResume() {
         mainButton.setBackgroundColor(getResources().getColor(R.color.buttonInactiveGray));
         mainButton.setText(getResources().getString(R.string.main_button_after_join));
-        mainButton.setVisibility(View.VISIBLE);
-        mainButton.setEnabled(false);
+        buttonState = ButtonState.AFTER_JOIN;
+        setButtonVisibility(false);
     }
 
     public void setButtonForInactive(ButtonState state) {
         mainButton.setBackgroundColor(getResources().getColor(R.color.buttonInactiveGray));
         mainButton.setText(getResources().getString(R.string.main_button_join));
-        mainButton.setVisibility(View.VISIBLE);
         buttonState = state;
+        setButtonVisibility();
     }
 
     private void setButtonForStartTheGame() {
         mainButton.setText(getResources().getString(R.string.main_button_start_the_game));
-        mainButton.setVisibility(View.VISIBLE);
         if (playersInTheRoomNames.size() < 2) {
             mainButton.setBackgroundColor(getResources().getColor(R.color.buttonInactiveGray));
             buttonState = ButtonState.ALMOST_START_GAME;
@@ -232,19 +279,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             buttonState = ButtonState.START_GAME;
         }
         mainController.setButtonState(buttonState);
+        setButtonVisibility();
     }
 
     private void setButtonForWaitingFromServerForGameStart() {
-        mainButton.setVisibility(View.VISIBLE);
         mainButton.setBackgroundColor(getResources().getColor(R.color.buttonInactiveGray));
         mainButton.setText(getResources().getString(R.string.main_button_wait_for_start_the_game));
+        setButtonVisibility();
     }
 
     public void startTheGame() {
         Intent intent = new Intent(this, GameActivity.class);
         intent.putExtra("my_player_name", mainController.getPlayerName());
         intent.putExtra("my_player_idx", mainController.getPlayerIdx());
-        startActivity(intent);
+        startActivityForResult(intent, REQUEST_CODE);
 //        finish();
     }
 
@@ -264,14 +312,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 setButtonForStartTheGame();
                 break;
             case JOIN:
-                WSC.getInstance().sendWantToJoinTheGameMsg();
-                setButtonForAfterJoinOrResume();
-                break;
             case RESUME:
-                Toast.makeText(this, "RESUME THE GAME <?>", Toast.LENGTH_SHORT).show();
                 WSC.getInstance().sendWantToJoinTheGameMsg();
                 setButtonForAfterJoinOrResume();
                 break;
+//            case RESUME:
+//                Toast.makeText(this, "RESUME THE GAME <?>", Toast.LENGTH_SHORT).show();
+//                WSC.getInstance().sendWantToJoinTheGameMsg();
+//                setButtonForAfterJoinOrResume();
+//                break;
             case LIMIT:
                 Toast.makeText(this, getResources().getString(R.string.main_button_toast_limit), Toast.LENGTH_SHORT).show();
                 break;

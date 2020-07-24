@@ -8,5 +8,6 @@ public enum ButtonState {
     RESUME,
     OTHER,
     START_GAME,
-    ALMOST_START_GAME
+    ALMOST_START_GAME,
+    AFTER_JOIN
 }

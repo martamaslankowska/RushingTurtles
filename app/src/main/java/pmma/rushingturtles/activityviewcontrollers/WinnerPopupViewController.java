@@ -1,6 +1,7 @@
 package pmma.rushingturtles.activityviewcontrollers;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,8 +21,11 @@ import java.util.List;
 
 import pmma.rushingturtles.R;
 import pmma.rushingturtles.activities.GameActivity;
+import pmma.rushingturtles.activities.MainActivity;
 import pmma.rushingturtles.enums.TurtleColor;
 import pmma.rushingturtles.websocket.WSC;
+
+import static android.app.Activity.RESULT_OK;
 
 public class WinnerPopupViewController {
 
@@ -70,7 +74,11 @@ public class WinnerPopupViewController {
             public void onClick(View v) {
                 popupWindowWinner.dismiss();
                 // TODO wysyłanie wiadomości do serwera o chęci ponownego zagrania w grę :)
-                WSC.getInstance().sendPlayAgainMsg();
+//                WSC.getInstance().sendPlayAgainMsg();
+
+                Intent output = new Intent();
+                output.putExtra("play_again_msg", true);
+                gameActivity.setResult(RESULT_OK, output);
                 gameActivity.finish();
             }
         });
